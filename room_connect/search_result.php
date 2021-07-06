@@ -48,7 +48,7 @@ if ($result === false) {
                 echo "非公開";
                 }
             ?></span></p>
-            <a href="detail.php?room_number=<?php echo $result['room_number'] ?>">参加する</a>
+            <a href="room.php?room_number=<?php echo $result['room_number'] ?>">参加する</a>
         </div>
     </div>
 </body>
