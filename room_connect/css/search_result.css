@@ -13,8 +13,6 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    border-radius: 8px;
-    border: 1px solid #888;
 }
 
 p {
