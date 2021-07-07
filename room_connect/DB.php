@@ -4,7 +4,7 @@ class DB {
     function dbConnect() {
         $dsn = 'mysql:host=localhost;dbname=db_name;charset=utf8';
         $user = 'user_name';
-        $pass = 'password';
+        $pass = 'passwordaaa';
         try {
             $dbh = new PDO($dsn,$user,$pass,[
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
