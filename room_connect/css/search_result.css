@@ -3,6 +3,11 @@
     padding: 0;
 }
 
+.create {
+    text-align: center;
+    font-size: 24px;
+}
+
 .room {
     position: absolute;
     left: 50%;
