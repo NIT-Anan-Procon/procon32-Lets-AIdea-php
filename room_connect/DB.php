@@ -1,10 +1,23 @@
 ﻿<?php
 
+require_once('../../info.php');
+
 class DB {
+
     function dbConnect() {
+<<<<<<< HEAD
         $dsn = 'mysql:host=localhost;dbname=db_name;charset=utf8';
         $user = 'user_name';
         $pass = 'passwordaaa';
+=======
+        $dbname = db_name;
+        $password = password;
+        $user_name = db_user;
+
+        $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
+        $user = "$user_name";
+        $pass = "$password";
+>>>>>>> f90bc1b2e4c4672e196d5495a1cd51675450cbd6
         try {
             $dbh = new PDO($dsn,$user,$pass,[
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -27,7 +40,8 @@ class DB {
     }
 
     function create_room($room_number, $publish_status) {
-        $sql = "INSERT INTO table_name(room_number, publish_status)
+        $table = table;
+        $sql = "INSERT INTO $table(room_number, publish_status)
         VALUES
             (:room_number, :publish_status)";
 
@@ -44,8 +58,10 @@ class DB {
     }
 
     function room_info($room_number) {
+        $table = table;
+        
         $dbh = $this->dbConnect();
-        $stmt = $dbh->prepare('SELECT * FROM table_name where room_number = :room_number');
+        $stmt = $dbh->prepare("SELECT * FROM $table where room_number = :room_number");
         $stmt->bindValue(':room_number', $room_number, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
