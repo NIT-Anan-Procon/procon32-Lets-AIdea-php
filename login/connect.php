@@ -1,5 +1,5 @@
 <?php
-require_once('../../login_info.php');
+require('../../login_info.php');
 
 function connectDB(){ //データベースに接続
     $DB_user = db_user;            //opアカウントのidとパスワード
