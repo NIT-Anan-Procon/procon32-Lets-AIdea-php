@@ -5,7 +5,7 @@ require_once('DB.php');
 $room = $_POST;
 
 if (empty($room["publish_status"])) {
-    exit("<a href=create_room.html>公開状態が未入力です</a>");
+    exit("<a href=html/create_form.html>公開状態が未入力です</a>");
 }
 if ($room['publish_status'] === "true") {
     $publish_status = 1;
