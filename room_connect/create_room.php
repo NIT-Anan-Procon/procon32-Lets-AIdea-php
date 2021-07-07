@@ -28,7 +28,7 @@ $result = $db->room_info($code);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>部屋詳細</title>
-    <link rel="stylesheet" href="css/search_result.css">
+    <link rel="stylesheet" href="css/create_room.css">
 </head>
 <body>
     <div class="create">部屋を作成しました。</div>
