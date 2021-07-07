@@ -5,11 +5,7 @@ require_once('../../info.php');
 class DB {
 
     function dbConnect() {
-<<<<<<< HEAD
-        $dsn = 'mysql:host=localhost;dbname=db_name;charset=utf8';
-        $user = 'user_name';
-        $pass = 'passwordaaa';
-=======
+
         $dbname = db_name;
         $password = password;
         $user_name = db_user;
@@ -17,7 +13,7 @@ class DB {
         $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
         $user = "$user_name";
         $pass = "$password";
->>>>>>> f90bc1b2e4c4672e196d5495a1cd51675450cbd6
+
         try {
             $dbh = new PDO($dsn,$user,$pass,[
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
