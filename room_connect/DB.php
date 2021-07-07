@@ -6,7 +6,7 @@ class DB {
 
     function dbConnect() {
 
-        $dbname = db_nam;
+        $dbname = db_name;
         $password = password;
         $user_name = db_user;
 
