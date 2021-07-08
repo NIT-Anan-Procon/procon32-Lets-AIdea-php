@@ -41,6 +41,7 @@ if ($result === false) {
 <body>
     <div class="room">
         <div class="room_box">
+            <?php echo $_SESSION['id']; ?>
             <p>部屋番号:<span><?php echo $result['room_number']; ?></span></p>
             <p>公開状態:<span><?php if ((int)$result['publish_status'] === 1) {
                 echo "公開";
