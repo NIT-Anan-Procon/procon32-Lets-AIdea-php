@@ -1,5 +1,4 @@
 ﻿<?php
-session_start();
 require_once('../../info.php');
 
 
@@ -65,27 +64,23 @@ class DB {
         return $result;
     }
 
-    function join_room($room_number){
+    function join_room($result){
         $table = table;
-        $dbh = $this->dbconnect();
-        $stmt = $dbh->prepare("SELECT * FROM $table where room_number = :room_number");
-        $stmt->bindValue(':room_number', $room_number, PDO::PARAM_INT);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        for($order = 0; $order <= 4; $order++){
-            $join = 'account'.$order;
-            if(empty($result["$join"]))
+     /*   for($order = 0; $order <= 4; $order++){
+            $join = 'account1';
+            if(empty($result['account1']))
                 break;
             else if($order = 4){
                 echo '参加人数が上限に達しています';
                 exit;
             }
-        }
-        $order = 'account'.$order;
-        $sql = "INSERT INTO $table VALUES (:$order)";
+    */    
+        $dbh = $this->dbConnect();
+    //    $order = 'account'.$order;
+        $sql = "UPDATE $table SET account1 = :account1 where room_number = :room_number";
         $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(':'.$order, $_SESSION['id']);
+        $stmt->bindValue(':account1', $_SESSION['id']);
+        $stmt->bindValue(':room_number', $_SESSION['room']);
         $stmt->execute();
     }
 }
