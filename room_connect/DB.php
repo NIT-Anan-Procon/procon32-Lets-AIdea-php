@@ -1,8 +1,8 @@
 ﻿<?php
-
+session_start();
 require_once('../../info.php');
 
-session_start();
+
 class DB {
 
     function dbConnect() {
