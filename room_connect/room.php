@@ -1,5 +1,5 @@
 ﻿<?php
-
+session_start();
 require_once('DB.php');
 $db = new DB();
 
