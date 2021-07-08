@@ -1,6 +1,5 @@
 <?php
-
-//session_start();
+session_start();
 require('connect.php');
 
 $dbh = connectDB();
@@ -31,7 +30,7 @@ if($_POST['password'] === $acount['password']){
         <title>logintest</title>
     </head>
     <body>
-        <?php echo "{$_SESSION['id']}"; ?>様<br>
+        <h2>こんにちは、<?php echo "{$_SESSION['id']}"; ?>様</h2>
         <a href="../room_connect/html/create_form.html">部屋作成</a><br>
         <a href="../room_connect/html/search_room.html">部屋検索</a><br>
     </body>
