@@ -12,7 +12,7 @@ if ($result === false) {
 }
 $_SESSION['room'] = $room_number;
 $id = $_SESSION['id'];
-$db ->join_room($id);
+$db ->join_room($roomnumber);
 
 ?>
 

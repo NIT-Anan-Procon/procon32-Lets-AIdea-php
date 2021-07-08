@@ -65,7 +65,7 @@ class DB {
         return $result;
     }
 
-    function join_room($id){
+    function join_room($room_number){
         $table = table;
         $dbh = $this->dbconnect();
         $stmt = $dbh->prepare("SELECT * FROM $table where room_number = :room_number");
@@ -85,7 +85,7 @@ class DB {
         $order = 'account'.$order;
         $sql = "INSERT INTO $table VALUES (:$order)";
         $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(':'.$order, $id);
+        $stmt->bindValue(':'.$order, $_SESSION['id']);
         $stmt->execute();
     }
 }
