@@ -7,7 +7,7 @@ $secret = secret;
 $callback = callback;
 $application = application;
 
-$json = json_decode('composer.json');
+$json = file_get_contents("composer.json");
 
 Unsplash\HttpClient::init([
 	'applicationId'	=> "$access",
