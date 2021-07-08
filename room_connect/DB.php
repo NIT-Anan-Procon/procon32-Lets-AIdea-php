@@ -68,11 +68,13 @@ class DB {
         $table = table;
         $dbh = $this->dbconnect();
         $stmt = $dbh->prepare("SELECT * FROM $table where room_number = :room_number");
+        $stmt->bindValue(':room_number', $room_number, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         for($order = 0; $order <= 4; $order++){
-            if(empty($result["account{$order}"]))
+            $join = 'account'.$order;
+            if(empty($result["$join"]))
                 break;
             else if($order = 4){
                 echo '参加人数が上限に達しています';
