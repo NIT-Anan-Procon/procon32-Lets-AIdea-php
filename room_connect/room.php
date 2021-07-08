@@ -11,7 +11,8 @@ if ($result === false) {
     exit('検索した部屋は存在しません。');
 }
 $_SESSION['room'] = $room_number;
-$db ->join_room($_SESSION['id']);
+$id = $_SESSION['id'];
+$db ->join_room($id);
 
 ?>
 
