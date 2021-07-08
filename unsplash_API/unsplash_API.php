@@ -31,6 +31,12 @@ $img = $photo->download();
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
+	<style>
+		img {
+			width: 800px;
+			height: 600px;
+		}
+	</style>
 </head>
 <body>
 	<img src="<?php echo $img; ?>">
