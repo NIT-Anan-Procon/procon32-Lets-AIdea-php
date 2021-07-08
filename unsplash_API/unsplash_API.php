@@ -2,11 +2,18 @@
 
 require_once('../../info.php');
 
+$access = access;
+$secret = secret;
+$callback = callback;
+$application = application;
+
+$json = json_decode('composer.json');
+
 Unsplash\HttpClient::init([
-	'applicationId'	=> 'YOUR ACCESS KEY',
-	'secret'	=> 'YOUR APPLICATION SECRET',
-	'callbackUrl'	=> 'https://your-application.com/oauth/callback',
-	'utmSource' => 'NAME OF YOUR APPLICATION'
+	'applicationId'	=> "$access",
+	'secret'	=> "$secret",
+	'callbackUrl'	=> "$callback",
+	'utmSource' => "$application"
 ]);
 
 ?>
