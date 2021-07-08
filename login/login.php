@@ -17,10 +17,22 @@ if (empty($acount)) { // IDが存在しなかったために、$acountの中身�
 }
 
 if($_POST['password'] === $acount['password']){
-    echo "こんにちは{$acount['ID']}様";
+    $_SESSION['id'] = $acount['ID'];
+
 } else {
     $error = 'アカウント名またはパスワードが間違っています。';
     header("location: index.php?error=$error"); // index.phpに飛ばす
     exit;
 }
 ?>
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <title>logintest</title>
+    </head>
+    <body>
+        <?php echo "{$_SESSION['id']}"; ?>様<br>
+        <a href="../room_connect/html/create_form.html">部屋作成</a><br>
+        <a href="../room_connect/html/search_room.html">部屋検索</a><br>
+    </body>
+</html>

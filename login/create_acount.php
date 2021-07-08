@@ -25,6 +25,16 @@ $stmt = $dbh->prepare($sql);
 $stmt->bindValue(':ID', $_POST['ID']);
 $stmt->bindValue(':password', $_POST['password']);
 $stmt->execute();
-echo '登録完了';
 
 ?>
+
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <title>logintest</title>
+    </head>
+    <body>
+        登録完了<br>
+        <a href="index.php">ログイン画面に戻る</a>
+    </body>
+</html>
