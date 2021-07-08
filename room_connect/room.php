@@ -1,7 +1,6 @@
 ﻿<?php
 
 require_once('DB.php');
-
 $db = new DB();
 
 $room_number = $_GET['room_number'];
@@ -11,6 +10,8 @@ $result = $db->room_info($room_number);
 if ($result === false) {
     exit('検索した部屋は存在しません。');
 }
+$_SESSION['room'] = $room_number;
+$db ->join_room($_SESSION['id']);
 
 ?>
 

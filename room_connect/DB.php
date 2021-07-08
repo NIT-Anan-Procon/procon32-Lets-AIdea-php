@@ -63,6 +63,28 @@ class DB {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    function join_room($id){
+        $table = table;
+        $dbh = $this->dbconnect();
+        $stmt = $dbh->prepare("SELECT * FROM $table where room_number = :room_number");
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        for($order = 0; $order <= 4; $order++){
+            if(empty($result["account{$order}"]))
+                break;
+            else if($order = 4){
+                echo '参加人数が上限に達しています';
+                exit;
+            }
+        }
+        $order = 'account'.$order;
+        $sql = "INSERT INTO $table VALUES (:$order)";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':'.$order, $id);
+        $stmt->execute();
+    }
 }
 
 ?>
