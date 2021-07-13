@@ -15,13 +15,16 @@ Unsplash\HttpClient::init([
 	'utmSource' => "$application"
 ]);
 
-$filter = [
-	'query' => 'sea',
-	'w'		=> '800',
-	'h' 	=> '600'
-];
-$photo = Unsplash\Photo::random($filter);
-$img = $photo->download();
+function getPhoto($word) {
+	$filter = [
+		'query' => 'sea',
+		'w'		=> '800',
+		'h' 	=> '600'
+	];
+	$photo = Unsplash\Photo::random($filter);
+	$img = $photo->download();
+	return $img;
+}
 
 ?>
 
