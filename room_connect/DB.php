@@ -66,17 +66,8 @@ class DB {
 
     function join_room($result){
         $table = table;
-     /*   for($order = 0; $order <= 4; $order++){
-            $join = 'account1';
-            if(empty($result['account1']))
-                break;
-            else if($order = 4){
-                echo '参加人数が上限に達しています';
-                exit;
-            }
-    */    
+        
         $dbh = $this->dbConnect();
-    //    $order = 'account'.$order;
         $sql = "UPDATE $table SET account1 = :account1 where room_number = :room_number";
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(':account1', $_SESSION['id']);
