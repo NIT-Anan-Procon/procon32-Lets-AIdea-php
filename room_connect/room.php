@@ -4,7 +4,7 @@ require_once('DB.php');
 
 $db = new DB();
 
-$room_number = $_GET['room_number'];
+$room_number = $_GET['roomID'];
 
 $result = $db->room_info($room_number);
 

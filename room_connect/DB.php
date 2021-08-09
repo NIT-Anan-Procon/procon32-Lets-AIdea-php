@@ -35,18 +35,17 @@ class DB {
         }
     }
 
-    function create_room($room_number, $publish_status) {
+    function create_room($room_number) {
         $table = table;
-        $sql = "INSERT INTO $table(room_number, publish_status)
+        $sql = "INSERT INTO $table(roomID)
         VALUES
-            (:room_number, :publish_status)";
+            (:roomID)";
 
         $dbh = $this->dbConnect();
 
         try {
             $stmt = $dbh->prepare($sql);
-            $stmt->bindValue(':room_number', $room_number, PDO::PARAM_STR);
-            $stmt->bindValue(':publish_status', $publish_status, PDO::PARAM_STR);
+            $stmt->bindValue(':roomID', $room_number, PDO::PARAM_STR);
             $stmt->execute();
        } catch(PDOException $e) {
             exit($e);
@@ -57,8 +56,8 @@ class DB {
         $table = table;
         
         $dbh = $this->dbConnect();
-        $stmt = $dbh->prepare("SELECT * FROM $table where room_number = :room_number");
-        $stmt->bindValue(':room_number', $room_number, PDO::PARAM_INT);
+        $stmt = $dbh->prepare("SELECT * FROM $table where roomID = :roomID");
+        $stmt->bindValue(':roomID', $room_number, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;

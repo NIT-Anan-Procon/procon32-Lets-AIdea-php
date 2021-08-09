@@ -12,7 +12,7 @@ function h($s) {
     return htmlspecialchars($s, ENT_QUOTES, "UTF-8");
 }
 
-$room_number = (int)(h($room['room_number']));
+$room_number = (int)(h($room['roomID']));
 
 if (empty($room_number)) {
     echo "<a href=join_form.php>検索した部屋は存在しません。</a>";
@@ -41,14 +41,8 @@ if ($result === false) {
 <body>
     <div class="room">
         <div class="room_box">
-            <p>部屋番号:<span><?php echo $result['room_number']; ?></span></p>
-            <p>公開状態:<span><?php if ((int)$result['publish_status'] === 1) {
-                echo "公開";
-                } else {
-                echo "非公開";
-                }
-            ?></span></p>
-            <a href="room.php?room_number=<?php echo $result['room_number'] ?>">参加する</a>
+            <p>部屋番号:<span><?php echo $result['roomID']; ?></span></p>
+            <a href="room.php?roomID=<?php echo $result['roomID'] ?>">参加する</a>
         </div>
     </div>
 </body>
