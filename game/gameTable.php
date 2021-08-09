@@ -61,9 +61,3 @@ class Game {
     }
 
 }
-
-$game = new Game();
-
-$result = $game->GetGameInfo(111, 1, "AB");
-
-var_dump($result);
