@@ -1,22 +1,16 @@
-﻿<?php
+<?php
 
 require_once('DB.php');
 
-$room = $_POST;
-$count = count($room);
-if ($count === 0) {
+$room_number = (int)(h($_POST['roomID']));
+$userID = $_POST['ID'];
+
+if (empty($room_number)) {
     exit("検索された値が空です。");
 }
 
 function h($s) {
     return htmlspecialchars($s, ENT_QUOTES, "UTF-8");
-}
-
-$room_number = (int)(h($room['roomID']));
-
-if (empty($room_number)) {
-    echo "<a href=join_form.php>検索した部屋は存在しません。</a>";
-    exit;
 }
 
 $db = new DB();
@@ -39,10 +33,11 @@ if ($result === false) {
     <link rel="stylesheet" href="css/search_result.css">
 </head>
 <body>
-    <div class="room">
+    <form action="room.php?roomID=<?php echo $result['roomID']; ?>" method="POST" class="room">
         <div class="room_box">
             <p>部屋番号:<span><?php echo $result['roomID']; ?></span></p>
-            <a href="room.php?roomID=<?php echo $result['roomID'] ?>">参加する</a>
+            <input type="hidden" name="ID" value="<?php echo $userID; ?>">
+            <input type="submit" class="btn" value="参加する">
         </div>
     </div>
 </body>

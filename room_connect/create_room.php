@@ -1,8 +1,8 @@
-﻿<?php
+<?php
 
 require_once('DB.php');
 
-$room = $_POST;
+$userID = $_POST['ID'];
 
 $db = new DB();
 
@@ -23,11 +23,12 @@ $result = $db->room_info($code);
 </head>
 <body>
     <div class="create">部屋を作成しました。</div>
-    <div class="room">
+    <form class="room" action="room.php?roomID=<?php echo $result['roomID']; ?>"  method="POST">
         <div class="room_box">
             <p>部屋番号:<span><?php echo $result['roomID']; ?></span></p>
-            <a href="room.php?roomID=<?php echo $result['roomID'] ?>">参加する</a>
+            <input type="hidden" name="ID" value="<?php echo $userID; ?>" >
+            <input type="submit" class="btn" value="参加する">
         </div>
-    </div>
+    </form>
 </body>
 </html>

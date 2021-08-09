@@ -1,6 +1,8 @@
-﻿<?php
+<?php
 
 require_once('DB.php');
+
+$userID = $_POST['ID'];
 
 $db = new DB();
 
@@ -8,7 +10,7 @@ $room_number = $_GET['roomID'];
 
 $result = $db->room_info($room_number);
 
-$db->add_account($room_number, "AB");
+$db->add_account($room_number, $userID);
 
 if ($result === false) {
     exit('検索した部屋は存在しません。');
