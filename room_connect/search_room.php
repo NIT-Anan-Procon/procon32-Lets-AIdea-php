@@ -1,6 +1,6 @@
 <?php
 
-    $userID = $_POST['ID'];
+session_start();
 
 ?>
 
@@ -17,7 +17,6 @@
     <form action="./search_result.php" method="POST">
         <label for="room_number">部屋番号</label>
         <input type="text" id="room_number" name="roomID">
-        <input type="hidden" name="ID" value=<?php echo $userID; ?> >
         <input type="submit" value="検索する">
     </form>
 </body>

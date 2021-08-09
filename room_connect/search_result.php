@@ -3,7 +3,8 @@
 require_once('DB.php');
 
 $room_number = (int)(h($_POST['roomID']));
-$userID = $_POST['ID'];
+
+session_start();
 
 if (empty($room_number)) {
     exit("検索された値が空です。");
@@ -36,7 +37,6 @@ if ($result === false) {
     <form action="room.php?roomID=<?php echo $result['roomID']; ?>" method="POST" class="room">
         <div class="room_box">
             <p>部屋番号:<span><?php echo $result['roomID']; ?></span></p>
-            <input type="hidden" name="ID" value="<?php echo $userID; ?>">
             <input type="submit" class="btn" value="参加する">
         </div>
     </div>

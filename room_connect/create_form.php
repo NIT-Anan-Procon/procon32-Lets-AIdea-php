@@ -1,6 +1,6 @@
 <?php
 
-    $userID = $_POST['ID'];
+    session_start();
 
 ?>
 
@@ -15,7 +15,6 @@
 </head>
 <body>
     <form action="create_room.php" method="POST">
-        <input type="hidden" name="ID" value=<?php echo $userID; ?> >
         <input type="submit" value="部屋を作成する">
     </form>
 </body>

@@ -23,6 +23,10 @@ if($_POST['password'] === $acount['password']){
     header("location: index.php?error=$error"); // index.phpに飛ばす
     exit;
 }
+
+session_start();
+$_SESSION['userID'] = $acount['ID'];
+
 ?>
 
 <!DOCTYPE html>
@@ -35,11 +39,9 @@ if($_POST['password'] === $acount['password']){
 </head>
 <body>
     <form method="POST" action="../room_connect/create_form.php">
-        <input type="hidden" name="ID" value=<?php echo $acount['ID']; ?> >
         <input type="submit" value="部屋を作成する">
     </form>
     <form method="POST" action="../room_connect/search_room.php">
-        <input type="hidden" name="ID" value=<?php echo $acount['ID']; ?> >
         <input type="submit" value="部屋を検索する">
     </form>
 </body>
