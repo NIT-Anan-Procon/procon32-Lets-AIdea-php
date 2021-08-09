@@ -52,6 +52,24 @@ class DB {
         }
     }
 
+    function add_account($room_number, $userID) {
+        $table = table;
+        $sql = "INSERT INTO $table(roomID, userID)
+        VALUES
+            (:roomID, :userID)";
+
+        $dbh = $this->dbConnect();
+
+        try {
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(':roomID', $room_number);
+            $stmt->bindValue(':userID', $userID);
+            $stmt->execute();
+       } catch(PDOException $e) {
+            exit($e);
+        }
+    }
+
     function room_info($room_number) {
         $table = table;
         
@@ -62,6 +80,7 @@ class DB {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
 }
 
 ?>

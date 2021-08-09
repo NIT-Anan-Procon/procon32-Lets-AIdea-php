@@ -8,6 +8,8 @@ $room_number = $_GET['roomID'];
 
 $result = $db->room_info($room_number);
 
+$db->add_account($room_number, "AB");
+
 if ($result === false) {
     exit('検索した部屋は存在しません。');
 }
