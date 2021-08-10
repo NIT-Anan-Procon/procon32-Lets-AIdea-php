@@ -24,12 +24,12 @@ class library {
 
     }
 
-    function UploadLibrary($userID, $explanation) {
+    function UploadLibrary($userID, $explanation, $pictureURL) {
         $today = date("Y/m/d H:i");
         $table = table;
-        $sql = "INSERT INTO $table(userID, explanation, time)
+        $sql = "INSERT INTO $table(userID, explanation, pictureURL, time)
         VALUES
-            (:userID, :explanation, :time)";
+            (:userID, :explanation, :pictureURL, :time)";
 
         $dbh = $this->DbConnect();
 
@@ -37,6 +37,7 @@ class library {
             $stmt = $dbh->prepare($sql);
             $stmt->bindValue(':userID', $userID);
             $stmt->bindValue(':explanation', $explanation);
+            $stmt->bindValue(':pictureURL', $pictureURL);
             $stmt->bindValue(':time', $today);
             $stmt->execute();
         } catch(PDOException $e) {
