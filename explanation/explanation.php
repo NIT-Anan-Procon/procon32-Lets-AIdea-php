@@ -1,6 +1,6 @@
 ﻿<?php
 
-require_once('../explanation_info.php');
+require_once('../../explanation_info.php');
 
 class Explanation {
 
@@ -62,8 +62,3 @@ class Explanation {
     }
 
 }
-
-$explanation = new Explanation();
-
-$a = $explanation->GetExplanation(3, "A");
-var_dump($a);
