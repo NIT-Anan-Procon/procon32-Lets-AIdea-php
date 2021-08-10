@@ -1,6 +1,6 @@
 ﻿<?php
 
-require_once('../point_info.php');
+require_once('../../point_info.php');
 
 class Point {
 
