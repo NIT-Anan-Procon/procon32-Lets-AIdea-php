@@ -25,7 +25,9 @@ class library {
     }
 
     function UploadLibrary($userID, $explanation, $pictureURL) {
+        date_default_timezone_set('Asia/Tokyo');
         $today = date("Y/m/d H:i");
+
         $table = table;
         $sql = "INSERT INTO $table(userID, explanation, pictureURL, time)
         VALUES
