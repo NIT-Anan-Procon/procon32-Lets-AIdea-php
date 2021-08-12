@@ -23,4 +23,26 @@ if($_POST['password'] === $acount['password']){
     header("location: index.php?error=$error"); // index.phpに飛ばす
     exit;
 }
+
+session_start();
+$_SESSION['userID'] = $acount['ID'];
+
 ?>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+</head>
+<body>
+    <form method="POST" action="../room_connect/create_form.php">
+        <input type="submit" value="部屋を作成する">
+    </form>
+    <form method="POST" action="../room_connect/search_room.php">
+        <input type="submit" value="部屋を検索する">
+    </form>
+</body>
+</html>

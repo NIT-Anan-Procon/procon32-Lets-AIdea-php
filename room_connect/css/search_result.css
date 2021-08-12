@@ -10,7 +10,6 @@
     border: 1px #aaa solid;
     width: 400px;
     height: 200px;
-    position: relative;
     border-radius: 20px;
 }
 .room_box {
@@ -28,7 +27,8 @@ span {
     text-align: center;
     display: inline-block;
 }
-a {
+
+input[type="submit"] {
     display: block;
     text-decoration: none;
     color: white;
@@ -40,8 +40,11 @@ a {
     transition: opacity 0.3s;
     margin-top: 20px;
     padding: 5px;
+    cursor: pointer;
+    height: 45px;
 }
-a:hover {
+
+input[type="submit"]:hover {
     opacity: 0.6;
 }
 img {
