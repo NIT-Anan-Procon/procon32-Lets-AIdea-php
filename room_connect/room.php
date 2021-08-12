@@ -1,39 +1,54 @@
 <?php
 
-require_once('DB.php');
+require_once('../../info.php');
 
-session_start();
+class DB {
 
-$db = new DB();
+    public $dbh;
 
-$room_number = $_GET['roomID'];
+    function __construct() {
 
-$result = $db->room_info($room_number);
+        $dbname = db_name;
+        $pass = password;
+        $user = db_user;
 
-$db->add_account($room_number, $_SESSION['userID']);
+        $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
 
-if ($result === false) {
-    exit('検索した部屋は存在しません。');
-}
+        try {
+            $this->dbh = new PDO($dsn,$user,$pass,[
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            ]);
+        } catch(PDOException $e) {
+            echo '接続失敗'. $e->getMessage();
+            exit();
+        };
+    }
 
-?>
+    function AddRoom($gameID, $userID, $roomID) {
+        $table = room_table;
+        $sql = "INSERT INTO $table(gameID, userID, roomID)
+        VALUES
+            (:gameID, :userID, :roomID)";
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo "$room_number"; ?></title>
-    <style>
-        * {
-            margin: 0;
+        try {
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->bindValue(':gameID', $gameID);
+            $stmt->bindValue(':userID', $userID);
+            $stmt->bindValue(':roomID', $roomID);
+            $stmt->execute();
+       } catch(PDOException $e) {
+            exit($e);
         }
-    </style>
-</head>
-<body>
-    <h1>
-        <?php echo "$room_number"; ?>
-    </h1>
-</body>
-</html>
+    }
+
+    function RoomInfo($roomID) {
+        $table = room_table;
+        
+        $stmt = $this->dbh->prepare("SELECT * FROM $table where roomID = :roomID");
+        $stmt->bindValue(':roomID', $roomID);
+        $stmt->execute();
+        $result = $stmt->fetchall(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+}
