@@ -32,7 +32,7 @@ class userInfo {
         $account = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if(empty($account)){    //同じ名前のアカウントが存在しないとき
-            $result = 1;
+
             try {
 
             $sql = "INSERT INTO $table(name, password, image_icon)
@@ -41,7 +41,7 @@ class userInfo {
 
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':name', $name);
-            $stmt->bindValue(':password', $password);
+            $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));
             $stmt->bindValue(':image_icon', $image);
             $stmt->execute();
 
@@ -49,25 +49,46 @@ class userInfo {
             echo '接続失敗'.$e->getMessage();
             exit();
             }
-        } else {    //同じ名前のアカウントが存在する (失敗)
-            $result = 0;
+            return true;
+        } else {
+            return false;
         }
-        return $result;     //アカウント作成成功なら1、失敗なら0を返す
     }
 
-    function GetUserInfo($name, $password){
+    function userAuth($name, $password){
 
         $table = table;
-        $stmt = $this->dbh->prepare("SELECT * FROM $table WHERE name = :name AND password = :password");
+        $stmt = $this->dbh->prepare("SELECT password FROM $table WHERE name = :name");
         $stmt->bindValue(':name', $name);
-        $stmt->bindValue(':password', $password);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(empty($result)){
-            return 0;
+        if(password_verify($password, $result['password'])){
+            return true;
         } else {
-            return $result;
+            return false;
         }
+    }
+
+    function GetUserID($name){
+
+        $table = table;
+        $stmt = $this->dbh->prepare("SELECT userID FROM $table WHERE name = :name");
+        $stmt->bindValue(':name', $name);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result['userID'];
+    }
+
+    function GetUserInfo($userID){
+
+        $table = table;
+        $stmt = $this->dbh->prepare("SELECT * FROM $table WHERE userID = :userID");
+        $stmt->bindValue(':userID', $userID);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
     }
 
 }
