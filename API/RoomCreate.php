@@ -6,10 +6,10 @@ require_once('../room_connect/room.php');
 
 $room = new Room();
 
-if($_POST != null) {
-    $gameID = $_POST['gameID'];
+if(filter_input(INPUT_POST, 'userID')) {
+    $gameID = $room->CreateGameID();
     $userID = $_POST['userID'];
-    $roomID = $_POST['roomID'];
+    $roomID = $room->CreateRoomID();
     $room->AddRoom($gameID, $userID, $roomID);
     $result = $room->RoomInfo($roomID);
 } else {
