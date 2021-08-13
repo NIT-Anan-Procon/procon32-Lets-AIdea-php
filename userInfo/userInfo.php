@@ -58,6 +58,10 @@ class userInfo {
 
     function userAuth($name, $password){
 
+        if(is_null($name) || is_null($password)){
+            return false;
+        }
+
         $stmt = $this->dbh->prepare("SELECT password FROM $this->table WHERE name = :name");
         $stmt->bindValue(':name', $name);
         $stmt->execute();
@@ -98,6 +102,22 @@ class userInfo {
             $sql = "UPDATE $this->table SET password = :newPassword WHERE userID = :userID";
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':newPassword', password_hash($newPassword, PASSWORD_DEFAULT));
+            $stmt->bindValue(':userID', $userID);
+            $stmt->execute();
+            return true;
+        } catch(PDOException $e) {
+            echo '接続失敗'.$e->getMessage();
+            exit();
+            return false;
+        }
+    }
+
+    function ChImage_icon($userID, $newImage_icon){
+
+        try {
+            $sql = "UPDATE $this->table SET image_icon = :newImage_icon WHERE userID = :userID";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->bindValue(':newImage_icon', $newImage_icon);
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
             return true;
