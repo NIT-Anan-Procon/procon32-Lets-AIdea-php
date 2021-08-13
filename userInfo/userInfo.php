@@ -3,13 +3,15 @@
 require_once('../../userInfo_info.php');
 
 class userInfo {
-    public $dbh;
+    protected $dbh;
+    protected $table;
 
     function __construct() {
 
         $dbname = db_name;
         $db_password = db_password;
         $user_name = db_user;
+        $this->table = table;
         $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
         
         try {
@@ -24,8 +26,7 @@ class userInfo {
 
     function AddUserInfo($name, $password, $image){
 
-        $table = table;
-        $sql = "SELECT * FROM $table WHERE name=:name";
+        $sql = "SELECT * FROM $this->table WHERE name=:name";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindValue(':name', $name);
         $stmt->execute();
@@ -35,7 +36,7 @@ class userInfo {
 
             try {
 
-            $sql = "INSERT INTO $table(name, password, image_icon)
+            $sql = "INSERT INTO $this->table(name, password, image_icon)
             VALUES
                 (:name, :password, :image_icon)";
 
@@ -57,11 +58,13 @@ class userInfo {
 
     function userAuth($name, $password){
 
-        $table = table;
-        $stmt = $this->dbh->prepare("SELECT password FROM $table WHERE name = :name");
+        $stmt = $this->dbh->prepare("SELECT password FROM $this->table WHERE name = :name");
         $stmt->bindValue(':name', $name);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if(empty($result)){
+            return false;
+        }
         if(password_verify($password, $result['password'])){
             return true;
         } else {
@@ -71,8 +74,7 @@ class userInfo {
 
     function GetUserID($name){
 
-        $table = table;
-        $stmt = $this->dbh->prepare("SELECT userID FROM $table WHERE name = :name");
+        $stmt = $this->dbh->prepare("SELECT userID FROM $this->table WHERE name = :name");
         $stmt->bindValue(':name', $name);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -82,8 +84,7 @@ class userInfo {
 
     function GetUserInfo($userID){
 
-        $table = table;
-        $stmt = $this->dbh->prepare("SELECT * FROM $table WHERE userID = :userID");
+        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE userID = :userID");
         $stmt->bindValue(':userID', $userID);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -91,4 +92,19 @@ class userInfo {
         return $result;
     }
 
+    function ChPassword($userID, $newPassword){
+
+        try {
+            $sql = "UPDATE $this->table SET password = :newPassword WHERE userID = :userID";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->bindValue(':newPassword', password_hash($newPassword, PASSWORD_DEFAULT));
+            $stmt->bindValue(':userID', $userID);
+            $stmt->execute();
+            return true;
+        } catch(PDOException $e) {
+            echo '接続失敗'.$e->getMessage();
+            exit();
+            return false;
+        }
+    }
 }
