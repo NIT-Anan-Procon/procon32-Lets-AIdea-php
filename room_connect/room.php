@@ -2,7 +2,7 @@
 
 require_once('../../info.php');
 
-class DB {
+class Room {
 
     public $dbh;
 
