@@ -63,13 +63,13 @@ class Room {
         }
     }
 
-    function DeleteRoom($playerID) {
-        if(empty($playerID)) {
+    function DeleteRoom($gameID) {
+        if(empty($gameID)) {
             exit;
         }
 
-        $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE playerID = :playerID");
-        $stmt->bindValue(':playerID',$playerID);
+        $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE gameID = :gameID");
+        $stmt->bindValue(':gameID',$gameID);
         $stmt->execute();
     }
 
