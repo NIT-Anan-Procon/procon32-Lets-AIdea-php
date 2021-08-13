@@ -21,7 +21,7 @@ class userInfo {
         } catch(PDOException $e) {
             echo '接続失敗'.$e->getMessage();
             exit();
-        };
+        }
     }
 
     function AddUserInfo($name, $password, $image){
@@ -107,4 +107,21 @@ class userInfo {
             return false;
         }
     }
+
+    function DeleteUserInfo($userID){
+
+        try {
+            $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE userID = :userID");
+            $stmt->bindValue(':userID', $userID);
+            $stmt->execute();
+            return true;
+        } catch(PDOException $e) {
+            echo '接続失敗'.$e->getMessage();
+            exit();
+            return false;
+        }
+    }
 }
+$obj = new userInfo();
+$result = $obj->DeleteUserInfo(5);
+var_dump($result);
