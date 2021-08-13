@@ -24,6 +24,28 @@ class Room {
         };
     }
 
+    function CreateRoomID() {
+        $roomID = random_int(0,9999);
+        $code = (int)(sprintf('%04d', $roomID));
+        $result = $this->RoomInfo($code);
+        if(count($result) === 0) {
+            return $code;
+        } else {
+            $this->CreateRoomID();
+        }
+    }
+
+    function CreateGameID() {
+        $roomID = random_int(0,9999);
+        $code = (int)(sprintf('%04d', $roomID));
+        $result = $this->RoomInfo($code);
+        if(count($result) === 0) {
+            return $code;
+        } else {
+            $this->CreateGameID();
+        }
+    }
+
     function AddRoom($gameID, $userID, $roomID) {
         $table = room_table;
         $sql = "INSERT INTO $table(gameID, userID, roomID)
@@ -52,3 +74,7 @@ class Room {
     }
 
 }
+
+$room = new Room();
+$result = $room->CreateGameID();
+echo $result;
