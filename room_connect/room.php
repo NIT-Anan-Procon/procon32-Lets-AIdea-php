@@ -4,7 +4,8 @@ require_once('../../info.php');
 
 class Room {
 
-    public $dbh;
+    protected $dbh;
+    protected $table =  room_table;
 
     function __construct() {
 
@@ -24,9 +25,30 @@ class Room {
         };
     }
 
+    function CreateRoomID() {
+        $roomID = random_int(0,9999);
+        $code = (int)(sprintf('%04d', $roomID));
+        $result = $this->RoomInfo($code);
+        if(count($result) === 0) {
+            return $code;
+        } else {
+            $this->CreateRoomID();
+        }
+    }
+
+    function CreateGameID() {
+        $roomID = random_int(0,9999);
+        $code = (int)(sprintf('%04d', $roomID));
+        $result = $this->RoomInfo($code);
+        if(count($result) === 0) {
+            return $code;
+        } else {
+            $this->CreateGameID();
+        }
+    }
+
     function AddRoom($gameID, $userID, $roomID) {
-        $table = room_table;
-        $sql = "INSERT INTO $table(gameID, userID, roomID)
+        $sql = "INSERT INTO $this->table(gameID, userID, roomID)
         VALUES
             (:gameID, :userID, :roomID)";
 
@@ -41,10 +63,18 @@ class Room {
         }
     }
 
+    function DeleteRoom($playerID) {
+        if(empty($playerID)) {
+            exit;
+        }
+
+        $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE playerID = :playerID");
+        $stmt->bindValue(':playerID',$playerID);
+        $stmt->execute();
+    }
+
     function RoomInfo($roomID) {
-        $table = room_table;
-        
-        $stmt = $this->dbh->prepare("SELECT * FROM $table where roomID = :roomID");
+        $stmt = $this->dbh->prepare("SELECT * FROM $this->table where roomID = :roomID");
         $stmt->bindValue(':roomID', $roomID);
         $stmt->execute();
         $result = $stmt->fetchall(PDO::FETCH_ASSOC);
