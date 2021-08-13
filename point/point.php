@@ -4,7 +4,8 @@ require_once('../../info.php');
 
 class Point {
 
-    public $dbh;
+    protected $dbh;
+    protected $table;
 
     function __construct() {
         $dbname = db_name;
@@ -42,12 +43,12 @@ class Point {
 
     }
 
-    function GetPoint($pointID) {
+    function GetPoint($playerID) {
 
         $table = point_table;
 
-        $stmt = $this->dbh->prepare("SELECT SUM(pointNum) FROM $table WHERE pointID = :pointID");
-        $stmt->bindValue(':pointID', $pointID);
+        $stmt = $this->dbh->prepare("SELECT SUM(pointNum) FROM $table WHERE playerID = :playerID");
+        $stmt->bindValue(':playerID', $playerID);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
@@ -55,3 +56,10 @@ class Point {
     }
 
 }
+
+$point = new Point();
+// $point->AddPoint(2,2,2);
+// $point->AddPoint(2,2,2);
+// $point->AddPoint(2,2,2);
+$sum = $point->GetPoint(2);
+var_dump($sum);
