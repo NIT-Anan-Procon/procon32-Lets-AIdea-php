@@ -122,6 +122,3 @@ class userInfo {
         }
     }
 }
-$obj = new userInfo();
-$result = $obj->DeleteUserInfo(5);
-var_dump($result);
