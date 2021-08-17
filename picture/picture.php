@@ -4,7 +4,8 @@ require_once('../../info.php');
 
 class Picture {
 
-    public $dbh;
+    protected $dbh;
+    protected $table = picture_table;
 
     function __construct() {
 
@@ -26,8 +27,7 @@ class Picture {
     
     function AddGameInfo($gameID, $playerID, $PictureUrl, $answer) {
     
-        $table = picture_table;
-        $sql = "INSERT INTO $table(gameID, playerID, pictureURL, answer)
+        $sql = "INSERT INTO $this->table(gameID, playerID, pictureURL, answer)
         VALUES
             (:gameID, :playerID, :pictureURL, :answer)";
     
@@ -45,9 +45,8 @@ class Picture {
     }
     
     function GetGameInfo($pictureID) {
-        $table = picture_table;
     
-        $stmt = $this->dbh->prepare("SELECT * FROM $table WHERE pictureID = :pictureID");
+        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE pictureID = :pictureID");
         $stmt->bindValue(':pictureID', $pictureID);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
