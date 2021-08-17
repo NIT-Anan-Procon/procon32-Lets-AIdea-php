@@ -5,7 +5,7 @@ require_once('../../info.php');
 class Point {
 
     protected $dbh;
-    protected $table;
+    protected $table = point_table;
 
     function __construct() {
         $dbname = db_name;
@@ -23,18 +23,18 @@ class Point {
         };
     }
 
-    function AddPoint($gameID, $playerID, $pointNum) {
+    function AddPoint($gameID, $playerID, $pointNum, $flag) {
 
-        $table = point_table;
-        $sql = "INSERT INTO $table(gameID, playerID, pointNum)
+        $sql = "INSERT INTO $this->table(gameID, playerID, pointNum, flag)
         VALUES
-            (:gameID, :playerID, :pointNum)";
+            (:gameID, :playerID, :pointNum, :flag)";
 
         try {
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':gameID', $gameID);
             $stmt->bindValue(':playerID', $playerID);
             $stmt->bindValue(':pointNum', $pointNum);
+            $stmt->bindValue('flag', $flag);
             $stmt->execute();
         } catch(PDOException $e) {
             echo '接続失敗'.$e->getMessage();
@@ -43,12 +43,11 @@ class Point {
 
     }
 
-    function GetPoint($playerID) {
+    function GetPoint($playerID, $flag) {
 
-        $table = point_table;
-
-        $stmt = $this->dbh->prepare("SELECT SUM(pointNum) FROM $table WHERE playerID = :playerID");
+        $stmt = $this->dbh->prepare("SELECT SUM(pointNum) FROM $this->table WHERE playerID = :playerID AND flag = :flag");
         $stmt->bindValue(':playerID', $playerID);
+        $stmt->bindValue(':flag', $flag);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
@@ -56,10 +55,3 @@ class Point {
     }
 
 }
-
-$point = new Point();
-// $point->AddPoint(2,2,2);
-// $point->AddPoint(2,2,2);
-// $point->AddPoint(2,2,2);
-$sum = $point->GetPoint(2);
-var_dump($sum);
