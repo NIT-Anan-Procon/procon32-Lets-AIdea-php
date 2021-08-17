@@ -79,11 +79,11 @@ class Room {
     }
 
     function JoinRoom($userID, $roomID) {
-        $st = $this->dbh->prepare("SELECT playerID FROM $this->table where roomID = :roomID AND userID IS NULL");
+        $st = $this->dbh->prepare("SELECT * FROM $this->table WHERE roomID = :roomID AND userID IS NULL");
         $st->bindValue(':roomID', $roomID);
         $st->execute();
-        if($st->fetch(PDO::FETCH_ASSOC) != false) {
-            $playerID = $st->fetch(PDO::FETCH_ASSOC)['playerID'];
+        if( ($result = $st->fetch(PDO::FETCH_ASSOC) ) != false) {
+            $playerID = (int)($result['playerID']);
             $sql ="UPDATE $this->table SET userID = :userID WHERE playerID = :playerID";
             $this->dbh->beginTransaction();
             try {
@@ -92,7 +92,11 @@ class Room {
                 $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
                 $stmt->execute();
                 $this->dbh->commit();
-                return true;
+                $st = $this->dbh->prepare("SELECT * FROM $this->table WHERE playerID = :playerID");
+                $st->bindValue(':playerID', $playerID);
+                $st->execute();
+                $result = $st->fetch(PDO::FETCH_ASSOC);
+                return $result;
             } catch(PDOException $e) {
                 $dbh->rollBack();
                 return false;
