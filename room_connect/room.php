@@ -47,10 +47,25 @@ class Room {
         }
     }
 
-    function AddRoom($gameID, $userID, $roomID) {
+    function AddRoom($userID, $roomID) {
         $sql = "INSERT INTO $this->table(gameID, userID, roomID)
         VALUES
             (:gameID, :userID, :roomID)";
+
+        $st = $this->dbh->prepare("SELECT * FROM $this->table");
+        $st->execute();
+        $result = $st->fetchall(PDO::FETCH_ASSOC);
+        $count = count($result);
+        if($count != NULL) {
+            $last = $result[$count - 1]['gameID'];
+            if($count % 4 === 0) {
+                $gameID = $last + 1;
+            } else {
+                $gameID = $last;
+            }
+        } else {
+            $gameID = 1;
+        }
 
         try {
             $stmt = $this->dbh->prepare($sql);
@@ -63,13 +78,38 @@ class Room {
         }
     }
 
-    function DeleteRoom($gameID) {
-        if(empty($gameID)) {
+    function JoinRoom($userID, $roomID) {
+        $st = $this->dbh->prepare("SELECT playerID FROM $this->table where roomID = :roomID AND userID IS NULL");
+        $st->bindValue(':roomID', $roomID);
+        $st->execute();
+        if($st->fetch(PDO::FETCH_ASSOC) != false) {
+            $playerID = $st->fetch(PDO::FETCH_ASSOC)['playerID'];
+            $sql ="UPDATE $this->table SET userID = :userID WHERE playerID = :playerID";
+            $this->dbh->beginTransaction();
+            try {
+                $stmt = $this->dbh->prepare($sql);
+                $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
+                $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
+                $stmt->execute();
+                $this->dbh->commit();
+                return true;
+            } catch(PDOException $e) {
+                $dbh->rollBack();
+                return false;
+                exit;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    function DeleteRoom($playerID) {
+        if(empty($playerID)) {
             exit;
         }
 
-        $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE gameID = :gameID");
-        $stmt->bindValue(':gameID',$gameID);
+        $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE playerID = :playerID");
+        $stmt->bindValue(':playerID',$playerID);
         $stmt->execute();
     }
 
