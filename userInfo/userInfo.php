@@ -62,7 +62,7 @@ class userInfo {
             return false;
         }
 
-        $stmt = $this->dbh->prepare("SELECT password FROM $this->table WHERE name = :name");
+        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE name = :name");
         $stmt->bindValue(':name', $name);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -70,20 +70,10 @@ class userInfo {
             return false;
         }
         if(password_verify($password, $result['password'])){
-            return true;
+            return $result;
         } else {
             return false;
         }
-    }
-
-    function GetUserID($name){
-
-        $stmt = $this->dbh->prepare("SELECT userID FROM $this->table WHERE name = :name");
-        $stmt->bindValue(':name', $name);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return $result['userID'];
     }
 
     function GetUserInfo($userID){
@@ -96,12 +86,21 @@ class userInfo {
         return $result;
     }
 
-    function ChPassword($userID, $newPassword){
-
+    function ChUserInfo($userID, $newName, $newImage){
+        
+        $sql = "SELECT * FROM $this->table WHERE name=:name";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindValue(':name', $newName);
+        $stmt->execute();
+        $account = $stmt->fetch(PDO::FETCH_ASSOC);
+        if(!empty($account)){
+            return false;
+        }
         try {
-            $sql = "UPDATE $this->table SET password = :newPassword WHERE userID = :userID";
+            $sql = "UPDATE $this->table SET name = :newName, image_icon = :newImage WHERE userID = :userID";
             $stmt = $this->dbh->prepare($sql);
-            $stmt->bindValue(':newPassword', password_hash($newPassword, PASSWORD_DEFAULT));
+            $stmt->bindValue(':newName', $newName);
+            $stmt->bindValue(':newImage', $newImage);
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
             return true;
@@ -112,12 +111,12 @@ class userInfo {
         }
     }
 
-    function ChImage_icon($userID, $newImage_icon){
+    function ChPassword($userID, $newPassword){
 
         try {
-            $sql = "UPDATE $this->table SET image_icon = :newImage_icon WHERE userID = :userID";
+            $sql = "UPDATE $this->table SET password = :newPassword WHERE userID = :userID";
             $stmt = $this->dbh->prepare($sql);
-            $stmt->bindValue(':newImage_icon', $newImage_icon);
+            $stmt->bindValue(':newPassword', password_hash($newPassword, PASSWORD_DEFAULT));
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
             return true;
