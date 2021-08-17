@@ -11,8 +11,7 @@ if(filter_input(INPUT_POST, 'roomID') && filter_input(INPUT_POST, 'userID')) {
     $userID = $_POST['userID'];
     $count = count($room->RoomInfo($roomID));
     if($count != 0) {
-        $room->JoinRoom($userID, $roomID);
-        $result = $room->RoomInfo($roomID);
+        $result = $room->JoinRoom($userID, $roomID);
     } else {
         $result = false;
     }
