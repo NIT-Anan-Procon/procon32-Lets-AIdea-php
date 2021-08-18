@@ -1,18 +1,21 @@
 ﻿<?php
 
-require_once('../explanation_info.php');
+require_once('../../info.php');             //DBのログイン情報を取得
 
 class Explanation {
 
-    function DbConnect() {
+    public $dbh;
 
+    function __construct() {
+        /* 3行目で取得したログイン情報を変数に代入 */
         $dbname = db_name;
         $password = password;
         $user_name = db_user;
+
         $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
 
         try {
-            $dbh = new PDO($dsn, $user_name, $password, [
+            $this->dbh = new PDO($dsn, $user_name, $password, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
         } catch(PDOException $e) {
@@ -20,23 +23,21 @@ class Explanation {
             exit();
         };
 
-        return $dbh;
-
     }
 
-    function AddExplanation($gameID, $userID, $explanation, $flag) {
+    function AddExplanation($gameID, $playerID, $explanation, $flag) {
 
-        $table = table;
-        $sql = "INSERT INTO $table(gameID, userID, explanation, flag)
+        /* 3行目で取得したログイン情報を変数に代入 */
+        $table = explanation_table;
+
+        $sql = "INSERT INTO $table(gameID, playerID, explanation, flag)
         VALUES
-            (:gameID, :userID, :explanation, :flag)";
-
-        $dbh = $this->DbConnect();
+            (:gameID, :playerID, :explanation, :flag)";
 
         try {
-            $stmt = $dbh->prepare($sql);
+            $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':gameID', $gameID);
-            $stmt->bindValue(':userID', $userID);
+            $stmt->bindValue(':playerID', $playerID);
             $stmt->bindValue(':explanation', $explanation);
             $stmt->bindValue(':flag', $flag);
             $stmt->execute();
@@ -47,14 +48,14 @@ class Explanation {
 
     }
 
-    function GetExplanation($gameID, $userID) {
+    function GetExplanation($gameID, $playerID) {
         
-        $table = table;
+        /* 3行目で取得したログイン情報を変数に代入 */
+        $table = explanation_table;
 
-        $dbh = $this->DbConnect();
-        $stmt = $dbh->prepare("SELECT * FROM $table WHERE gameID = :gameID AND userID = :userID");
+        $stmt = $this->dbh->prepare("SELECT * FROM $table WHERE gameID = :gameID AND playerID = :playerID");
         $stmt->bindValue(':gameID', $gameID);
-        $stmt->bindValue(':userID', $userID);
+        $stmt->bindValue(':playerID', $playerID);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
@@ -62,8 +63,3 @@ class Explanation {
     }
 
 }
-
-$explanation = new Explanation();
-
-$a = $explanation->GetExplanation(3, "A");
-var_dump($a);
