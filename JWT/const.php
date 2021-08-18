@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /** JWT のアルゴリズム */
 define('JWT_ALG', 'HS256');
 /** JWT のキー */
