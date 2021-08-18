@@ -1,13 +1,13 @@
 <?php
-header("Access-Control-Allow-Origin:http://localhost");     //localhostからのアクセスのみに制限
+header("Access-Control-Allow-Origin:*");     //localhostからのアクセスのみに制限
 header("Content-Type: application/json; charset=utf-8");
 require_once('../point/point.php');
 
 $point = new point();
 
-if($_POST != null) {
+if(filter_input(INPUT_POST, 'playerID')){
     $playerID = $_POST['playerID'];
-    $gameID = $_POST['gameID'];
+//    $gameID = 
     $result = $point->GetPoint($playerID, $gameID);
 } else {
     $result = false;
