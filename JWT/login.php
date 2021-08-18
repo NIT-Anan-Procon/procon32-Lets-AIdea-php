@@ -1,19 +1,30 @@
 <?php
+
+//他ファイルから実行された時に相対パスではエラーが起きるため
 require __DIR__ . '/const.php';
 require __DIR__ . '/vendor/autoload.php';
+
 use \Firebase\JWT\JWT;
 
-// POST 時
+//strtoupper・・・文字列を大文字にする
+//POST通信であれば
 if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
-    $inputString = file_get_contents('php://input'); // JSON 文字列取得
+
+    // JSON 文字列取得
+    $inputString = file_get_contents('php://input');
+
+    //@json_decode()・・・JSON文字列をでコードする
     $input = @json_decode($inputString, true);
 
     if (is_array($input)) {
+
+        //17行目で取得した値を配列にマージする
         $input = array_merge(array('username' => '', 'password' => ''), $input);
         $username = $input['username'];
         $password = $input['password'];
         
         $ok = ($username == 'test' && $password == 'test'); // username = test, password = test で認証 OK とする (仮)
+
         if ($ok) {
             $payload = array(
                 'iss' => JWT_ISSUER,
