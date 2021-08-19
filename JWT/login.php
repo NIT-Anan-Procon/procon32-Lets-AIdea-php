@@ -33,7 +33,8 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
     
             header('Content-Type: application/json');//レスポンスする形式はJSONファイル
             header('Access-Control-Allow-Origin: *'); // CORS
-            echo json_encode(array('token' => $jwt)); // token を返却
+            // echo json_encode(array('token' => $jwt)); // token を返却
+            setcookie(json_encode(array('token' => $jwt)));
             return;
         }
     }
