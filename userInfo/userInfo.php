@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../userInfo_info.php');
+require_once('../../info.php');
 
 class userInfo {
     protected $dbh;
@@ -9,9 +9,9 @@ class userInfo {
     function __construct() {
 
         $dbname = db_name;
-        $db_password = db_password;
+        $db_password = password;
         $user_name = db_user;
-        $this->table = table;
+        $this->table = userInfo_table;
         $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
         
         try {
@@ -26,33 +26,27 @@ class userInfo {
 
     function AddUserInfo($name, $password, $image){
 
-        $sql = "SELECT * FROM $this->table WHERE name=:name";
-        $stmt = $this->dbh->prepare($sql);
-        $stmt->bindValue(':name', $name);
-        $stmt->execute();
-        $account = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if(empty($account)){    //同じ名前のアカウントが存在しないとき
-
-            try {
-
-            $sql = "INSERT INTO $this->table(name, password, image_icon)
-            VALUES
-                (:name, :password, :image_icon)";
-
+        if(is_null($name) || is_null($password)){
+            return false;
+        }
+        $check = $this->CheckName($name);   //同じ名前のアカウントが存在するか
+        if($check){
+            return false;
+        }
+        $sql = "INSERT INTO $this->table(name, password, image_icon)
+        VALUES
+            (:name, :password, :image_icon)";
+        try{
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':name', $name);
             $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));
             $stmt->bindValue(':image_icon', $image);
             $stmt->execute();
-
-            } catch(PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
-            exit();
-            }
             return true;
-        } else {
+        } catch(PDOException $e) {
+            echo '接続失敗'.$e->getMessage();
             return false;
+            exit();
         }
     }
 
@@ -66,7 +60,7 @@ class userInfo {
         $stmt->bindValue(':name', $name);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(empty($result)){
+        if(!($result)){                             //resultがfalseのとき
             return false;
         }
         if(password_verify($password, $result['password'])){
@@ -82,18 +76,16 @@ class userInfo {
         $stmt->bindValue(':userID', $userID);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
         return $result;
     }
 
-    function ChUserInfo($userID, $newName, $newImage){
-        
-        $sql = "SELECT * FROM $this->table WHERE name=:name";
-        $stmt = $this->dbh->prepare($sql);
-        $stmt->bindValue(':name', $newName);
-        $stmt->execute();
-        $account = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(!empty($account)){
+    function ChangeUserInfo($userID, $newName, $newImage){
+
+        if(is_null($newName) || is_null($userID)){
+            return false;
+        }
+        $check = $this->CheckName($newName);   //同じ名前のアカウントが存在するか
+        if($check){
             return false;
         }
         try {
@@ -111,7 +103,7 @@ class userInfo {
         }
     }
 
-    function ChPassword($userID, $newPassword){
+    function ChangePassword($userID, $newPassword){
 
         try {
             $sql = "UPDATE $this->table SET password = :newPassword WHERE userID = :userID";
@@ -127,7 +119,7 @@ class userInfo {
         }
     }
 
-    function DeleteUserInfo($userID){
+    function DelUserInfo($userID){
 
         try {
             $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE userID = :userID");
@@ -139,5 +131,18 @@ class userInfo {
             exit();
             return false;
         }
+    }
+
+    function CheckName($name){
+
+        $sql = "SELECT name FROM $this->table WHERE name=:name";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindValue(':name', $name);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_COLUMN);
+        if($result == $name){
+            return true;
+        }
+        return $result;
     }
 }
