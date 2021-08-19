@@ -4,10 +4,10 @@ require_once('../../info.php');             //DBのログイン情報を取得
 
 class Explanation {
 
-    public $dbh;
+    protected $dbh;
+    protected $table = word_table;
 
     function __construct() {
-        /* 3行目で取得したログイン情報を変数に代入 */
         $dbname = db_name;
         $password = password;
         $user_name = db_user;
@@ -27,10 +27,7 @@ class Explanation {
 
     function AddExplanation($gameID, $playerID, $explanation, $flag) {
 
-        /* 3行目で取得したログイン情報を変数に代入 */
-        $table = explanation_table;
-
-        $sql = "INSERT INTO $table(gameID, playerID, explanation, flag)
+        $sql = "INSERT INTO $this->table(gameID, playerID, explanation, flag)
         VALUES
             (:gameID, :playerID, :explanation, :flag)";
 
@@ -49,11 +46,8 @@ class Explanation {
     }
 
     function GetExplanation($gameID, $playerID) {
-        
-        /* 3行目で取得したログイン情報を変数に代入 */
-        $table = explanation_table;
 
-        $stmt = $this->dbh->prepare("SELECT * FROM $table WHERE gameID = :gameID AND playerID = :playerID");
+        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE gameID = :gameID AND playerID = :playerID");
         $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->execute();
