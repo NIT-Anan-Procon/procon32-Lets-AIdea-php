@@ -29,7 +29,7 @@ class Room {
         $roomID = random_int(0,9999);
         $code = (int)(sprintf('%04d', $roomID));
         $result = $this->RoomInfo($code);
-        if(count($result) === 0) {
+        if($result == false) {
             return $code;
         } else {
             $this->CreateRoomID();

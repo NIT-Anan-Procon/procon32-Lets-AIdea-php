@@ -14,9 +14,11 @@ if(filter_input(INPUT_POST, 'userID')) {
     for($i = 0; $i < 3; $i++) {
         $room->AddRoom(NULL, $roomID, $gameID, 0);
     }
-    $result = $room->RoomInfo($roomID)[0];
+    $playerID = (int)($room->RoomInfo($roomID)['playerID']) - 1;
+    $result = $room->PlayerInfo($playerID);
+    $result += array('state' => 0);
 } else {
-    $result = false;
+    $result = array('state' => 1);
 }
 
 echo json_encode($result);
