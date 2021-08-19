@@ -9,13 +9,9 @@ $room = new Room();
 if(filter_input(INPUT_POST, 'roomID') && filter_input(INPUT_POST, 'userID')) {
     $roomID = $_POST['roomID'];
     $userID = $_POST['userID'];
-    $count = count($room->RoomInfo($roomID));
-    if($count != 0) {
-        $result = $room->JoinRoom($userID, $roomID);
-    } else {
-        $result = false;
-    }
+    $result = $room->JoinRoom($userID, $roomID);
 } else {
+    echo json_encode("d");
     $result = false;
 }
 
