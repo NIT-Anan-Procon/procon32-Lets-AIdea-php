@@ -32,9 +32,9 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
             $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
     
             header('Content-Type: application/json');//レスポンスする形式はJSONファイル
-            header('Access-Control-Allow-Origin: *'); // CORS
-            echo json_encode(array('token' => $jwt)); // token を返却
-            setcookie('token', json_encode(array('token' => $jwt)), (time() + 36), "/");
+            header('Access-Control-Allow-Origin: *'); //アクセスを許可するURL
+            echo json_encode(array('token' => $jwt)); //tokenを返却
+            setcookie('token', $jwt, (time() + 10), "/");
             return;
         }
     }
