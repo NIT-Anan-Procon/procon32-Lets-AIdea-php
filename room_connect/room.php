@@ -50,6 +50,32 @@ class Room {
         return $result['gameID'];
     }
 
+    
+    function PlayerInfo($playerID) {
+        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE playerID = :playerID");
+        $stmt->bindValue(':playerID', $playerID);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    function RoomInfo($roomID) {
+        $st = $this->dbh->prepare("SELECT * FROM $this->table WHERE roomID = :roomID AND userID IS NULL");
+        $st->bindValue(':roomID', $roomID);
+        $st->execute();
+        $result = $st->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    function OwnerInfo($roomID) {
+        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE roomID = :roomID AND flag = :flag");
+        $stmt->bindValue(':roomID', $roomID);
+        $stmt->bindValue(':flag', 1);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
     function AddRoom($userID, $roomID, $gameID, $flag) {
         $sql = "INSERT INTO $this->table(gameID, userID, roomID, flag)
         VALUES
@@ -84,7 +110,7 @@ class Room {
                 $result += array('state' => 0);
                 return $result;
             } catch(PDOException $e) {
-                $dbh->rollBack();
+                $this->dbh->rollBack();
                 return array('state' => 3);
                 exit;
             }
@@ -99,29 +125,24 @@ class Room {
         $stmt->execute();
     }
 
-    function PlayerInfo($playerID) {
-        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE playerID = :playerID");
-        $stmt->bindValue(':playerID', $playerID);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result;
-    }
-
-    function RoomInfo($roomID) {
-        $st = $this->dbh->prepare("SELECT * FROM $this->table WHERE roomID = :roomID AND userID IS NULL");
-        $st->bindValue(':roomID', $roomID);
-        $st->execute();
-        $result = $st->fetch(PDO::FETCH_ASSOC);
-        return $result;
-    }
-
-    function OwnerInfo($roomID) {
-        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE roomID = :roomID AND flag = :flag");
-        $stmt->bindValue(':roomID', $roomID);
-        $stmt->bindValue(':flag', 1);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result;
+    function LeaveRoom($playerID) {
+        $result = $this->PlayerInfo($playerID);
+        if($result != false) {
+            $this->dbh->beginTransaction();
+            try {
+                $stmt = $this->dbh->prepare("UPDATE $this->table SET userID = null WHERE playerID = :playerID");
+                $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
+                $stmt->execute();
+                $this->dbh->commit();
+                return array('state' => 0);
+            } catch(PDOException $e) {
+                return array('state' => 3);
+                exit;
+            }
+        } else {
+            return array('state' => 2);
+            exit;
+        }
     }
 
 }

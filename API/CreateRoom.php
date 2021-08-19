@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 header("Access-Control-Allow-Origin:http://localhost");     //localhostからのアクセスのみに制限する
 header("Content-Type: application/json; charset=utf-8");    //レスポンスする形式はjson
 
