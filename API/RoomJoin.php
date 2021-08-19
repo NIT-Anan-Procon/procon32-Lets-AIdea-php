@@ -11,7 +11,7 @@ if(filter_input(INPUT_POST, 'roomID') && filter_input(INPUT_POST, 'userID')) {
     $userID = $_POST['userID'];
     $result = $room->JoinRoom($userID, $roomID);
 } else {
-    $result = 1;
+    $result = array('state' => 1);
 }
 
 echo json_encode($result);

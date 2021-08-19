@@ -29,20 +29,24 @@ class Room {
         $roomID = random_int(0,9999);
         $code = (int)(sprintf('%04d', $roomID));
         $result = $this->RoomInfo($code);
+
         if($result == false) {
             return $code;
         } else {
             $this->CreateRoomID();
         }
+
     }
 
     function GetGameID() {
         $stmt = $this->dbh->prepare("SELECT gameID FROM $this->table ORDER BY playerID DESC LIMIT 1");
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
         if($result == false) {
             return 0;
         }
+
         return $result['gameID'];
     }
 
@@ -58,13 +62,15 @@ class Room {
             $stmt->bindValue(':roomID', $roomID);
             $stmt->bindValue(':flag', $flag);
             $stmt->execute();
-       } catch(PDOException $e) {
-            exit($e);
+        } catch(PDOException $e) {
+            return array('state' => 3);
+            exit;
         }
     }
 
     function JoinRoom($userID, $roomID) {
         $result = $this->RoomInfo($roomID);
+
         if($result != false) {
             $playerID = (int)($result['playerID']);
             $this->dbh->beginTransaction();
@@ -75,24 +81,21 @@ class Room {
                 $stmt->execute();
                 $this->dbh->commit();
                 $result = $this->PlayerInfo($playerID);
+                $result += array('state' => 0);
                 return $result;
             } catch(PDOException $e) {
                 $dbh->rollBack();
-                return 3;
+                return array('state' => 3);
                 exit;
             }
         } else {
-            return 2;
+            return array('state' => 2);
         }
     }
 
-    function DeleteRoom($playerID) {
-        if(empty($playerID)) {
-            exit;
-        }
-
-        $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE playerID = :playerID");
-        $stmt->bindValue(':playerID',$playerID);
+    function DeleteRoom($gameID) {
+        $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE gameID = :gameID");
+        $stmt->bindValue(':gameID',$gameID);
         $stmt->execute();
     }
 

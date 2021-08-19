@@ -6,12 +6,12 @@ require_once('../room_connect/room.php');
 
 $room = new Room();
 
-if(filter_input(INPUT_POST, 'playerID')) {
-    $playerID = $_POST['playerID'];
-    $room->DeleteRoom($playerID);
-    $result = true;
+if(filter_input(INPUT_POST, 'gameID')) {
+    $gameID = $_POST['gameID'];
+    $room->DeleteRoom($gameID);
+    $result = array('state' => 0);
 } else {
-    $result = false;
+    $result = array('state' => 1);
 }
 
 echo json_encode($result);
