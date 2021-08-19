@@ -78,13 +78,11 @@ class Room {
                 return $result;
             } catch(PDOException $e) {
                 $dbh->rollBack();
-                echo json_encode('a');
-                return false;
+                return 3;
                 exit;
             }
         } else {
-            echo json_encode("b");
-            return false;
+            return 2;
         }
     }
 
