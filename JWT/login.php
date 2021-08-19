@@ -13,7 +13,7 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
     // JSON 文字列取得
     $inputString = file_get_contents('php://input');
 
-    //@json_decode()・・・JSON文字列をでコードする
+    //@json_decode()・・・JSON文字列をデコードする
     $input = @json_decode($inputString, true);
 
     if (is_array($input)) {
