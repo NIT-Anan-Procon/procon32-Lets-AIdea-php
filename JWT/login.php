@@ -18,8 +18,6 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
 
     if (is_array($input)) {
 
-        //17行目で取得した値を配列にマージする
-        $input = array_merge(array('username' => '', 'password' => ''), $input);
         $username = $input['username'];
         $password = $input['password'];
         
