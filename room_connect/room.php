@@ -114,4 +114,13 @@ class Room {
         return $result;
     }
 
+    function OwnerInfo($roomID) {
+        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE roomID = :roomID AND flag = :flag");
+        $stmt->bindValue(':roomID', $roomID);
+        $stmt->bindValue(':flag', 1);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
 }

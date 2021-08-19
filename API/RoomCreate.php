@@ -14,8 +14,7 @@ if(filter_input(INPUT_POST, 'userID')) {
     for($i = 0; $i < 3; $i++) {
         $room->AddRoom(NULL, $roomID, $gameID, 0);
     }
-    $playerID = (int)($room->RoomInfo($roomID)['playerID']) - 1;
-    $result = $room->PlayerInfo($playerID);
+    $result = $room->OwnerInfo($roomID);
     $result += array('state' => 0);
 } else {
     $result = array('state' => 1);
