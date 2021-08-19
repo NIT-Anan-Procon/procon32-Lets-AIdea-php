@@ -8,7 +8,17 @@ $room = new Room();
 
 if(filter_input(INPUT_POST, 'playerID')) {
     $playerID = (int)($_POST['playerID']);
-    $result = $room->LeaveRoom($playerID);
+    $playerInfo = $room->PlayerInfo($playerID);
+    if($playerInfo != false) {
+        if($playerInfo['flag'] == 1) {
+            $room->DeleteRoom($playerInfo['gameID']);
+        } else {
+            $room->LeaveRoom($playerID);
+        }
+        $result = array('state' => 0);
+    } else{
+        $result = array('state' => 2);
+    }
 } else {
     $result = array('state' => 1);
 }

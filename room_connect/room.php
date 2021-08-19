@@ -134,14 +134,10 @@ class Room {
                 $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
                 $stmt->execute();
                 $this->dbh->commit();
-                return array('state' => 0);
             } catch(PDOException $e) {
                 return array('state' => 3);
                 exit;
             }
-        } else {
-            return array('state' => 2);
-            exit;
         }
     }
 

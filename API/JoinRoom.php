@@ -7,8 +7,8 @@ require_once('../room_connect/room.php');
 $room = new Room();
 
 if(filter_input(INPUT_POST, 'roomID') && filter_input(INPUT_POST, 'userID')) {
-    $roomID = $_POST['roomID'];
-    $userID = $_POST['userID'];
+    $roomID = (int)($_POST['roomID']);
+    $userID = (int)($_POST['userID']);
     $result = $room->JoinRoom($userID, $roomID);
 } else {
     $result = array('state' => 1);
