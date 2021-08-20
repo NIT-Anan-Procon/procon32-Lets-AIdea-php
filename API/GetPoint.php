@@ -5,10 +5,10 @@ require_once('../point/point.php');
 
 $point = new point();
 
-if(filter_input(INPUT_POST, 'playerID')){
+if(filter_input(INPUT_POST, 'playerID') && filter_input(INPUT_POST, 'flag')){
     $playerID = $_POST['playerID'];
 //    $gameID = 
-    $result = $point->GetPoint($playerID, $gameID);
+    $result = $point->GetPoint($gameID, $playerID, $flag);
 } else {
     $result = false;
 }
