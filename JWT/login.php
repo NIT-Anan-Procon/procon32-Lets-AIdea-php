@@ -33,6 +33,7 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
                 'username' => $userID,
             );
             $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
+            var_dump($jwt);
     
             header('Content-Type: application/json');//レスポンスする形式はJSONファイル
             header('Access-Control-Allow-Origin: *'); //アクセスを許可するURL
