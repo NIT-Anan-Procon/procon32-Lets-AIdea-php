@@ -29,100 +29,116 @@ class Room {
         $roomID = random_int(0,9999);
         $code = (int)(sprintf('%04d', $roomID));
         $result = $this->RoomInfo($code);
-        if(count($result) === 0) {
+
+        if($result == false) {
             return $code;
         } else {
             $this->CreateRoomID();
         }
+
     }
 
-    function CreateGameID() {
-        $roomID = random_int(0,9999);
-        $code = (int)(sprintf('%04d', $roomID));
-        $result = $this->RoomInfo($code);
-        if(count($result) === 0) {
-            return $code;
-        } else {
-            $this->CreateGameID();
+    function GetGameID() {
+        $stmt = $this->dbh->prepare("SELECT gameID FROM $this->table ORDER BY playerID DESC LIMIT 1");
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($result == false) {
+            return 0;
         }
+
+        return $result['gameID'];
     }
 
-    function AddRoom($userID, $roomID) {
-        $sql = "INSERT INTO $this->table(gameID, userID, roomID)
-        VALUES
-            (:gameID, :userID, :roomID)";
+    
+    function PlayerInfo($playerID) {
+        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE playerID = :playerID");
+        $stmt->bindValue(':playerID', $playerID);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
 
-        $st = $this->dbh->prepare("SELECT * FROM $this->table");
+    function RoomInfo($roomID) {
+        $st = $this->dbh->prepare("SELECT * FROM $this->table WHERE roomID = :roomID AND userID IS NULL");
+        $st->bindValue(':roomID', $roomID);
         $st->execute();
-        $result = $st->fetchall(PDO::FETCH_ASSOC);
-        $count = count($result);
-        if($count != NULL) {
-            $last = $result[$count - 1]['gameID'];
-            if($count % 4 === 0) {
-                $gameID = $last + 1;
-            } else {
-                $gameID = $last;
-            }
-        } else {
-            $gameID = 1;
-        }
+        $result = $st->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    function OwnerInfo($roomID) {
+        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE roomID = :roomID AND flag = :flag");
+        $stmt->bindValue(':roomID', $roomID);
+        $stmt->bindValue(':flag', 1);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    function AddRoom($userID, $roomID, $gameID, $flag) {
+        $sql = "INSERT INTO $this->table(gameID, userID, roomID, flag)
+        VALUES
+            (:gameID, :userID, :roomID, :flag)";
 
         try {
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':gameID', $gameID);
             $stmt->bindValue(':userID', $userID);
             $stmt->bindValue(':roomID', $roomID);
+            $stmt->bindValue(':flag', $flag);
             $stmt->execute();
-       } catch(PDOException $e) {
-            exit($e);
+        } catch(PDOException $e) {
+            return array('state' => 3);
+            exit;
         }
     }
 
     function JoinRoom($userID, $roomID) {
-        $st = $this->dbh->prepare("SELECT * FROM $this->table WHERE roomID = :roomID AND userID IS NULL");
-        $st->bindValue(':roomID', $roomID);
-        $st->execute();
-        if( ($result = $st->fetch(PDO::FETCH_ASSOC) ) != false) {
+        $result = $this->RoomInfo($roomID);
+
+        if($result != false) {
             $playerID = (int)($result['playerID']);
-            $sql ="UPDATE $this->table SET userID = :userID WHERE playerID = :playerID";
             $this->dbh->beginTransaction();
             try {
-                $stmt = $this->dbh->prepare($sql);
+                $stmt = $this->dbh->prepare("UPDATE $this->table SET userID = :userID WHERE playerID = :playerID");
                 $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
                 $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
                 $stmt->execute();
                 $this->dbh->commit();
-                $st = $this->dbh->prepare("SELECT * FROM $this->table WHERE playerID = :playerID");
-                $st->bindValue(':playerID', $playerID);
-                $st->execute();
-                $result = $st->fetch(PDO::FETCH_ASSOC);
+                $result = $this->PlayerInfo($playerID);
+                $result += array('state' => 0);
                 return $result;
             } catch(PDOException $e) {
-                $dbh->rollBack();
-                return false;
+                $this->dbh->rollBack();
+                return array('state' => 3);
                 exit;
             }
         } else {
-            return false;
+            return array('state' => 2);
         }
     }
 
-    function DeleteRoom($playerID) {
-        if(empty($playerID)) {
-            exit;
-        }
-
-        $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE playerID = :playerID");
-        $stmt->bindValue(':playerID',$playerID);
+    function DeleteRoom($gameID) {
+        $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE gameID = :gameID");
+        $stmt->bindValue(':gameID',$gameID);
         $stmt->execute();
     }
 
-    function RoomInfo($roomID) {
-        $stmt = $this->dbh->prepare("SELECT * FROM $this->table where roomID = :roomID");
-        $stmt->bindValue(':roomID', $roomID);
-        $stmt->execute();
-        $result = $stmt->fetchall(PDO::FETCH_ASSOC);
-        return $result;
+    function LeaveRoom($playerID) {
+        $result = $this->PlayerInfo($playerID);
+        if($result != false) {
+            $this->dbh->beginTransaction();
+            try {
+                $stmt = $this->dbh->prepare("UPDATE $this->table SET userID = null WHERE playerID = :playerID");
+                $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
+                $stmt->execute();
+                $this->dbh->commit();
+            } catch(PDOException $e) {
+                return array('state' => 3);
+                exit;
+            }
+        }
     }
 
 }
