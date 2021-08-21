@@ -1,8 +1,8 @@
 <?php
 
 require_once('../../info.php');
-require __DIR__ . '/const.php';
-require __DIR__ . '/vendor/autoload.php';
+require_once('../JWT/const.php');
+require_once('../JWT/vendor/autoload.php');
 
 use \Firebase\JWT\JWT;
 
