@@ -28,8 +28,8 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
 
         header('Content-Type: application/json');//レスポンスする形式はJSONファイル
         header('Access-Control-Allow-Origin: *'); //アクセスを許可するURL
+        setcookie('token', $jwt, (time() + 60), "/", false, true);
         echo json_encode(array('token' => $jwt, 'state' => 0)); //tokenを返却
-        setcookie('token', $jwt, (time() + 60), "/");
     } else {
         echo json_encode(array('state' => 4));
     }
