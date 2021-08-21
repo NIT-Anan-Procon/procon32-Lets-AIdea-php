@@ -1,4 +1,3 @@
-
 <?php
 header("Access-Control-Allow-Origin:*");     //localhostからのアクセスのみに制限
 header("Content-Type: application/json; charset=utf-8");
