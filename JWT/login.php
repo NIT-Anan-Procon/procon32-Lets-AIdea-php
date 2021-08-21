@@ -38,7 +38,7 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
             header('Content-Type: application/json');//レスポンスする形式はJSONファイル
             header('Access-Control-Allow-Origin: *'); //アクセスを許可するURL
             echo json_encode(array('token' => $jwt)); //tokenを返却
-            setcookie('token', $jwt, (time() + 60), "/");
+            setcookie('token', $jwt, (time() + 60), "/", false, true);
             return;
         }
     }
