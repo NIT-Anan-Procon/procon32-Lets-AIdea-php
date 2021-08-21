@@ -11,37 +11,30 @@ $userInfo = new userInfo();
 
 //strtoupper・・・文字列を大文字にする
 //POST通信であれば
-if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
+if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')) {
 
-    // JSON 文字列取得
-    $inputString = file_get_contents('php://input');
-
-    //@json_decode()・・・JSON文字列をデコードする
-    $input = @json_decode($inputString, true);
-
-    if (is_array($input)) {
-
-        $username = $input['username'];
-        $password = $input['password'];
-        
-        $ok = $userInfo->userAuth($username, $password);
-
-        if ($ok) {
-            $payload = array(
-                'iss' => JWT_ISSUER,
-                'exp' => time() + JWT_EXPIRES,
-                'userID' => $ok['userID']
-            );
-            $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
-            var_dump($jwt);
+    $username = $_POST['username'];
+    $password = $_POST['password'];
     
-            header('Content-Type: application/json');//レスポンスする形式はJSONファイル
-            header('Access-Control-Allow-Origin: *'); //アクセスを許可するURL
-            echo json_encode(array('token' => $jwt)); //tokenを返却
-            setcookie('token', $jwt, (time() + 60), "/");
-            return;
-        }
+    $ok = $userInfo->userAuth($username, $password);
+
+    if ($ok) {
+        $payload = array(
+            'iss' => JWT_ISSUER,
+            'exp' => time() + JWT_EXPIRES,
+            'userID' => $ok['userID']
+        );
+        $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
+
+        header('Content-Type: application/json');//レスポンスする形式はJSONファイル
+        header('Access-Control-Allow-Origin: *'); //アクセスを許可するURL
+        echo json_encode(array('token' => $jwt, 'state' => 0)); //tokenを返却
+        setcookie('token', $jwt, (time() + 60), "/");
+    } else {
+        echo json_encode(array('state' => 4));
     }
-    // JSON 取得失敗、認証に失敗した場合は 401
-    http_response_code(401);
+} else {
+    echo json_encode(array('state' => 1));
 }
+
+http_response_code(200);
