@@ -6,8 +6,8 @@ require_once('../point/point.php');
 require_once('../room_connect/room.php');
 $point = new point();
 
-if(filter_input(INPUT_POST, 'playerID') && filter_input(INPUT_POST, 'pointNum') && filter_input(INPUT_POST, 'flag')){
-//    $gameID = 
+if (filter_input(INPUT_POST, 'playerID') && filter_input(INPUT_POST, 'pointNum') && filter_input(INPUT_POST, 'flag')) {
+//    $gameID =
     $playerID = (int)$_POST['playerID'];
     $pointNum = (int)$_POST['pointNum'];
     $flag = (int)$_POST['flag'];
