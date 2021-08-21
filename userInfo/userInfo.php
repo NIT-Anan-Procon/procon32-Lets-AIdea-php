@@ -1,6 +1,11 @@
 <?php
 
 require_once('../../info.php');
+require __DIR__ . '/const.php';
+require __DIR__ . '/vendor/autoload.php';
+
+use \Firebase\JWT\JWT;
+
 
 class userInfo {
     protected $dbh;
@@ -144,5 +149,21 @@ class userInfo {
             return true;
         }
         return $result;
+    }
+
+    function CheckLogin() {
+        if (!is_null($_COOKIE['token'])) {
+            $request = $_COOKIE['token'];
+            $decode = JWT::decode($request, JWT_KEY, array('HS256'));
+            $decode_array = (array)$decode;
+            $result = $this->GetUserInfo($decode_array['userID']);
+            if ($result) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }
