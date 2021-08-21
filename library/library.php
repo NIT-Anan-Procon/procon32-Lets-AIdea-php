@@ -25,16 +25,10 @@ class library {
         };
     }
 
-    function UploadLibrary($userID, $explanation, $NGword, $pictureURL) {
+    function UploadLibrary($userID, $explanation, $NGword, $pictureURL, $flag) {
         
         date_default_timezone_set('Asia/Tokyo');
         $today = date("Y/m/d H:i:s");
-
-        if(is_null($NGword)){
-            $flag = 0;
-        }else{
-            $flag = 1;
-        }
 
         $sql = "INSERT INTO $this->table(userID, explanation, NGword, pictureURL, time, flag)
         VALUES
