@@ -30,7 +30,7 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
             $payload = array(
                 'iss' => JWT_ISSUER,
                 'exp' => time() + JWT_EXPIRES,
-                'username' => $ok['userID']
+                'userID' => $ok['userID']
             );
             $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
             var_dump($jwt);
@@ -38,7 +38,7 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
             header('Content-Type: application/json');//レスポンスする形式はJSONファイル
             header('Access-Control-Allow-Origin: *'); //アクセスを許可するURL
             echo json_encode(array('token' => $jwt)); //tokenを返却
-            setcookie('token', $jwt, (time() + 60), "/", false, true);
+            setcookie('token', $jwt, (time() + 60), "/");
             return;
         }
     }
