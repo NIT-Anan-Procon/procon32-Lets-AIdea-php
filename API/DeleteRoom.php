@@ -6,7 +6,7 @@ require_once('../room_connect/room.php');
 
 $room = new Room();
 
-if(filter_input(INPUT_POST, 'gameID')) {
+if (filter_input(INPUT_POST, 'gameID')) {
     $gameID = $_POST['gameID'];
     $room->DeleteRoom($gameID);
     $result = array('state' => 0);

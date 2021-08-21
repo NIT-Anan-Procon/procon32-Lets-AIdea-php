@@ -6,13 +6,13 @@ require_once('../room_connect/room.php');
 
 $room = new Room();
 
-if(filter_input(INPUT_POST, 'userID')) {
+if (filter_input(INPUT_POST, 'userID')) {
     $userID = (int)($_POST['userID']);
     $roomID = $room->CreateRoomID();
     $gameID = $room->GetGameID() + 1;
     $room->AddRoom($userID, $roomID, $gameID, 1);
-    for($i = 0; $i < 3; $i++) {
-        $room->AddRoom(NULL, $roomID, $gameID, 0);
+    for ($i = 0; $i < 3; $i++) {
+        $room->AddRoom(null, $roomID, $gameID, 0);
     }
     $result = $room->OwnerInfo($roomID);
     $result += array('state' => 0);
