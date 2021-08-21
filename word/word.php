@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../info.php');             //DBのログイン情報を取得
+require_once('../../info.php');
 
 class word {
 
@@ -8,7 +8,7 @@ class word {
     protected $table;
 
     function __construct() {
-        /* 3行目で取得したログイン情報を変数に代入 */
+
         $dbname = db_name;
         $password = password;
         $user_name = db_user;
@@ -40,10 +40,12 @@ class word {
             $stmt->bindValue(':word', $word);
             $stmt->bindValue(':flag', $flag);
             $stmt->execute();
-            return true;
+            $result = array('state'=>0);
+            return $result;
         } catch(PDOException $e) {
             echo '接続失敗'.$e->getMessage();
-            return false;
+            $result = array('state'=>3);
+            return $result;
             exit();
         }
 
@@ -60,6 +62,11 @@ class word {
         } else {
             $result = $stmt->fetch(PDO::FETCH_COLUMN);
         }
+        if($result == false){
+            $result = array('state'=>2);
+        } else {
+            $result += array('state'=>0);
+        }
         return $result;
     }
 
@@ -70,11 +77,13 @@ class word {
             $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE gameID = :gameID");
             $stmt->bindValue(':gameID', $gameID);
             $stmt->execute();
-            return true;
+            $result = array('state'=>0);
+            return $result;
 
         } catch(PDOException $e) {
             echo '接続失敗'.$e->getMessage();
-            return false;
+            $result = array('state'=>3);
+            return $result;
             exit();
         }
     }
