@@ -1,17 +1,16 @@
 ﻿<?php
 
-require_once('../../info.php');             //DBのログイン情報を取得
+require_once('../../info.php');
 
-class Explanation {
+class Point {
 
-    public $dbh;
+    protected $dbh;
+    protected $table = point_table;
 
     function __construct() {
-        /* 3行目で取得したログイン情報を変数に代入 */
         $dbname = db_name;
         $password = password;
         $user_name = db_user;
-
         $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
 
         try {
@@ -22,24 +21,20 @@ class Explanation {
             echo '接続失敗'.$e->getMessage();
             exit();
         };
-
     }
 
-    function AddExplanation($gameID, $playerID, $explanation, $flag) {
+    function AddPoint($gameID, $playerID, $pointNum, $flag) {
 
-        /* 3行目で取得したログイン情報を変数に代入 */
-        $table = explanation_table;
-
-        $sql = "INSERT INTO $table(gameID, playerID, explanation, flag)
+        $sql = "INSERT INTO $this->table(gameID, playerID, pointNum, flag)
         VALUES
-            (:gameID, :playerID, :explanation, :flag)";
+            (:gameID, :playerID, :pointNum, :flag)";
 
         try {
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':gameID', $gameID);
             $stmt->bindValue(':playerID', $playerID);
-            $stmt->bindValue(':explanation', $explanation);
-            $stmt->bindValue(':flag', $flag);
+            $stmt->bindValue(':pointNum', $pointNum);
+            $stmt->bindValue('flag', $flag);
             $stmt->execute();
         } catch(PDOException $e) {
             echo '接続失敗'.$e->getMessage();
@@ -48,14 +43,11 @@ class Explanation {
 
     }
 
-    function GetExplanation($gameID, $playerID) {
-        
-        /* 3行目で取得したログイン情報を変数に代入 */
-        $table = explanation_table;
+    function GetPoint($playerID, $flag) {
 
-        $stmt = $this->dbh->prepare("SELECT * FROM $table WHERE gameID = :gameID AND playerID = :playerID");
-        $stmt->bindValue(':gameID', $gameID);
+        $stmt = $this->dbh->prepare("SELECT SUM(pointNum) FROM $this->table WHERE playerID = :playerID AND flag = :flag");
         $stmt->bindValue(':playerID', $playerID);
+        $stmt->bindValue(':flag', $flag);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
