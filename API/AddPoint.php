@@ -7,12 +7,15 @@ require_once('../room_connect/room.php');
 $point = new point();
 
 if(filter_input(INPUT_POST, 'playerID') && filter_input(INPUT_POST, 'pointNum') && filter_input(INPUT_POST, 'flag')){
-    $playerID = $_POST['playerID'];
-    $pointNum = $_POST['pointNum'];
-
+//    $gameID = 
+    $playerID = (int)$_POST['playerID'];
+    $pointNum = (int)$_POST['pointNum'];
+    $flag = (int)$_POST['flag'];
     $result = $point->AddPoint($gameID, $playerID, $pointNum, $flag);
+    $responce = 200;
 } else {
-    $result = false;
+    $result = array('state'=>1);
+    $responce = 400;
 }
 echo json_encode($result);
-http_response_code(200);
+http_response_code($responce);

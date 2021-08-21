@@ -6,12 +6,15 @@ require_once('../point/point.php');
 $point = new point();
 
 if(filter_input(INPUT_POST, 'playerID') && filter_input(INPUT_POST, 'flag')){
-    $playerID = $_POST['playerID'];
 //    $gameID = 
+    $playerID = (int)$_POST['playerID'];
+    $flag = (int)$_POST['flag'];
     $result = $point->GetPoint($gameID, $playerID, $flag);
+    $responce = 200;
 } else {
-    $result = false;
+    $result = array('state'=>1);
+    $responce = 400;
 }
 
 echo json_encode($result);
-http_response_code(200);
+http_response_code($responce);
