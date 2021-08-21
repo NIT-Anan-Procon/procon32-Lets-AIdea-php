@@ -6,11 +6,10 @@ require __DIR__ . '/vendor/autoload.php';
 use \Firebase\JWT\JWT;
 
 if(!empty($_COOKIE['token'])) {
-    $jwt = $_COOKIE['token'];
-    $JWT = JWT::decode($jwt, JWT_KEY, array('HS256'));
-    print_r($JWT);
-    // $decode_array = (array)$JWT;
-    // var_dump($decode_array);
-    // setcookie('token', '', (time() + -3600), '/');
+    setcookie('token', '', (time() + -3600), '/');
+    echo json_encode(array('state' => 0));
+} else {
+    echo json_encode(array('state' => 1));
 }
 
+http_response_code(200);
