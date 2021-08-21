@@ -21,16 +21,16 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST') {
 
     if (is_array($input)) {
 
-        $userID = $input['userID'];
+        $username = $input['username'];
         $password = $input['password'];
         
-        $ok = $userInfo->userAuth($userID, $password);
+        $ok = $userInfo->userAuth($username, $password);
 
         if ($ok) {
             $payload = array(
                 'iss' => JWT_ISSUER,
                 'exp' => time() + JWT_EXPIRES,
-                'username' => $userID,
+                'username' => $ok['userID']
             );
             $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
             var_dump($jwt);
