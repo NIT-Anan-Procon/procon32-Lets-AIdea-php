@@ -50,6 +50,13 @@ class Room {
         return $result['gameID'];
     }
 
+    function GameInfo($gameID) {
+        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE gameID = :gameID");
+        $stmt->bindValue(':gameID', $gameID);
+        $stmt->execute();
+        $result = $stmt->fetchall(PDO::FETCH_ASSOC);
+        return $result;
+    }
     
     function PlayerInfo($playerID) {
         $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE playerID = :playerID");
