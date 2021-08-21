@@ -6,13 +6,12 @@ require_once('../word/word.php');
 
 $word = new word();
 
-if(filter_input(INPUT_POST,'playerID') && filter_input(INPUT_POST,'flag')) {
+if (filter_input(INPUT_POST, 'playerID') && filter_input(INPUT_POST, 'flag')) {
     $playerID = (int)($_POST['playerID']);
     $flag = (int)($_POST['flag']);
-    $result = $word->GetWord($gameID,$playerID, $flag);
+    $result = $word->GetWord($gameID, $playerID, $flag);
     $responce = 200;
-}
-else{
+} else {
     $result = array('state'=>1);
     $responce = 400;
 }
