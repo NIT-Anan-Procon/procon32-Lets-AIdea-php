@@ -1,6 +1,5 @@
 <?php
 
-//他ファイルから実行された時に相対パスではエラーが起きるため
 require __DIR__ . '/const.php';
 require __DIR__ . '/vendor/autoload.php';
 require_once('../userInfo/userInfo.php');
@@ -9,10 +8,7 @@ use \Firebase\JWT\JWT;
 
 $userInfo = new userInfo();
 
-//strtoupper・・・文字列を大文字にする
-//POST通信であれば
 if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')) {
-
     $username = $_POST['username'];
     $password = $_POST['password'];
     
@@ -26,8 +22,8 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
         );
         $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
 
-        header('Content-Type: application/json');//レスポンスする形式はJSONファイル
-        header('Access-Control-Allow-Origin: *'); //アクセスを許可するURL
+        header('Content-Type: application/json');
+        header('Access-Control-Allow-Origin: *');
         setcookie('token', $jwt, (time() + 60), "/", false, true);
         echo json_encode(array('token' => $jwt, 'state' => 0)); //tokenを返却
     } else {
