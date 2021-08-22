@@ -13,7 +13,7 @@ if (filter_input(INPUT_POST, 'playerID') && filter_input(INPUT_POST, 'pointNum')
     $result = $point->AddPoint($gameID, $playerID, $pointNum, $flag);
     $responce = 200;
 } else {
-    $result = array('state'=>1);
+    $result = array('state'=>"リクエストした値が指定している形式と異なる");
     $responce = 400;
 }
 echo json_encode($result);

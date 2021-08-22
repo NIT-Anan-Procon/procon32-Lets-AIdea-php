@@ -41,7 +41,7 @@ class Point
             return $result;
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
-            $result = array('state'=>3);
+            $result = array('state'=>"DBとの接続エラー");
             return $result;
             exit();
         }
@@ -53,8 +53,7 @@ class Point
         $stmt->bindValue(':playerID', $playerID);
         $stmt->bindValue(':flag', $flag);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $result += array('state'=>0);
+        $result = array("point"=>"$stmt->fetch(PDO::FETCH_ASSOC");
         return $result;
     }
 }
