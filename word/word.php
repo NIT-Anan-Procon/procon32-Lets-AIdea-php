@@ -40,11 +40,11 @@ class word {
             $stmt->bindValue(':word', $word);
             $stmt->bindValue(':flag', $flag);
             $stmt->execute();
-            $result = array('state'=>0);
+            $result = array('state'=>true);
             return $result;
         } catch(PDOException $e) {
             echo '接続失敗'.$e->getMessage();
-            $result = array('state'=>3);
+            $result = array('state'=>'DBとの接続エラー');
             return $result;
             exit();
         }
@@ -60,13 +60,11 @@ class word {
         if($flag == 2){
             $result = $stmt->fetchAll(PDO::FETCH_COLUMN);
         } else {
-            $result = $stmt->fetch(PDO::FETCH_COLUMN);
+            $result = array("explanation"=>$stmt->fetch(PDO::FETCH_COLUMN));
         }
         if($result == false){
-            $result = array('state'=>2);
-        } else {
-            $result += array('state'=>0);
-        }
+            $result = array('state'=>"指定されたplayerID・flagに値が存在しません");
+        } 
         return $result;
     }
 
@@ -82,7 +80,7 @@ class word {
 
         } catch(PDOException $e) {
             echo '接続失敗'.$e->getMessage();
-            $result = array('state'=>3);
+            $result = array('state'=>'DBとの接続エラー');
             return $result;
             exit();
         }
