@@ -6,11 +6,11 @@ require_once('../room_connect/room.php');
 $library = new library();
 
 if (filter_input(INPUT_GET, 'search') && filter_input(INPUT_GET, 'sort') && filter_input(INPUT_GET, 'period') && filter_input(INPUT_GET, 'page')) {
-    $search = (int)$_POST['search'];
-    $sort = (int)$_POST['sort'];
-    $period = (int)$_POST['period'];
-    $page = (int)$_POST['page'];
-    $userID = (int)$_POST['userID'];
+    $search = (int)$_GET['search'];
+    $sort = (int)$_GET['sort'];
+    $period = (int)$_GET['period'];
+    $page = (int)$_GET['page'];
+    $userID = (int)$_GET['userID'];
     $result = $library->GetLibrary($search, $sort, $period, $page, $userID);
     $responce = 200;
 } else {
