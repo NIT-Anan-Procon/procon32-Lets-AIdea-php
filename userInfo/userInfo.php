@@ -158,12 +158,12 @@ class userInfo {
             try {
                 $decode = JWT::decode($request, JWT_KEY, array('HS256'));
                 $decode_array = (array)$decode;
-                $result = $this->GetUserInfo($decode_array['userID'])['userID'];
+                $result = $this->GetUserInfo($decode_array['userID']);
                 $decode_array['exp'] = time() + JWT_EXPIRES;
                 $jwt = JWT::encode($decode_array, JWT_KEY, JWT_ALG);
                 echo "成功";
                 if ($result) {
-                    setcookie('token', $jwt, (time() + 3600), '/', '*' ,false, true);
+                    setcookie('token', $jwt, (time() + 50), '/', false, true);
                 } else {
                     $result = false;
                 }
@@ -177,3 +177,7 @@ class userInfo {
         return $result;
     }
 }
+
+$obj = new userInfo();
+$result = $obj->CheckLogin();
+echo json_encode($result);

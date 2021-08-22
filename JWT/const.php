@@ -6,4 +6,4 @@ define('JWT_KEY', '5929848024849039829403929839450303929004029285478577361718094
 /** JWT の発行者 */
 define('JWT_ISSUER', 'http://localhost');
 /** JWT の有効期限 (秒) */
-define('JWT_EXPIRES', 3600);
+define('JWT_EXPIRES', 30);
