@@ -6,15 +6,13 @@ require_once('../word/word.php');
 
 $word = new word();
 
-if (filter_input(INPUT_POST, 'playerID') && filter_input(INPUT_POST, 'word') && filter_input(INPUT_POST, 'flag')) {
-//    $gameID = (int)($_POST['gameID']);
-    $playerID = (int)($_POST['playerID']);
+if (filter_input(INPUT_POST, 'word') && filter_input(INPUT_POST, 'flag')) {
     $word = $_POST['word'];
     $flag = (int)($_POST['flag']);
     $result = $word->AddWord($gameID, $playerID, $word, $flag);
     $responce = 200;
 } else {
-    $result = array('state'=>1);
+    $result = array('state'=>"リクエストした値が指定している形式と異なる");
     $responce = 400;
 }
 

@@ -12,7 +12,7 @@ if (filter_input(INPUT_POST, 'playerID') && filter_input(INPUT_POST, 'flag')) {
     $result = $word->GetWord($gameID, $playerID, $flag);
     $responce = 200;
 } else {
-    $result = array('state'=>1);
+    $result = array('state'=>"リクエストした値が指定している形式と異なる");
     $responce = 400;
 }
 echo json_encode($result);
