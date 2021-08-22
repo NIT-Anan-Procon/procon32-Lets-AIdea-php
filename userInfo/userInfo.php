@@ -1,6 +1,11 @@
 <?php
 
 require_once('../../info.php');
+require_once('../JWT/const.php');
+require_once('../JWT/vendor/autoload.php');
+
+use \Firebase\JWT\JWT;
+
 
 class userInfo {
     protected $dbh;
@@ -142,6 +147,32 @@ class userInfo {
         $result = $stmt->fetch(PDO::FETCH_COLUMN);
         if($result == $name){
             return true;
+        }
+        return $result;
+    }
+
+    function CheckLogin() {
+        date_default_timezone_set('Asia/Tokyo');
+        if (filter_input(INPUT_COOKIE, 'token')) {
+            $request = $_COOKIE['token'];
+            try {
+                $decode = JWT::decode($request, JWT_KEY, array('HS256'));
+                $decode_array = (array)$decode;
+                $result = $this->GetUserInfo($decode_array['userID']);
+                $decode_array['exp'] = time() + JWT_EXPIRES;
+                $jwt = JWT::encode($decode_array, JWT_KEY, JWT_ALG);
+                echo "成功";
+                if ($result) {
+                    setcookie('token', $jwt, (time() + 50), '/', false, true);
+                } else {
+                    $result = false;
+                }
+            } catch (Exception $e) {
+                echo "失敗";
+                $result = false;
+            }
+        } else {
+            $result = false;
         }
         return $result;
     }
