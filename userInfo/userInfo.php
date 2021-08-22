@@ -177,7 +177,3 @@ class userInfo {
         return $result;
     }
 }
-
-$obj = new userInfo();
-$result = $obj->CheckLogin();
-echo json_encode($result);
