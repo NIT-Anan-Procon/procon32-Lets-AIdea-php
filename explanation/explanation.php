@@ -57,7 +57,7 @@ class Explanation {
         $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchall(PDO::FETCH_ASSOC);
         return $result;
 
     }
