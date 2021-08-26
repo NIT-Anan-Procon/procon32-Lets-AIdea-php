@@ -15,19 +15,20 @@ Unsplash\HttpClient::init([
 	'utmSource' => "$application"
 ]);
 
-function getPhoto($word) {
-	$filters = [
-		'query'    => "$word",
-		'w'        => 600,
-		'h'        => 400
-	];
+function InitialPhoto() {
 	$photo = Unsplash\Photo::random($filters);
-
 	$img = $photo->download();
 	return $img;
 }
 
-$photo = getPhoto('snow');
-var_dump($photo);
+function getPhotos($search) {
+	$photos = Unsplash\Search::photos($search,1,4);
+	$urls = array();
+	for($i = 0; $i < 3; $i++) {
+		$urls += array($i => $photos[$i]['urls']['raw']);
+	}
+	return $urls;
+}
+
 
 ?>
