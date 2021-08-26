@@ -1,8 +1,8 @@
 <?php
 
-require __DIR__ . '/const.php';
-require __DIR__ . '/vendor/autoload.php';
-require_once('../userInfo/userInfo.php');
+require __DIR__ . '../Const.php';
+require __DIR__ . '../vendor/autoload.php';
+require_once('../lib/userInfo.php');
 
 use \Firebase\JWT\JWT;
 
@@ -22,7 +22,7 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
         $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
 
         header('Content-Type: application/json');
-        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Origin: localhost');
         setcookie('token', $jwt, (time() + 1800), "/", false, true);
         echo json_encode(array('token' => $jwt, 'state' => 0)); //tokenを返却
     } else {

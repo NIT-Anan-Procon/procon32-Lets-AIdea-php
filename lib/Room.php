@@ -1,11 +1,12 @@
 <?php
 
-require_once('../../info.php');
+// require_once('../../info.php');
+require_once('../Const.php');
 
 class Room {
 
     protected $dbh;
-    protected $table =  room_table;
+    protected $table =  'room';
 
     function __construct() {
 
@@ -126,3 +127,7 @@ class Room {
     }
 
 }
+
+$room = new Room();
+$result = $room->RoomInfo(677);
+var_dump($result);

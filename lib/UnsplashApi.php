@@ -1,7 +1,7 @@
 ﻿<?php
 
-require_once('../../info.php');
-require('vendor/autoload.php');
+require_once('../Const.php');
+require('../vendor/autoload.php');
 
 $access = access;
 $secret = secret;
@@ -26,5 +26,8 @@ function getPhoto($word) {
 	$img = $photo->download();
 	return $img;
 }
+
+$photo = getPhoto('snow');
+var_dump($photo);
 
 ?>
