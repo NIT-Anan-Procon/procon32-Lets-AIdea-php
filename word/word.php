@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../info.php');
+require_once('../../Const.php');
 
 class word {
 
