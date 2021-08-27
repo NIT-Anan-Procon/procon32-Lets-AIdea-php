@@ -7,11 +7,17 @@ define('JWT_KEY', '5929848024849039829403929839450303929004029285478577361718094
 define('JWT_ISSUER', 'http://localhost');
 /** JWT の有効期限 (秒) */
 define('JWT_EXPIRES', 30);
-
+$dev = false;
 
 define('db_name', 'lets_aidea');
-define('password', 'FP4D**-V26GUjsP@WAs6nbXaqudMmGXy');
-define('db_user', 'root');
+if ($dev) {
+    define('password', 'FP4D**-V26GUjsP@WAs6nbXaqudMmGXy');
+    define('db_user', 'root');
+}
+else{
+    define('password','aaa1');
+    define('db_user', 'kubota');
+}
 define('room_table', 'room');
 define('word_table', 'word');
 define('library_table', 'library');

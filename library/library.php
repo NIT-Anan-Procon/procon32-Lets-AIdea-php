@@ -8,7 +8,7 @@ class library
     protected $library_table;
     protected $now;
 
-    public function __construct()
+    public function __Construct()
     {
         $dbname = db_name;
         $password = password;
@@ -57,50 +57,48 @@ class library
 
         $limit = 20;
         $p = 0;
-        $con = "";
+        $sql = "SELECT * FROM library ";
 
         if ($search > 0) {
-            $con .= "WHERE flag = :flag ";
+            $sql .= "WHERE flag = :flag ";
             $flag = $search - 1;
             $p = 1;
         }
         if ($period > 0) {
             $time = date("Y/m/d H:i:s", strtotime("-$period day"));
             if ($p = 0) {
-                $con .= "WHERE ";
+                $sql .= "WHERE ";
             } else {
-                $con .= "AND ";
+                $sql .= "AND ";
             }
-            $con .= "time > :time ";
+            $sql .= "time > :time ";
             $p = 1;
         }
         if(!is_null($userID)){
             if ($p = 0) {
-                $con .= "WHERE ";
+                $sql .= "WHERE ";
             } else {
-                $con .= "AND ";
+                $sql .= "AND ";
             }
-            $con .= "userID = :userID ";
+            $sql .= "userID = :userID ";
         }
-        $con .= "ORDER BY ";
+        $sql .= "ORDER BY ";
         switch($sort){
             case 0:
-                $con .= "libraryID DESC ";
+                $sql .= "libraryID DESC ";
                 break;
             case 1:
-                $con .= "like DESC, libraryID DESC ";
+                $sql .= "like DESC, libraryID DESC ";
                 break;
             case 2:
-                $con .= "LENGTH(explanation) DESC, libraryID DESC ";
+                $sql .= "LENGTH(explanation) DESC, libraryID DESC ";
                 break;
             case 3:
-                $con .= "LENGTH(explanation) ASC, libraryID DESC ";
+                $sql .= "LENGTH(explanation) ASC, libraryID DESC ";
                 break;
         }
-        $con .= "LIMIT 20 OFFSET :offset";
-
-        $sqlData = "SELECT explanation, pictureURL, NGword, time, good, flag FROM library ";
-        $stmt = $this->dbh->prepare($sqlData.$con);
+        $sql .= "LIMIT :limit OFFSET :offset";
+        $stmt = $this->dbh->prepare($sql);
         if($search > 0){
             $stmt->bindValue(':flag', $flag);
         }
@@ -110,34 +108,13 @@ class library
         if(!is_null($userID)){
             $stmt->bindValue(':userID', $userID);
         }
-        $stmt->bindValue(':limit', $limit);
-        $stmt->bindValue(':offset', 3, PDO::PARAM_INT);        
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', ($page - 1) * 20, PDO::PARAM_INT);   
         $stmt->execute();
-        $values = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $sqlData = "SELECT libraryID FROM library";
-        $stmt = $this->dbh->prepare($sqlData.$sql);
-        if($search > 0){
-            $stmt->bindValue(':flag', $flag);
-        }
-        if($period > 0){
-            $stmt->bindValue(':time', $time);
-        }
-        if(!is_null($userID)){
-            $stmt->bindValue(':userID', $userID);
-        }
-        $stmt->bindValue(':limit', $limit);
-        $stmt->bindValue(':offset', ($page - 1) * 20, PDO::PARAM_INT);        
-        $stmt->execute();
-        $libraryID = $stmt->fetchAll(PDO::FETCH_COLUMN);
- /*       $keys = [];
-        for($i = 0; $i < $limit; $i++){
-            $keys += [$result[$i]['libraryID'] => [[explanation], [pictureURL], [NGword], [time], [like], [flag]]];
-        }
-        $result = array_combine($keys, $values);
-        return $result;*/
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 }
 $obj = new library();
 $result = $obj->GetLibrary(1, 0, 0, 1, null);
-print_r($result);
+var_dump($result);
