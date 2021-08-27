@@ -1,0 +1,6 @@
+{
+    "require": {
+        "firebase/php-jwt": "^5.4",
+        "unsplash/unsplash": "^3.1"
+    }
+}
