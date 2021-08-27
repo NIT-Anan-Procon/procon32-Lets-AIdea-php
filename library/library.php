@@ -1,8 +1,6 @@
 <?php
 
-use Unsplash\Search;
-
-require_once('../../info.php');
+require_once('../Const.php');
 
 class library
 {
@@ -15,7 +13,7 @@ class library
         $dbname = db_name;
         $password = password;
         $user_name = db_user;
-        $this->table = library_table;
+        $this->table = 'library';
         date_default_timezone_set('Asia/Tokyo');
         $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
 
@@ -59,6 +57,7 @@ class library
 
         $p = 0;
         $sql = "SELECT * FROM $this->table ";
+
         if ($search > 0) {
             $sql .= "WHERE flag = :flag ";
             $flag = $search - 1;
@@ -97,7 +96,8 @@ class library
                 $sql .= "LENGTH(explanation) ASC ";
                 break;
         }
-        $sql .= "LIMIT :offset, 20";
+        $sql .= "LIMIT 20 OFFSET :offset";
+
         $stmt = $this->dbh->prepare($sql);
         if($search > 0){
             $stmt->bindValue(':flag', $flag);
@@ -108,9 +108,13 @@ class library
         if(!is_null($userID)){
             $stmt->bindValue(':userID', $userID);
         }
-        $stmt->bindValue(':offset', ($page - 1) * 20);
+        $stmt->bindValue(':offset', 3, PDO::PARAM_INT);
+        
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 }
+$obj = new library();
+$result = $obj->GetLibrary(1, 0, 0, 1, null);
+var_dump($result);
