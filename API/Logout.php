@@ -3,7 +3,7 @@
 require __DIR__ . '/const.php';
 require __DIR__ . '/vendor/autoload.php';
 
-use \Firebase\JWT\JWT;
+use Firebase\JWT\JWT;
 
 if (!empty($_COOKIE['token'])) {
     setcookie('token', '', (time() + -3600), '/', false, true);

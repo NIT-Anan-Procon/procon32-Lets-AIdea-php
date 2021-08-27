@@ -4,14 +4,14 @@ require __DIR__ . '../Const.php';
 require __DIR__ . '../vendor/autoload.php';
 require_once('../lib/userInfo.php');
 
-use \Firebase\JWT\JWT;
+use Firebase\JWT\JWT;
 
 $userInfo = new userInfo();
 
 if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')) {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    
+
     $ok = $userInfo->userAuth($username, $password);
     if ($ok) {
         $payload = array(

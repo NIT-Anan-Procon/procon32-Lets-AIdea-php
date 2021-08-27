@@ -2,11 +2,12 @@
 
 require_once('../../library_info.php');
 
-class library {
+class library
+{
     public $dbh;
 
-    function __construct() {
-
+    public function __construct()
+    {
         $dbname = db_name;
         $password = password;
         $user_name = db_user;
@@ -16,14 +17,14 @@ class library {
             $this->dbh = new PDO($dsn, $user_name, $password, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
             exit();
         };
     }
 
-    function UploadLibrary($userID, $explanation, $pictureURL) {
-
+    public function UploadLibrary($userID, $explanation, $pictureURL)
+    {
         date_default_timezone_set('Asia/Tokyo');
         $today = date("Y/m/d H:i:s");
 
@@ -39,34 +40,32 @@ class library {
             $stmt->bindValue(':pictureURL', $pictureURL);
             $stmt->bindValue(':time', $today);
             $stmt->execute();
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
             exit();
         }
-
     }
 
-    function GetLibrary($userID) { //特定のユーザーの作品を新しいもの順で返す
-        
+    public function GetLibrary($userID)
+    { //特定のユーザーの作品を新しいもの順で返す
+
         $table = table;
-;
+        ;
         $stmt = $this->dbh->prepare("SELECT * FROM $table WHERE userID = :userID ORDER BY time DESC");
         $stmt->bindValue(':userID', $userID);
         $stmt->execute();
         $result = $stmt->fetchAll();
         return $result;
-
     }
 
-    function ListLibrary() { //全ユーザーの作品を新着順で返す
-        
+    public function ListLibrary()
+    { //全ユーザーの作品を新着順で返す
+
         $table = table;
 
         $stmt = $this->dbh->prepare("SELECT * FROM $table ORDER BY libraryID DESC");
         $stmt->execute();
         $result = $stmt->fetchAll();
         return $result;
-
     }
-
 }
