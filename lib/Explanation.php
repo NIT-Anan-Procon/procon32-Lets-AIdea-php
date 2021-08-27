@@ -2,11 +2,12 @@
 
 require_once('../../info.php');             //DBのログイン情報を取得
 
-class Explanation {
-
+class Explanation
+{
     public $dbh;
 
-    function __construct() {
+    public function __construct()
+    {
         /* 3行目で取得したログイン情報を変数に代入 */
         $dbname = db_name;
         $password = password;
@@ -18,14 +19,14 @@ class Explanation {
             $this->dbh = new PDO($dsn, $user_name, $password, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
             exit();
         };
-
     }
 
-    function AddExplanation($gameID, $playerID, $explanation, $flag) {
+    public function AddExplanation($gameID, $playerID, $explanation, $flag)
+    {
 
         /* 3行目で取得したログイン情報を変数に代入 */
         $table = explanation_table;
@@ -41,15 +42,15 @@ class Explanation {
             $stmt->bindValue(':explanation', $explanation);
             $stmt->bindValue(':flag', $flag);
             $stmt->execute();
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
             exit();
         }
-
     }
 
-    function GetExplanation($gameID, $playerID) {
-        
+    public function GetExplanation($gameID, $playerID)
+    {
+
         /* 3行目で取得したログイン情報を変数に代入 */
         $table = explanation_table;
 
@@ -59,7 +60,5 @@ class Explanation {
         $stmt->execute();
         $result = $stmt->fetchall(PDO::FETCH_ASSOC);
         return $result;
-
     }
-
 }

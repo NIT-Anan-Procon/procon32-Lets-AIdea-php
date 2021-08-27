@@ -476,3 +476,4 @@ composer.lock
 Const.php
 sample*
 *.http
+.php-cs-fixer.cache

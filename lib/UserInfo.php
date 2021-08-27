@@ -4,60 +4,60 @@ require_once('../../info.php');
 require_once('../JWT/const.php');
 require_once('../JWT/vendor/autoload.php');
 
-use \Firebase\JWT\JWT;
+use Firebase\JWT\JWT;
 
-
-class userInfo {
+class userInfo
+{
     protected $dbh;
     protected $table;
 
-    function __construct() {
-
+    public function __construct()
+    {
         $dbname = db_name;
         $db_password = password;
         $user_name = db_user;
         $this->table = userInfo_table;
         $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
-        
+
         try {
             $this->dbh = new PDO($dsn, $user_name, $db_password, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
             exit();
         }
     }
 
-    function AddUserInfo($name, $password, $image){
-
-        if(is_null($name) || is_null($password)){
+    public function AddUserInfo($name, $password, $image)
+    {
+        if (is_null($name) || is_null($password)) {
             return false;
         }
         $check = $this->CheckName($name);   //同じ名前のアカウントが存在するか
-        if($check){
+        if ($check) {
             return false;
         }
         $sql = "INSERT INTO $this->table(name, password, image_icon)
         VALUES
             (:name, :password, :image_icon)";
-        try{
+        try {
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':name', $name);
             $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));
             $stmt->bindValue(':image_icon', $image);
             $stmt->execute();
             return true;
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
             return false;
             exit();
         }
     }
 
-    function userAuth($name, $password){
-
-        if(is_null($name) || is_null($password)){
+    public function userAuth($name, $password)
+    {
+        if (is_null($name) || is_null($password)) {
             return false;
         }
 
@@ -65,18 +65,18 @@ class userInfo {
         $stmt->bindValue(':name', $name);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(!($result)){                             //resultがfalseのとき
+        if (!($result)) {                             //resultがfalseのとき
             return false;
         }
-        if(password_verify($password, $result['password'])){
+        if (password_verify($password, $result['password'])) {
             return $result;
         } else {
             return false;
         }
     }
 
-    function GetUserInfo($userID){
-
+    public function GetUserInfo($userID)
+    {
         $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE userID = :userID");
         $stmt->bindValue(':userID', $userID);
         $stmt->execute();
@@ -84,13 +84,13 @@ class userInfo {
         return $result;
     }
 
-    function ChangeUserInfo($userID, $newName, $newImage){
-
-        if(is_null($newName) || is_null($userID)){
+    public function ChangeUserInfo($userID, $newName, $newImage)
+    {
+        if (is_null($newName) || is_null($userID)) {
             return false;
         }
         $check = $this->CheckName($newName);   //同じ名前のアカウントが存在するか
-        if($check){
+        if ($check) {
             return false;
         }
         try {
@@ -101,15 +101,15 @@ class userInfo {
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
             return true;
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
             exit();
             return false;
         }
     }
 
-    function ChangePassword($userID, $newPassword){
-
+    public function ChangePassword($userID, $newPassword)
+    {
         try {
             $sql = "UPDATE $this->table SET password = :newPassword WHERE userID = :userID";
             $stmt = $this->dbh->prepare($sql);
@@ -117,41 +117,42 @@ class userInfo {
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
             return true;
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
             exit();
             return false;
         }
     }
 
-    function DelUserInfo($userID){
-
+    public function DelUserInfo($userID)
+    {
         try {
             $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE userID = :userID");
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
             return true;
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
             exit();
             return false;
         }
     }
 
-    function CheckName($name){
-
+    public function CheckName($name)
+    {
         $sql = "SELECT name FROM $this->table WHERE name=:name";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindValue(':name', $name);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_COLUMN);
-        if($result == $name){
+        if ($result == $name) {
             return true;
         }
         return $result;
     }
 
-    function CheckLogin() {
+    public function CheckLogin()
+    {
         date_default_timezone_set('Asia/Tokyo');
         if (filter_input(INPUT_COOKIE, 'token')) {
             $request = $_COOKIE['token'];
