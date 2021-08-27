@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 require_once('../../info.php');             //DBのログイン情報を取得
 
