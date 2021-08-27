@@ -20,7 +20,7 @@ npm install
 
 ## PHP CS Fixer について
 
-> このリポジトリには[PHP-CS-Fixer]がComposerからインストールされています。
+> このリポジトリには[PHP-CS-Fixer](https://cs.symfony.com/)がComposerからインストールされています。
 
 ### 使い方
 
