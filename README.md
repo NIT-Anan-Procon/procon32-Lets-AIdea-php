@@ -7,6 +7,24 @@
 - Apache 2.4.x
 - MariaDB 10.3.x
 
+## 初期設定
+
+```
+git clone https://github.com/NIT-Anan-Procon/procon32_Lets_AIdea_php.git
+cd procon32_Lets_AIdea_php.git
+composer install
+```
+
+## PHP CS Fixer について
+
+> このリポジトリには[PHP-CS-Fixer]がComposerからインストールされています。
+
+### 使い方
+
+```
+./vendor/bin/php-cs-fixer fix ./
+```
+
 ## ファイル構成
 - API
     - CreateRoom.php
