@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../Const.php');
+require_once('../Const.php');
 
 class word {
 
@@ -51,27 +51,24 @@ class word {
 
     }
 
-    function GetWord($playerID, $flag) {
+    function GetWord($gameID, $playerID, $flag) {
         
-        $stmt = $this->dbh->prepare("SELECT word FROM $this->table WHERE playerID = :playerID AND flag = :flag");
+        $stmt = $this->dbh->prepare("SELECT word FROM $this->table WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag");
+        $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->bindValue(':flag', $flag);
         $stmt->execute();
         if($flag == 2){
             $result = $stmt->fetchAll(PDO::FETCH_COLUMN);
         } else {
-            $result = array("explanation"=>$stmt->fetch(PDO::FETCH_COLUMN));
+            $result = $stmt->fetch(PDO::FETCH_COLUMN);
         }
-        if($result == false){
-            $result = array('state'=>"指定されたplayerID・flagに値が存在しません");
-        } 
         return $result;
     }
 
     function Delword($gameID){
 
         try {
-
             $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE gameID = :gameID");
             $stmt->bindValue(':gameID', $gameID);
             $stmt->execute();
