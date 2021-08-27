@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 header("Access-Control-Allow-Origin:http://localhost");
 header("Content-Type: application/json; charset=utf-8");
 

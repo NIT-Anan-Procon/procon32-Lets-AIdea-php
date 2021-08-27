@@ -1,7 +1,0 @@
-﻿POST http://localhost/procon32_Lets_AIdea_php/JWT/login.php
-content-type: application/json
-
-{
-    "username": "test",
-    "password": "test"
-}
