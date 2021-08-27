@@ -63,6 +63,9 @@ class word {
         } else {
             $result = $stmt->fetch(PDO::FETCH_COLUMN);
         }
+        if($result == false){
+            return null;
+        }
         return $result;
     }
 
