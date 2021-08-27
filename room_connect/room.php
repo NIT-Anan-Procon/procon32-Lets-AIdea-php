@@ -88,6 +88,15 @@ class Room
         return $result;
     }
 
+    public function getGameInfo($userID)
+    {
+        $stmt = $this->dbh->prepare("SELECT gameID From $this->table WHERE userID = :userID");
+        $stmt->bindValue(':userID', $userID);
+        $stmt->execute();
+        $result = $stmt->fetchColumn();
+        return $result;
+    }
+
     public function AddRoom($userID, $roomID, $gameID, $flag)
     {
         $sql = "INSERT INTO $this->table(gameID, userID, roomID, flag)
