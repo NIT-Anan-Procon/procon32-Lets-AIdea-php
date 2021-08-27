@@ -477,3 +477,4 @@ Const.php
 sample*
 *.http
 .php-cs-fixer.cache
+node_modules
