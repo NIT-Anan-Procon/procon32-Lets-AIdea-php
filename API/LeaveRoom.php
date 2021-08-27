@@ -14,21 +14,17 @@ if ($userInfo->CheckLogin() === false) {
     exit;
 }
 
-if (filter_input(INPUT_POST, 'playerID')) {
-    $playerID = (int)($_POST['playerID']);
-    $playerInfo = $room->PlayerInfo($playerID);
-    if ($playerInfo != false) {
-        if ($playerInfo['flag'] == 1) {
-            $room->DeleteRoom($playerInfo['gameID']);
-        } else {
-            $room->LeaveRoom($playerID);
-        }
-        $result = array('state' => 0);
+$userID = $userInfo->CheckLogin()['userID'];
+$playerID = $room->getGameInfo($userID)['playerID'];
+$playerInfo = $room->PlayerInfo($playerID);
+if ($playerInfo != false) {
+    if ($playerInfo['flag'] == 1) {
+        $room->DeleteRoom($playerInfo['gameID']);
     } else {
-        $result = array('state' => 2);
+        $room->LeaveRoom($playerID);
     }
 } else {
-    $result = array('state' => 1);
+    $result = array('state' => 'ユーザーは部屋に入っていません。');
 }
 
 echo json_encode($result);

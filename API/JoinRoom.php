@@ -19,7 +19,7 @@ if (filter_input(INPUT_POST, 'roomID')) {
     $roomID = (int)($_POST['roomID']);
     $result = $room->JoinRoom($userID, $roomID);
 } else {
-    $result = array('state' => 1);
+    $result = array('state' => '部屋番号が入力されていません。');
 }
 
 echo json_encode($result);

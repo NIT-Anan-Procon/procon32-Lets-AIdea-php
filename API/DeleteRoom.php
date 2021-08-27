@@ -9,13 +9,13 @@ $room = new Room();
 $userInfo = new userInfo();
 
 if ($userInfo->CheckLogin() === false) {
-    echo json_encode(array('State' => 'ログインしていません'));
+    echo json_encode(array('State' => 'ログインしていません。'));
     http_response_code(403);
     exit;
 }
 
 $userID = $userInfo->CheckLogin()['userID'];
-$gameID = $room->getGameInfo($userID);
+$gameID = $room->getGameInfo($userID)['gameID'];
 $room->DeleteRoom($gameID);
 
 //echo json_encode($result);

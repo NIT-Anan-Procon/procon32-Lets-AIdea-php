@@ -90,10 +90,10 @@ class Room
 
     public function getGameInfo($userID)
     {
-        $stmt = $this->dbh->prepare("SELECT gameID From $this->table WHERE userID = :userID");
+        $stmt = $this->dbh->prepare("SELECT * From $this->table WHERE userID = :userID");
         $stmt->bindValue(':userID', $userID);
         $stmt->execute();
-        $result = $stmt->fetchColumn();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
 

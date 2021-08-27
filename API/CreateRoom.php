@@ -9,7 +9,7 @@ $room = new Room();
 $userInfo = new userInfo();
 
 if ($userInfo->CheckLogin() === false) {
-    echo json_encode(array('state' => 'ログインしていません'));
+    echo json_encode(array('state' => 'ログインしていません。'));
     http_response_code(403);
     exit;
 }
