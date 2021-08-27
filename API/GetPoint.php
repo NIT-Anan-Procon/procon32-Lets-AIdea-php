@@ -3,18 +3,16 @@ header("Access-Control-Allow-Origin:*");     //localhostからのアクセスの
 header("Content-Type: application/json; charset=utf-8");
 require_once('../point/point.php');
 
-$point = new point();
+$point = new Point();
 
-if (filter_input(INPUT_POST, 'playerID') && filter_input(INPUT_POST, 'flag')) {
-//    $gameID =
-    $playerID = (int)$_POST['playerID'];
-    $flag = (int)$_POST['flag'];
-    $result = $point->GetPoint($gameID, $playerID, $flag);
-    $responce = 200;
-} else {
-    $result = array('state'=>"リクエストした値が指定している形式と異なる");
-    $responce = 400;
+$gameID = 1;
+$result = [];
+for ($i = 1; $i <= 4; $i++) {
+    $exp = $point->GetPoint($gameID, $i, 0);
+    $ans = $point->GetPoint($gameID, $i, 1);
+    $vot = $point->GetPoint($gameID, $i, 2);
+    $result += [$i => ['exp'=> $exp, 'ans' => $ans, 'vot' => $vot]];
 }
-
+$responce = 200;
 echo json_encode($result);
 http_response_code($responce);
