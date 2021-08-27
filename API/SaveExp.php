@@ -9,7 +9,6 @@ $explanation = new Explanation();
 
 if (filter_input(INPUT_POST, 'gameID') && filter_input(INPUT_POST, 'playerID') && filter_input(INPUT_POST, 'explanation')) {
 
-    
     $gameID = (int)($_POST['gameID']);
     $playerID = (int)($_POST['playerID']);
     $exp = $_POST['explanation'];

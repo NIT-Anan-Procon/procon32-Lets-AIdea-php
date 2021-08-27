@@ -16,8 +16,7 @@
   },
   "lint-staged": {
     "*.php": [
-      "vendor/bin/php-cs-fixer fix",
-      "git add"
+      "vendor/bin/php-cs-fixer fix"
     ]
   }
 }
