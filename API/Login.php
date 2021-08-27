@@ -23,7 +23,7 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
 
         header('Content-Type: application/json');
         header('Access-Control-Allow-Origin: *');
-        setcookie('token', $jwt, (time() + 1800), "/", false, true);
+        setcookie('token', $jwt, (time() + 3600), "/", false, true);
         echo json_encode(array('token' => $jwt, 'state' => 0)); //tokenを返却
     } else {
         echo json_encode(array('state' => 4));
