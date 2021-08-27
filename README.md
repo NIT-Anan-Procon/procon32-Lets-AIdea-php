@@ -6,6 +6,8 @@
 - PHP 7.4.x
 - Apache 2.4.x
 - MariaDB 10.3.x
+- Node.js 14.7.3
+- npm 7.21.0
 
 ## 初期設定
 
@@ -13,6 +15,7 @@
 git clone https://github.com/NIT-Anan-Procon/procon32_Lets_AIdea_php.git
 cd procon32_Lets_AIdea_php.git
 composer install
+npm install
 ```
 
 ## PHP CS Fixer について
