@@ -88,7 +88,7 @@ class Room
         return $result;
     }
 
-    public function getGameID($userID)
+    public function getGameInfo($userID)
     {
         $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE userID = :userID");
         $stmt->bindValue(':userID', $userID);
