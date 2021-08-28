@@ -1,44 +1,46 @@
 <?php
+header("Access-Control-Allow-Origin:*");
+header("Content-Type: application/json; charset=utf-8");
 
-header('Access-Control-Allow-Origin:http://localhost');
-header('Content-Type: application/json; charset=utf-8');
-
-require_once '../picture/picture.php';
-
-require_once '../unsplash_API/unsplash_API.php';
+require_once('../lib/Picture.php');
+require_once('../lib/Room.php');
+require_once('../lib/Unsplash_API.php');
+require_once('../lib/UserInfo.php');
 
 $picture = new Picture();
+$room = new Room();
+$userInfo = new userInfo();
 
-if (filter_input(INPUT_POST, 'gameID') && filter_input(INPUT_POST, 'playerID') && filter_input(INPUT_POST, 'answer') && filter_input(INPUT_POST, 'word')) {
-    $gameID = $_POST['gameID'];
-    $playerID = $_POST['playerID'];
-    $answer = $_POST['answer'];
-    $word = $_POST['word'];
-    $flag = 0;
-
-    for ($i = 0; $i < 4; ++$i) {
-        $PictureURL = getPhoto($word);
-        $url = $picture->GetGameInfo($playerID);
-        for ($j = 0; $j < count($url); ++$j) {
-            if ($picture === $url[$j]['pictureURL']) {
-                $flag = 1;
-            }
-        }
-        if (0 === $flag) {
-            $picture->AddGameInfo($gameID, $playerID, $PictureURL, $answer);
-        } else {
-            --$i;
-        }
-        $flag = 0;
-    }
-
-    $result = $picture->GetGameInfo($playerID);
-} else {
-    $result = false;
-    echo json_encode($result);
-
+if ($userInfo->CheckLogin() === false) {
+    echo json_encode(array('state' => 'ログインしていません'));
+    http_response_code(403);
     exit;
 }
+
+$gameID = $_POST['gameID'];
+$infos = $room->gameInfo($gameID);
+foreach ($infos as $info) {
+    $playerID = $info['playerID'];
+
+    $photo = InitialPhoto();
+    $picture->AddGameInfo($gameID, $playerID, $photo, 1);
+
+    //pythonと通信
+    $ch = curl_init('');    //''にpythonのAPIのurlを記述
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $photo);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close();
+    $result = json_decode($response);
+
+    $urls = getPhotos($result['word']);
+    foreach ($urls as $url) {
+        $picture->AddGameInfo($gameID, $playerID, $url, 0);
+    }
+}
+
+$result = $picture->GetGameInfo($playerID);
 
 echo json_encode($result);
 http_response_code(200);
