@@ -1,8 +1,8 @@
 <?php
 
-require __DIR__ . '../Const.php';
-require __DIR__ . '../vendor/autoload.php';
-require_once('../lib/userInfo.php');
+require_once('../Const.php');
+require_once('../vendor/autoload.php');
+require_once('../lib/UserInfo.php');
 
 use Firebase\JWT\JWT;
 
