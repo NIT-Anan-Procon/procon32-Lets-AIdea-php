@@ -59,9 +59,4 @@ class Game
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-<<<<<<< HEAD:game/gameTable.php
-
 }
-=======
-}
->>>>>>> main:lib/GameTable.php
