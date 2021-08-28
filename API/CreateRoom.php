@@ -1,9 +1,10 @@
 <?php
-header("Access-Control-Allow-Origin:http://localhost");     //localhostからのアクセスのみに制限する
+
+header("Access-Control-Allow-Origin:*");     //localhostからのアクセスのみに制限する
 header("Content-Type: application/json; charset=utf-8");    //レスポンスする形式はjson
 
-require_once('../room_connect/room.php');
-require_once('../userInfo/userInfo.php');
+require_once('../lib/Room.php');
+require_once('../lib/UserInfo.php');
 
 $room = new Room();
 $userInfo = new userInfo();
