@@ -21,10 +21,10 @@ jobs:
       run: composer install -n --prefer-dist
     - name: Dry-run php-cs-fixer
       run: |
-        ./vendor/bin/php-cs-fixer fix --dry-run --diff --diff-format=udiff --using-cache=no . || true
+        ./vendor/bin/php-cs-fixer --config=.php-cs-fixer.dist.php fix --dry-run -v --diff --using-cache=no . || true
     - name: Execute php-cs-fixer
       run: |
-        ./vendor/bin/php-cs-fixer fix --using-cache=no .
+        ./vendor/bin/php-cs-fixer --config=.php-cs-fixer.dist.php fix --using-cache=no .
     - name: Commit and push
       uses: stefanzweifel/git-auto-commit-action@v4.2.0
       with:
