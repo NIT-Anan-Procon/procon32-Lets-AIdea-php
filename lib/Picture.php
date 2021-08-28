@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../info.php');
+require_once '../../info.php';
 
 class Picture
 {
@@ -12,7 +12,7 @@ class Picture
         $dbname = db_name;
         $password = password;
         $user_name = db_user;
-        $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
+        $dsn = "mysql:host=localhost;dbname={$dbname};charset=utf8";
 
         try {
             $this->dbh = new PDO($dsn, $user_name, $password, [
@@ -20,13 +20,14 @@ class Picture
             ]);
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             exit();
-        };
+        }
     }
 
     public function AddGameInfo($gameID, $playerID, $PictureUrl, $answer)
     {
-        $sql = "INSERT INTO $this->table(gameID, playerID, pictureURL, answer)
+        $sql = "INSERT INTO {$this->table}(gameID, playerID, pictureURL, answer)
         VALUES
             (:gameID, :playerID, :pictureURL, :answer)";
 
@@ -39,16 +40,17 @@ class Picture
             $stmt->execute();
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             exit();
         }
     }
 
     public function GetGameInfo($playerID)
     {
-        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE playerID = :playerID");
+        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE playerID = :playerID");
         $stmt->bindValue(':playerID', $playerID);
         $stmt->execute();
-        $result = $stmt->fetchall(PDO::FETCH_ASSOC);
-        return $result;
+
+        return $stmt->fetchall(PDO::FETCH_ASSOC);
     }
 }
