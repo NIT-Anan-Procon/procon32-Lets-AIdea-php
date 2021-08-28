@@ -114,7 +114,27 @@ class library
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    public function Good($libraryID)
+    {
+        try {
+            $stmt = $this->dbh->prepare("UPDATE library SET good = good + 1 WHERE libraryID = :libraryID");
+            $stmt->bindValue(':libraryID', $libraryID);
+            $stmt->execute();
+            $result = ['state'=>true];
+        } catch (PDOException $e) {
+            echo '接続失敗'.$e->getMessage();
+            $result = array('state'=>'データベースとの接続に失敗');
+            return $result;
+            exit();
+        }
+        $stmt = $this->dbh->prepare("SELECT good FROM library WHERE libraryID = :libraryID");
+        $stmt->bindValue(':libraryID', $libraryID);
+        $stmt->execute();
+        $result += ['good' => (int)($stmt->fetch(PDO::FETCH_COLUMN))];
+        if ($result == false) {
+            $result = ['status'=> '指定したライブラリIDは存在しない'];
+        }
+        return $result;
+    }
 }
-$obj = new library();
-$result = $obj->GetLibrary(1, 0, 0, 1, null);
-var_dump($result);
