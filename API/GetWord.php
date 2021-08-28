@@ -1,10 +1,11 @@
-﻿<?php
+<?php
+
 header("Access-Control-Allow-Origin:*");
 header("Content-Type: application/json; charset=utf-8");
 
 require_once('../word/word.php');
 
-$word = new word();
+$word = new Word();
 $result = [];
 //$gameID playerの数
 $gameID = 1;
