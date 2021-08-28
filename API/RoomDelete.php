@@ -1,9 +1,9 @@
 <?php
 
-header("Access-Control-Allow-Origin:http://localhost");
-header("Content-Type: application/json; charset=utf-8");
+header('Access-Control-Allow-Origin:http://localhost');
+header('Content-Type: application/json; charset=utf-8');
 
-require_once('../room_connect/room.php');
+require_once '../room_connect/room.php';
 
 $room = new Room();
 

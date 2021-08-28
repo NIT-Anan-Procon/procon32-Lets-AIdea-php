@@ -1,15 +1,15 @@
 <?php
 
-require_once('../../game_info.php');
+require_once '../../game_info.php';
 
-class Game
+class GameTable
 {
     public function DbConnect()
     {
         $dbname = db_name;
         $password = password;
         $user_name = db_user;
-        $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
+        $dsn = "mysql:host=localhost;dbname={$dbname};charset=utf8";
 
         try {
             $dbh = new PDO($dsn, $user_name, $password, [
@@ -17,8 +17,9 @@ class Game
             ]);
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             exit();
-        };
+        }
 
         return $dbh;
     }
@@ -26,7 +27,7 @@ class Game
     public function AddGameInfo($roomID, $gameID, $userID, $PictureUrl, $answer)
     {
         $table = table;
-        $sql = "INSERT INTO $table(roomID, gameID, userID, pictureURL, answer)
+        $sql = "INSERT INTO {$table}(roomID, gameID, userID, pictureURL, answer)
         VALUES
             (:roomID, :gameID, :userID, :pictureURL, :answer)";
 
@@ -42,6 +43,7 @@ class Game
             $stmt->execute();
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             exit();
         }
     }
@@ -51,12 +53,12 @@ class Game
         $table = table;
 
         $dbh = $this->DbConnect();
-        $stmt = $dbh->prepare("SELECT * FROM $table WHERE roomID = :roomID AND gameID = :gameID AND userID = :userID");
+        $stmt = $dbh->prepare("SELECT * FROM {$table} WHERE roomID = :roomID AND gameID = :gameID AND userID = :userID");
         $stmt->bindValue(':roomID', $roomID);
         $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':userID', $userID);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result;
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
