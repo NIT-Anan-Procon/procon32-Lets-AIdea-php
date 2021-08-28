@@ -5,7 +5,7 @@ require_once('../vendor/autoload.php');
 
 use Firebase\JWT\JWT;
 
-class userInfo
+class UserInfo
 {
     protected $dbh;
     protected $table = 'userinfo';
@@ -23,43 +23,48 @@ class userInfo
             ]);
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             exit();
         }
     }
 
     public function AddUserInfo($name, $password, $image)
     {
-        if (is_null($name) || is_null($password)) {
+        if (null === $name || null === $password) {
             return false;
         }
         $check = $this->CheckName($name);   //同じ名前のアカウントが存在するか
         if ($check) {
             return false;
         }
-        $sql = "INSERT INTO $this->table(name, password, image_icon)
+        $sql = "INSERT INTO {$this->table}(name, password, image_icon)
         VALUES
             (:name, :password, :image_icon)";
+
         try {
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':name', $name);
             $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));
             $stmt->bindValue(':image_icon', $image);
             $stmt->execute();
+
             return true;
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             return false;
+
             exit();
         }
     }
 
     public function userAuth($name, $password)
     {
-        if (is_null($name) || is_null($password)) {
+        if (null === $name || null === $password) {
             return false;
         }
 
-        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE name = :name");
+        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE name = :name");
         $stmt->bindValue(':name', $name);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -68,40 +73,44 @@ class userInfo
         }
         if (password_verify($password, $result['password'])) {
             return $result;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     public function GetUserInfo($userID)
     {
-        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE userID = :userID");
+        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE userID = :userID");
         $stmt->bindValue(':userID', $userID);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result;
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function ChangeUserInfo($userID, $newName, $newImage)
     {
-        if (is_null($newName) || is_null($userID)) {
+        if (null === $newName || null === $userID) {
             return false;
         }
         $check = $this->CheckName($newName);   //同じ名前のアカウントが存在するか
         if ($check) {
             return false;
         }
+
         try {
-            $sql = "UPDATE $this->table SET name = :newName, image_icon = :newImage WHERE userID = :userID";
+            $sql = "UPDATE {$this->table} SET name = :newName, image_icon = :newImage WHERE userID = :userID";
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':newName', $newName);
             $stmt->bindValue(':newImage', $newImage);
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
+
             return true;
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             exit();
+
             return false;
         }
     }
@@ -109,15 +118,18 @@ class userInfo
     public function ChangePassword($userID, $newPassword)
     {
         try {
-            $sql = "UPDATE $this->table SET password = :newPassword WHERE userID = :userID";
+            $sql = "UPDATE {$this->table} SET password = :newPassword WHERE userID = :userID";
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':newPassword', password_hash($newPassword, PASSWORD_DEFAULT));
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
+
             return true;
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             exit();
+
             return false;
         }
     }
@@ -125,27 +137,31 @@ class userInfo
     public function DelUserInfo($userID)
     {
         try {
-            $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE userID = :userID");
+            $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE userID = :userID");
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
+
             return true;
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             exit();
+
             return false;
         }
     }
 
     public function CheckName($name)
     {
-        $sql = "SELECT name FROM $this->table WHERE name=:name";
+        $sql = "SELECT name FROM {$this->table} WHERE name=:name";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindValue(':name', $name);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_COLUMN);
-        if ($result == $name) {
+        if ($result === $name) {
             return true;
         }
+
         return $result;
     }
 
@@ -154,25 +170,27 @@ class userInfo
         date_default_timezone_set('Asia/Tokyo');
         if (filter_input(INPUT_COOKIE, 'token')) {
             $request = $_COOKIE['token'];
+
             try {
-                $decode = JWT::decode($request, JWT_KEY, array('HS256'));
-                $decode_array = (array)$decode;
+                $decode = JWT::decode($request, JWT_KEY, ['HS256']);
+                $decode_array = (array) $decode;
                 $result = $this->GetUserInfo($decode_array['userID']);
                 $decode_array['exp'] = time() + JWT_EXPIRES;
                 $jwt = JWT::encode($decode_array, JWT_KEY, JWT_ALG);
-                echo "成功";
+                echo '成功';
                 if ($result) {
                     setcookie('token', $jwt, (time() + 50), '/', false, true);
                 } else {
                     $result = false;
                 }
             } catch (Exception $e) {
-                echo "失敗";
+                echo '失敗';
                 $result = false;
             }
         } else {
             $result = false;
         }
+
         return $result;
     }
 }

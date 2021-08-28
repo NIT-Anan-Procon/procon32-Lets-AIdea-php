@@ -1,8 +1,8 @@
 <?php
 
-require_once('../../library_info.php');
+require_once '../../library_info.php';
 
-class library
+class Library
 {
     public $dbh;
 
@@ -11,7 +11,7 @@ class library
         $dbname = db_name;
         $password = password;
         $user_name = db_user;
-        $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
+        $dsn = "mysql:host=localhost;dbname={$dbname};charset=utf8";
 
         try {
             $this->dbh = new PDO($dsn, $user_name, $password, [
@@ -19,17 +19,18 @@ class library
             ]);
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             exit();
-        };
+        }
     }
 
     public function UploadLibrary($userID, $explanation, $pictureURL)
     {
         date_default_timezone_set('Asia/Tokyo');
-        $today = date("Y/m/d H:i:s");
+        $today = date('Y/m/d H:i:s');
 
         $table = table;
-        $sql = "INSERT INTO $table(userID, explanation, pictureURL, time)
+        $sql = "INSERT INTO {$table}(userID, explanation, pictureURL, time)
         VALUES
             (:userID, :explanation, :pictureURL, :time)";
 
@@ -42,30 +43,29 @@ class library
             $stmt->execute();
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             exit();
         }
     }
 
     public function GetLibrary($userID)
     { //特定のユーザーの作品を新しいもの順で返す
-
         $table = table;
-        ;
-        $stmt = $this->dbh->prepare("SELECT * FROM $table WHERE userID = :userID ORDER BY time DESC");
+
+        $stmt = $this->dbh->prepare("SELECT * FROM {$table} WHERE userID = :userID ORDER BY time DESC");
         $stmt->bindValue(':userID', $userID);
         $stmt->execute();
-        $result = $stmt->fetchAll();
-        return $result;
+
+        return $stmt->fetchAll();
     }
 
     public function ListLibrary()
     { //全ユーザーの作品を新着順で返す
-
         $table = table;
 
-        $stmt = $this->dbh->prepare("SELECT * FROM $table ORDER BY libraryID DESC");
+        $stmt = $this->dbh->prepare("SELECT * FROM {$table} ORDER BY libraryID DESC");
         $stmt->execute();
-        $result = $stmt->fetchAll();
-        return $result;
+
+        return $stmt->fetchAll();
     }
 }
