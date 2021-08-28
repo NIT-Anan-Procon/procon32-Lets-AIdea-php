@@ -1,0 +1,22 @@
+{
+  "name": "procon32_lets_aidea_php",
+  "version": "0.0.0",
+  "scripts": {
+    "prepare": "husky install",
+    "lint-staged": "lint-staged"
+  },
+  "devDependencies": {
+    "husky": "^7.0.2",
+    "lint-staged": "^11.1.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.php": [
+      "vendor/bin/php-cs-fixer fix"
+    ]
+  }
+}
