@@ -11,6 +11,8 @@ if (filter_input(INPUT_POST, 'gameID') && filter_input(INPUT_POST, 'playerID') &
     $gameID = (int)($_POST['gameID']);
     $playerID = (int)($_POST['playerID']);
     $exp = $_POST['explanation'];
+
+    
     $flag = (int)($_POST['flag']);
     $explanation->AddExplanation($gameID, $playerID, $exp, $flag);
     $result = true;

@@ -11,6 +11,8 @@ if (filter_input(INPUT_POST, 'roomID') && filter_input(INPUT_POST, 'userID')) {
     $roomID = $_POST['roomID'];
     $userID = $_POST['userID'];
     $count = count($room->RoomInfo($roomID));
+
+    
     if ($count != 0) {
         $gameID = $room->RoomInfo($roomID)[0]['gameID'];
         $room->AddRoom($gameID, $userID, $roomID);

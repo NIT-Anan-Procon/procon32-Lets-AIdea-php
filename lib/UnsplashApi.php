@@ -11,6 +11,8 @@ $application = application;
 Unsplash\HttpClient::init([
     'applicationId'	=> "$access",
     'secret' => "$secret",
+
+    
     'callbackUrl' => "$callback",
     'utmSource' => "$application"
 ]);
