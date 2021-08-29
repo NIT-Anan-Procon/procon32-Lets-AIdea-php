@@ -132,8 +132,6 @@ class Room
                 $stmt->execute();
                 $this->dbh->commit();
                 $result = $this->PlayerInfo($playerID);
-                $result += ['state' => 0];
-
                 return $result;
             } catch (PDOException $e) {
                 $this->dbh->rollBack();

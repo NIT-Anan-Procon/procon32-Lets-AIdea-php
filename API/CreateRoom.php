@@ -24,7 +24,7 @@ $room->AddRoom($userID, $roomID, $gameID, 1);
 for ($i = 0; $i < 3; ++$i) {
     $room->AddRoom(null, $roomID, $gameID, 0);
 }
-$result = $room->OwnerInfo($roomID);
+$result = $room->OwnerInfo($roomID)['playerID'];
 
 echo json_encode($result);
 http_response_code(200);

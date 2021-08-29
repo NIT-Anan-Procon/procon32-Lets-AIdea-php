@@ -25,8 +25,9 @@ if (false !== $playerInfo) {
     } else {
         $room->LeaveRoom($playerID);
     }
+    $result = array('state' => true);
 } else {
-    $result = ['state' => 'ユーザーは部屋に入っていません。'];
+    $result = array('state' => 'ユーザーは部屋に入っていません。');
 }
 
 echo json_encode($result);
