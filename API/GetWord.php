@@ -1,17 +1,17 @@
 <?php
 
-header("Access-Control-Allow-Origin:*");
-header("Content-Type: application/json; charset=utf-8");
+header('Access-Control-Allow-Origin:*');
+header('Content-Type: application/json; charset=utf-8');
 
-require_once('../lib/word.php');
+require_once '../lib/word.php';
 
 $word = new Word();
 $result = [];
 //$gameID playerの数
 $gameID = 1;
-for ($i = 1; $i <= 4; $i++) {
+for ($i = 1; $i <= 4; ++$i) {
     $exp = $word->GetWord($gameID, $i, 0);
-    $AI =  $word->GetWord($gameID, $i, 1);
+    $AI = $word->GetWord($gameID, $i, 1);
     $NGword = $word->GetWord($gameID, $i, 2);
     $result += [$i => ['explanation' => $exp, 'AI' => $AI, 'NGword' => $NGword]];
 }

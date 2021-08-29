@@ -1,8 +1,8 @@
 <?php
 
-require_once('../Const.php');
+require_once '../Const.php';
 
-class Word
+class word
 {
     protected $dbh;
 
@@ -12,7 +12,7 @@ class Word
         $password = password;
         $user_name = db_user;
 
-        $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
+        $dsn = "mysql:host=localhost;dbname={$dbname};charset=utf8";
 
         try {
             $this->dbh = new PDO($dsn, $user_name, $password, [
@@ -20,15 +20,16 @@ class Word
             ]);
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             exit();
-        };
+        }
     }
 
     public function AddWord($gameID, $playerID, $word, $flag)
     {
-        $sql = "INSERT INTO word(gameID, playerID, word, flag)
+        $sql = 'INSERT INTO word(gameID, playerID, word, flag)
         VALUES
-            (:gameID, :playerID, :word, :flag)";
+            (:gameID, :playerID, :word, :flag)';
 
         try {
             $stmt = $this->dbh->prepare($sql);
@@ -37,46 +38,49 @@ class Word
             $stmt->bindValue(':word', $word);
             $stmt->bindValue(':flag', $flag);
             $stmt->execute();
-            $result = array('state'=>true);
-            return $result;
+
+            return ['state' => true];
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
-            $result = array('state'=>'DBとの接続エラー');
-            return $result;
+
+            return ['state' => 'DBとの接続エラー'];
+
             exit();
         }
     }
 
     public function GetWord($gameID, $playerID, $flag)
     {
-        $stmt = $this->dbh->prepare("SELECT word FROM word WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag");
+        $stmt = $this->dbh->prepare('SELECT word FROM word WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag');
         $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->bindValue(':flag', $flag);
         $stmt->execute();
-        if ($flag == 2) {
+        if (2 === $flag) {
             $result = $stmt->fetchAll(PDO::FETCH_COLUMN);
         } else {
             $result = $stmt->fetch(PDO::FETCH_COLUMN);
         }
-        if ($result == false) {
+        if (false === $result) {
             return null;
         }
+
         return $result;
     }
 
     public function Delword($gameID)
     {
         try {
-            $stmt = $this->dbh->prepare("DELETE FROM word WHERE gameID = :gameID");
+            $stmt = $this->dbh->prepare('DELETE FROM word WHERE gameID = :gameID');
             $stmt->bindValue(':gameID', $gameID);
             $stmt->execute();
-            $result = array('state'=>0);
-            return $result;
+
+            return ['state' => 0];
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
-            $result = array('state'=>'DBとの接続エラー');
-            return $result;
+
+            return ['state' => 'DBとの接続エラー'];
+
             exit();
         }
     }
