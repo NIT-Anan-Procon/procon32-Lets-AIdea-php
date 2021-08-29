@@ -1,5 +1,6 @@
 <?php
-ini_set( 'display_errors', 1 );
+
+ini_set('display_errors', 1);
 
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
@@ -22,7 +23,7 @@ if (filter_input(INPUT_POST, 'roomID')) {
     $userID = $userInfo->CheckLogin()['userID'];
     $roomID = (int) ($_POST['roomID']);
     $result = $room->JoinRoom($userID, $roomID);
-    if(!is_null($result['playerID'])) {
+    if (null !== $result['playerID']) {
         $result = $result['playerID'];
     }
 } else {
