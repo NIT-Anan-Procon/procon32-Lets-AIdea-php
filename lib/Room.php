@@ -123,7 +123,7 @@ class Room
         $room = $this->RoomInfo($roomID);
         $user = $this->getGameInfo($userID);
 
-        if ((false !== $result) && ($user === false)) {
+        if ((false !== $result) && (false === $user)) {
             $playerID = (int) ($result['playerID']);
             $this->dbh->beginTransaction();
 
