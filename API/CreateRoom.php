@@ -22,10 +22,10 @@ $roomID = $room->CreateRoomID();
 $gameID = $room->GetGameID() + 1;
 $playerID = 1;
 $room->AddRoom($userID, $playerID, $roomID, $gameID, 1);
-$playerID++;
+++$playerID;
 for ($i = 0; $i < 3; ++$i) {
     $room->AddRoom(null, $playerID, $roomID, $gameID, 0);
-    $playerID++;
+    ++$playerID;
 }
 $result = $room->OwnerInfo($roomID)['playerID'];
 
