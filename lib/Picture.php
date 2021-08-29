@@ -1,11 +1,10 @@
 <?php
 
-require_once '../../info.php';
+require_once '../Const.php';
 
 class Picture
 {
     protected $dbh;
-    protected $table = picture_table;
 
     public function __construct()
     {
@@ -20,14 +19,13 @@ class Picture
             ]);
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
-
             exit();
         }
     }
 
-    public function AddGameInfo($gameID, $playerID, $PictureUrl, $answer)
+    public function AddPicture($gameID, $playerID, $PictureUrl, $answer)
     {
-        $sql = "INSERT INTO {$this->table}(gameID, playerID, pictureURL, answer)
+        $sql = "INSERT INTO picture(gameID, playerID, pictureURL, answer)
         VALUES
             (:gameID, :playerID, :pictureURL, :answer)";
 
@@ -45,12 +43,13 @@ class Picture
         }
     }
 
-    public function GetGameInfo($playerID)
+    public function GetPicture($gameID, $playerID)
     {
-        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE playerID = :playerID");
+        $stmt = $this->dbh->prepare("SELECT pictureURL, answer FROM picture WHERE gameID = :gameID AND playerID = :playerID");
+        $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->execute();
-
-        return $stmt->fetchall(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchall(PDO::FETCH_ASSOC);
+        return $result;
     }
 }
