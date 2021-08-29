@@ -5,14 +5,12 @@ require_once('../Const.php');
 class Word
 {
     protected $dbh;
-    protected $table;
 
     public function __construct()
     {
         $dbname = db_name;
         $password = password;
         $user_name = db_user;
-        $this->table = word_table;
 
         $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
 
@@ -28,7 +26,7 @@ class Word
 
     public function AddWord($gameID, $playerID, $word, $flag)
     {
-        $sql = "INSERT INTO $this->table(gameID, playerID, word, flag)
+        $sql = "INSERT INTO word(gameID, playerID, word, flag)
         VALUES
             (:gameID, :playerID, :word, :flag)";
 
@@ -51,7 +49,7 @@ class Word
 
     public function GetWord($gameID, $playerID, $flag)
     {
-        $stmt = $this->dbh->prepare("SELECT word FROM $this->table WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag");
+        $stmt = $this->dbh->prepare("SELECT word FROM word WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag");
         $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->bindValue(':flag', $flag);
@@ -70,7 +68,7 @@ class Word
     public function Delword($gameID)
     {
         try {
-            $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE gameID = :gameID");
+            $stmt = $this->dbh->prepare("DELETE FROM word WHERE gameID = :gameID");
             $stmt->bindValue(':gameID', $gameID);
             $stmt->execute();
             $result = array('state'=>0);
