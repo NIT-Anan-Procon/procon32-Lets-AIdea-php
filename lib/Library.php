@@ -2,18 +2,15 @@
 
 require_once('../Const.php');
 
-class library
+class Library
 {
     protected $dbh;
-    protected $library_table;
-    protected $now;
 
     public function __Construct()
     {
         $dbname = db_name;
         $password = password;
         $user_name = db_user;
-        $this->table = 'library';
         date_default_timezone_set('Asia/Tokyo');
         $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
 
@@ -23,13 +20,14 @@ class library
             ]);
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             exit();
-        };
+        }
     }
 
     public function UploadLibrary($userID, $explanation, $NGword, $pictureURL, $flag)
     {
-        $sql = "INSERT INTO $this->table(userID, explanation, NGword, pictureURL, time, flag)
+        $sql = "INSERT INTO library(userID, explanation, NGword, pictureURL, time, flag)
         VALUES
             (:userID, :explanation, :NGword, :pictureURL, :time, :flag)";
 
