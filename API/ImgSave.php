@@ -14,11 +14,11 @@ $userInfo = new userInfo();
 if (false === $userInfo->CheckLogin()) {
     echo json_encode(['state' => 'ログインしていません']);
     http_response_code(403);
-
     exit;
 }
 
-$gameID = $_POST['gameID'];
+$userID = $userInfo->CheckLogin()['userID'];
+$gameID = $room->getGameInfo($userID)['gameID'];
 $infos = $room->gameInfo($gameID);
 foreach ($infos as $info) {
     $playerID = $info['playerID'];
