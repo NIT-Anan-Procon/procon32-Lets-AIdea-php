@@ -14,7 +14,7 @@ $picture = new Picture();
 $userInfo = new userInfo();
 
 if (false === $userInfo->CheckLogin()) {
-    echo json_encode(['state' => 'ログインしていません']);
+    echo json_encode('ログインしていません');
     http_response_code(403);
 
     exit;

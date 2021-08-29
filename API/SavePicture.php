@@ -19,7 +19,7 @@ $userInfo = new UserInfo();
 $explanation = new Explanation();
 
 if (false === $userInfo->CheckLogin()) {
-    echo json_encode(['state' => 'ログインしていません']);
+    echo json_encode('ログインしていません');
     http_response_code(403);
 
     exit;
