@@ -62,8 +62,8 @@ foreach ($infos as $info) {
     $urls = getPhotos($response['NGword2']);
     foreach ($urls as $url) {
         $img = $picture->getGameInfo();
-        for ($j = 0; $j < count($img); $j++) {
-            while($url === $img[$j]['pictureURL']) {
+        for ($j = 0; $j < count($img); ++$j) {
+            while ($url === $img[$j]['pictureURL']) {
                 $url = $picture->getPhoto($word);
             }
         }
