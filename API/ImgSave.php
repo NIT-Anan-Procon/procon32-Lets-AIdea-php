@@ -1,19 +1,24 @@
 <?php
-header("Access-Control-Allow-Origin:*");
-header("Content-Type: application/json; charset=utf-8");
 
-require_once('../lib/Picture.php');
-require_once('../lib/Room.php');
-require_once('../lib/Unsplash_API.php');
-require_once('../lib/UserInfo.php');
+header('Access-Control-Allow-Origin:*');
+header('Content-Type: application/json; charset=utf-8');
+
+require_once '../lib/Picture.php';
+
+require_once '../lib/Room.php';
+
+require_once '../lib/Unsplash_API.php';
+
+require_once '../lib/UserInfo.php';
 
 $picture = new Picture();
 $room = new Room();
 $userInfo = new userInfo();
 
-if ($userInfo->CheckLogin() === false) {
-    echo json_encode(array('state' => 'ログインしていません'));
+if (false === $userInfo->CheckLogin()) {
+    echo json_encode(['state' => 'ログインしていません']);
     http_response_code(403);
+
     exit;
 }
 
@@ -27,7 +32,7 @@ foreach ($infos as $info) {
 
     //pythonと通信
     $ch = curl_init('');    //''にpythonのAPIのurlを記述
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $photo);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
