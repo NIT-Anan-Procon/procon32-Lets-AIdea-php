@@ -25,6 +25,8 @@ if (false === $userInfo->CheckLogin()) {
 $userID = $userInfo->CheckLogin()['userID'];
 $gameID = $room->getGameInfo($userID)['gameID'];
 $infos = $room->gameInfo($gameID);
+$result = array();
+$i = 0;
 foreach ($infos as $info) {
     $playerID = $info['playerID'];
 
@@ -53,9 +55,9 @@ foreach ($infos as $info) {
         }
         $picture->AddGameInfo($gameID, $playerID, $url, 0);
     }
+    $result += array($i => $picture->GetGameInfo($playerID));
+    $i++;
 }
-
-$result = $picture->GetGameInfo($playerID);
 
 echo json_encode($result);
 http_response_code(200);
