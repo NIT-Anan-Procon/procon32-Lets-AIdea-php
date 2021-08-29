@@ -11,7 +11,7 @@ class Point
         $dbname = db_name;
         $password = password;
         $user_name = db_user;
-        $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
+        $dsn = "mysql:host=localhost;dbname={$dbname};charset=utf8";
 
         try {
             $this->dbh = new PDO($dsn, $user_name, $password, [
@@ -19,8 +19,9 @@ class Point
             ]);
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             exit();
-        };
+        }
     }
 
     public function AddPoint($gameID, $playerID, $pointNum, $flag)
