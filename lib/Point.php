@@ -1,6 +1,6 @@
 <?php
 
-require_once('../Const.php');
+require_once '../Const.php';
 
 class Point
 {
@@ -26,9 +26,9 @@ class Point
 
     public function AddPoint($gameID, $playerID, $pointNum, $flag)
     {
-        $sql = "INSERT INTO point(gameID, playerID, pointNum, flag)
+        $sql = 'INSERT INTO point(gameID, playerID, pointNum, flag)
         VALUES
-            (:gameID, :playerID, :pointNum, :flag)";
+            (:gameID, :playerID, :pointNum, :flag)';
 
         try {
             $stmt = $this->dbh->prepare($sql);
@@ -37,27 +37,29 @@ class Point
             $stmt->bindValue(':pointNum', $pointNum);
             $stmt->bindValue('flag', $flag);
             $stmt->execute();
-            $result = array('state'=>true);
-            return $result;
+
+            return ['state' => true];
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
-            $result = array('state'=>"DBとの接続エラー");
-            return $result;
+
+            return ['state' => 'DBとの接続エラー'];
+
             exit();
         }
     }
 
     public function GetPoint($gameID, $playerID, $flag)
     {
-        $stmt = $this->dbh->prepare("SELECT SUM(pointNum) FROM point WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag");
+        $stmt = $this->dbh->prepare('SELECT SUM(pointNum) FROM point WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag');
         $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->bindValue(':flag', $flag);
         $stmt->execute();
-        $result = (int)$stmt->fetch(PDO::FETCH_COLUMN);
-        if($result == false){
+        $result = (int) $stmt->fetch(PDO::FETCH_COLUMN);
+        if (false === $result) {
             $result = 0;
         }
+
         return $result;
     }
 }
