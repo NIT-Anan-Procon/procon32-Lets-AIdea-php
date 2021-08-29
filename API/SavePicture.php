@@ -31,10 +31,10 @@ foreach ($infos as $info) {
     $photo = InitialPhoto();
     $picture->AddGameInfo($gameID, $playerID, $photo, 1);
 
-    $val = array(
-        'lang'  => 0,
-        'url'   => $photo
-    );
+    $val = [
+        'lang' => 0,
+        'url' => $photo,
+    ];
     $data = json_encode($val);
 
     //pythonと通信
@@ -48,7 +48,7 @@ foreach ($infos as $info) {
 
     $urls = getPhotos($result['word']);
     foreach ($urls as $url) {
-        while($url === $photo) {
+        while ($url === $photo) {
             $url = getPhoto($result['word']);
         }
         $picture->AddGameInfo($gameID, $playerID, $url, 0);
