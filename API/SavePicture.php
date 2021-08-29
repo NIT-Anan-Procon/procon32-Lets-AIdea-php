@@ -55,11 +55,11 @@ foreach ($infos as $info) {
     //画像の説明文、NGワードを保存する
     $explanation->AddExplanation($gameID, $playerID, $result['sentence'], 1);
     $word = '';
-    foreach ($result['NGword1'] as $NG) {
+    foreach ($result['NGword2'] as $NG) {
         $explanation->AddExplanation($gameID, $playerID, $NG, 2);
     }
 
-    $urls = getPhotos($response['NGword2']);
+    $urls = getPhotos($response['NGword1']);
     foreach ($urls as $url) {
         $img = $picture->getGameInfo();
         for ($j = 0; $j < count($img); ++$j) {
