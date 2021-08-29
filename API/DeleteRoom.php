@@ -21,9 +21,9 @@ $userID = $userInfo->CheckLogin()['userID'];
 $gameID = $room->getGameInfo($userID)['gameID'];
 if ($gameID) {
     $room->DeleteRoom($gameID);
-    $result = array('state' => true);
+    $result = ['state' => true];
 } else {
-    $result = array('state' => 'ユーザーは部屋に入っていません。');
+    $result = ['state' => 'ユーザーは部屋に入っていません。'];
 }
 
 echo json_encode($result);
