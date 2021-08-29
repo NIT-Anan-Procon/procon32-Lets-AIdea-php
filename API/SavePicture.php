@@ -11,9 +11,12 @@ require_once '../lib/Unsplash_API.php';
 
 require_once '../lib/UserInfo.php';
 
+require_once '../lib/Explanation.php';
+
 $picture = new Picture();
 $room = new Room();
-$userInfo = new userInfo();
+$userInfo = new UserInfo();
+$explanation = new Explanation();
 
 if (false === $userInfo->CheckLogin()) {
     echo json_encode(['state' => 'ログインしていません']);
@@ -48,7 +51,15 @@ foreach ($infos as $info) {
     curl_close();
     $result = json_decode($response);
 
-    $urls = getPhotos($result['word']);
+    //画像の説明文、NGワードを保存する
+    $explanation->AddExplanation($gameID, $playerID, $result['sentence'], 1);
+    $word = "";
+    foreach($result['NGword'] as $NG) {
+        $explanation->AddExplanation($gameID, $playerID, $NG, 2);
+        $word += $NG;
+    }
+
+    $urls = getPhotos($word);
     foreach ($urls as $url) {
         while ($url === $photo) {
             $url = getPhoto($result['word']);
