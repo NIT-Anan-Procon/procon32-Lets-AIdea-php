@@ -1,8 +1,8 @@
 <?php
 header("Access-Control-Allow-Origin:*");     //localhostからのアクセスのみに制限
 header("Content-Type: application/json; charset=utf-8");
-require_once('../point/point.php');
-require_once('../room_connect/room.php');
+require_once('../lib/point.php');
+require_once('../lib/room.php');
 $point = new Point();
 
 if (filter_input(INPUT_POST, 'playerID') && filter_input(INPUT_POST, 'pointNum') && isset($_POST['flag'])) {
