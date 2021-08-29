@@ -1,6 +1,6 @@
 <?php
 
-header('Access-Control-Allow-Origin:http://localhost');
+header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
 require_once '../room_connect/room.php';
@@ -13,7 +13,6 @@ $userInfo = new userInfo();
 if (false === $userInfo->CheckLogin()) {
     echo json_encode(['state' => 'ログインしていません。']);
     http_response_code(403);
-
     exit;
 }
 
