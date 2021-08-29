@@ -120,9 +120,10 @@ class Room
 
     public function JoinRoom($userID, $roomID)
     {
-        $result = $this->RoomInfo($roomID);
+        $room = $this->RoomInfo($roomID);
+        $user = $this->getGameInfo($userID);
 
-        if (false !== $result) {
+        if ((false !== $result) && ($user === false)) {
             $playerID = (int) ($result['playerID']);
             $this->dbh->beginTransaction();
 
