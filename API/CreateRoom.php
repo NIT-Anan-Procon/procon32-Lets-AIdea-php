@@ -20,9 +20,12 @@ if (false === $userInfo->CheckLogin()) {
 $userID = $userInfo->CheckLogin()['userID'];
 $roomID = $room->CreateRoomID();
 $gameID = $room->GetGameID() + 1;
-$room->AddRoom($userID, $roomID, $gameID, 1);
+$playerID = 1;
+$room->AddRoom($userID, $playerID, $roomID, $gameID, 1);
+$playerID++;
 for ($i = 0; $i < 3; ++$i) {
-    $room->AddRoom(null, $roomID, $gameID, 0);
+    $room->AddRoom(null, $playerID, $roomID, $gameID, 0);
+    $playerID++;
 }
 $result = $room->OwnerInfo($roomID)['playerID'];
 

@@ -99,20 +99,20 @@ class Room
 
     public function AddRoom($userID, $roomID, $gameID, $flag)
     {
-        $sql = "INSERT INTO {$this->table}(gameID, userID, roomID, flag)
+        $sql = "INSERT INTO {$this->table}(gameID, playerID, userID, roomID, flag)
         VALUES
-            (:gameID, :userID, :roomID, :flag)";
+            (:gameID, :playerID, :userID, :roomID, :flag)";
 
         try {
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':gameID', $gameID);
+            $stmt->bindValue(':playerID', $gameID);
             $stmt->bindValue(':userID', $userID);
             $stmt->bindValue(':roomID', $roomID);
             $stmt->bindValue(':flag', $flag);
             $stmt->execute();
         } catch (PDOException $e) {
-            return ['state' => 3];
-
+            return false;
             exit;
         }
     }
