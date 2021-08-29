@@ -45,6 +45,7 @@ foreach ($infos as $info) {
     //pythonと通信
     $ch = curl_init('');    //''にpythonのAPIのurlを記述
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
@@ -54,15 +55,17 @@ foreach ($infos as $info) {
     //画像の説明文、NGワードを保存する
     $explanation->AddExplanation($gameID, $playerID, $result['sentence'], 1);
     $word = '';
-    foreach ($result['NGword'] as $NG) {
+    foreach ($result['NGword1'] as $NG) {
         $explanation->AddExplanation($gameID, $playerID, $NG, 2);
-        $word += $NG;
     }
 
-    $urls = getPhotos($word);
+    $urls = getPhotos($response['NGword2']);
     foreach ($urls as $url) {
-        while ($url === $photo) {
-            $url = getPhoto($result['word']);
+        $img = $picture->getGameInfo();
+        for ($j = 0; $j < count($img); ++$j) {
+            while ($url === $img[$j]['pictureURL']) {
+                $url = $picture->getPhoto($word);
+            }
         }
         $picture->AddGameInfo($gameID, $playerID, $url, 0);
     }
