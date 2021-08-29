@@ -113,6 +113,7 @@ class Room
             $stmt->execute();
         } catch (PDOException $e) {
             return false;
+
             exit;
         }
     }
