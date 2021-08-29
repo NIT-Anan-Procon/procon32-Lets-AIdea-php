@@ -2,10 +2,10 @@
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
-require_once('../lib/Picture.php');
-require_once('../lib/Room.php');
-require_once('../lib/Unsplash_API.php');
-require_once('../lib/UserInfo.php');
+require_once '../lib/Picture.php';
+require_once '../lib/Room.php';
+require_once '../lib/Unsplash_API.php';
+require_once '../lib/UserInfo.php';
 
 $picture = new Picture();
 $room = new Room();
