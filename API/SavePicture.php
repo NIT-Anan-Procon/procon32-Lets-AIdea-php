@@ -53,8 +53,8 @@ foreach ($infos as $info) {
 
     //画像の説明文、NGワードを保存する
     $explanation->AddExplanation($gameID, $playerID, $result['sentence'], 1);
-    $word = "";
-    foreach($result['NGword'] as $NG) {
+    $word = '';
+    foreach ($result['NGword'] as $NG) {
         $explanation->AddExplanation($gameID, $playerID, $NG, 2);
         $word += $NG;
     }
