@@ -136,12 +136,12 @@ class Room
             } catch (PDOException $e) {
                 $this->dbh->rollBack();
 
-                return ['state' => 3];
+                return ['state' => 'DBとの接続に失敗しました。'];
 
                 exit;
             }
         } else {
-            return ['state' => 2];
+            return ['state' => '部屋が満員か入力した部屋が存在しません。'];
         }
     }
 

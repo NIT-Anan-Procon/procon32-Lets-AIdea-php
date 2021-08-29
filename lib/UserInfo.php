@@ -1,10 +1,8 @@
 <?php
 
-require_once '../../info.php';
+require_once '../Const.php';
 
-require_once '../JWT/const.php';
-
-require_once '../JWT/vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
 use Firebase\JWT\JWT;
 
@@ -18,7 +16,7 @@ class UserInfo
         $dbname = db_name;
         $db_password = password;
         $user_name = db_user;
-        $this->table = userInfo_table;
+        $this->table = 'userinfo';
         $dsn = "mysql:host=localhost;dbname={$dbname};charset=utf8";
 
         try {

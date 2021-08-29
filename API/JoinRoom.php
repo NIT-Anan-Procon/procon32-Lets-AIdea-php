@@ -1,11 +1,12 @@
 <?php
+ini_set( 'display_errors', 1 );
 
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
-require_once '../room_connect/room.php';
+require_once '../lib/Room.php';
 
-require_once '../userInfo/userInfo.php';
+require_once '../lib/UserInfo.php';
 
 $room = new Room();
 $userInfo = new userInfo();
@@ -20,7 +21,10 @@ if (false === $userInfo->CheckLogin()) {
 if (filter_input(INPUT_POST, 'roomID')) {
     $userID = $userInfo->CheckLogin()['userID'];
     $roomID = (int) ($_POST['roomID']);
-    $result = $room->JoinRoom($userID, $roomID)['playerID'];
+    $result = $room->JoinRoom($userID, $roomID);
+    if(!is_null($result['playerID'])) {
+        $result = $result['playerID'];
+    }
 } else {
     $result = ['state' => '部屋番号が入力されていません。'];
 }
