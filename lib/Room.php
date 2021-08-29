@@ -131,8 +131,8 @@ class Room
                 $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
                 $stmt->execute();
                 $this->dbh->commit();
-                $result = $this->PlayerInfo($playerID);
-                return $result;
+
+                return $this->PlayerInfo($playerID);
             } catch (PDOException $e) {
                 $this->dbh->rollBack();
 
