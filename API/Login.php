@@ -25,7 +25,13 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
 
         header('Content-Type: application/json');
         header('Access-Control-Allow-Origin: *');
-        setcookie('token', $jwt, (time() + 1800), '/', false, true);
+        $options = [
+            'expires'   => time() + 1800,
+            'path'      => '/',
+            'secure'    => false,
+            'httponly'  => true
+        ];
+        setcookie('token', $jwt, $options);
         echo json_encode(['token' => $jwt, 'state' => 0]); //tokenを返却
     } else {
         echo json_encode(['state' => 'usernameもしくはpasswordが違います。']);
