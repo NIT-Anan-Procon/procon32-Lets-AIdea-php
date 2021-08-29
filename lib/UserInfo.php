@@ -1,7 +1,8 @@
 <?php
 
-require_once('../Const.php');
-require_once('../vendor/autoload.php');
+require_once '../Const.php';
+
+require_once '../vendor/autoload.php';
 
 use Firebase\JWT\JWT;
 
@@ -15,7 +16,7 @@ class UserInfo
         $dbname = db_name;
         $db_password = password;
         $user_name = db_user;
-        $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8";
+        $dsn = "mysql:host=localhost;dbname={$dbname};charset=utf8";
 
         try {
             $this->dbh = new PDO($dsn, $user_name, $db_password, [
