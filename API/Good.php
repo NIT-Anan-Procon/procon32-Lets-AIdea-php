@@ -4,7 +4,7 @@ header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
 require_once '../lib/Library.php';
-$library = new library();
+$library = new Library();
 
 if (filter_input(INPUT_POST, 'libraryID')) {
     $libraryID = (int) $_POST['libraryID'];

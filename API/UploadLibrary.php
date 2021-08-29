@@ -5,8 +5,8 @@ header('Content-Type: application/json; charset=utf-8');
 
 require_once '../lib/Library.php';
 
-require_once '../room_connect/room.php';
-$library = new library();
+require_once '../lib/Room.php';
+$library = new Library();
 //    $userID explanation pictureURL NGword flag
 $gameID = (int) $_GET['gameID'];
 $playerID = (int) $_GET['playerID'];
