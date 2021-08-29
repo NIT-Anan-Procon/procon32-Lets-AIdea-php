@@ -23,6 +23,8 @@ if (false === $userInfo->CheckLogin()) {
 
 $userID = $userInfo->CheckLogin()['userID'];
 $gameID = $room->getGameInfo($userID)['gameID'];
+$result = [];
+$gameID = 1;
 for ($i = 1; $i <= 4; ++$i) {
     $result += [$i => $picture->GetPicture($gameID, $i)];
 }

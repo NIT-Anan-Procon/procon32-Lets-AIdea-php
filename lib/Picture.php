@@ -36,9 +36,12 @@ class Picture
             $stmt->bindValue(':pictureURL', $PictureUrl);
             $stmt->bindValue(':answer', $answer);
             $stmt->execute();
+            $result = ['state' => true];
+            return $result;
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
-
+            $result = ['state' => 'DBとの接続エラー'];
+            return $result;
             exit();
         }
     }
@@ -49,7 +52,8 @@ class Picture
         $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->execute();
-        $result = $stmt->fetchall(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 }
+
