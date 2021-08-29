@@ -56,4 +56,3 @@ class Picture
         return $result;
     }
 }
-
