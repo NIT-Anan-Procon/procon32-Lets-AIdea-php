@@ -31,10 +31,16 @@ foreach ($infos as $info) {
     $photo = InitialPhoto();
     $picture->AddGameInfo($gameID, $playerID, $photo, 1);
 
+    $val = array(
+        'lang'  => 0,
+        'url'   => $photo
+    );
+    $data = json_encode($val);
+
     //pythonと通信
     $ch = curl_init('');    //''にpythonのAPIのurlを記述
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $photo);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
     curl_close();
@@ -42,6 +48,9 @@ foreach ($infos as $info) {
 
     $urls = getPhotos($result['word']);
     foreach ($urls as $url) {
+        while($url === $photo) {
+            $url = getPhoto($result['word']);
+        }
         $picture->AddGameInfo($gameID, $playerID, $url, 0);
     }
 }
