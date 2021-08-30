@@ -31,7 +31,7 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
             'secure' => false,
             'httponly' => true,
         ];
-        setcookie('token', $jwt, $options);    
+        setcookie('token', $jwt, $options);
         http_response_code(200);
     } else {
         http_response_code(403);
@@ -39,6 +39,6 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
     }
 } else {
     http_response_code(401);
+
     exit;
 }
-

@@ -8,8 +8,9 @@ require_once '../vendor/autoload.php';
 if (!empty($_COOKIE['token'])) {
     setcookie('token', '', (time() + -3600), '/', false, true);
     http_response_code(200);
-    exit;
-} else {
-    http_response_code(401);
+
     exit;
 }
+    http_response_code(401);
+
+    exit;
