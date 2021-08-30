@@ -8,10 +8,7 @@ require_once '../lib/Library.php';
 require_once '../lib/Room.php';
 $library = new Library();
 //    $userID explanation pictureURL NGword flag
-$gameID = (int) $_GET['gameID'];
-$playerID = (int) $_GET['playerID'];
-$pointNum = (int) $_GET['pointNum'];
-$flag = (int) $_GET['flag'];
-$result = $point->AddPoint($gameID, $playerID, $pointNum, $flag);
+
+$result = $library->UploadLibrary($userID, $explanation, $NGword, $pictureURL, $flag);
 echo json_encode($result);
 http_response_code(200);

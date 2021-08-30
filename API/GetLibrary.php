@@ -1,12 +1,11 @@
 <?php
-
+ini_set('display_errors', 1);
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
 require_once '../lib/Library.php';
 $library = new Library();
-
-if (filter_input(INPUT_GET, 'search') && filter_input(INPUT_GET, 'sort') && filter_input(INPUT_GET, 'period') && filter_input(INPUT_GET, 'page')) {
+if (isset($_GET['search']) && isset($_GET['sort']) && isset($_GET['period']) && filter_input(INPUT_GET, 'page') && isset($_GET['userID'])) {
     $search = (int) $_GET['search'];
     $sort = (int) $_GET['sort'];
     $period = (int) $_GET['period'];

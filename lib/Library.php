@@ -1,5 +1,5 @@
 <?php
-
+ini_set('display_errors', 1);
 require_once '../Const.php';
 
 class Library
@@ -64,16 +64,17 @@ class Library
             $p = 1;
         }
         if ($period > 0) {
-            $time = date('Y/m/d H:i:s', strtotime("-{$period} day"));
-            if ($p = 0) {
+            $date = new DateTime();
+            $time = $date->modify("-".$period." days")->format('Y/m/d H:i:s');
+            if ($p == 0) {
                 $sql .= 'WHERE ';
+                $p = 1;
             } else {
                 $sql .= 'AND ';
             }
-            $sql .= 'time > :time ';
-            $p = 1;
+            $sql .= 'time >= :time ';
         }
-        if (null !== $userID) {
+        if (0 !== $userID) {
             if ($p = 0) {
                 $sql .= 'WHERE ';
             } else {
@@ -90,7 +91,7 @@ class Library
                 break;
 
             case 1:
-                $sql .= 'like DESC, libraryID DESC ';
+                $sql .= 'good DESC, libraryID DESC ';
 
                 break;
 
@@ -112,7 +113,7 @@ class Library
         if ($period > 0) {
             $stmt->bindValue(':time', $time);
         }
-        if (null !== $userID) {
+        if (0 !== $userID) {
             $stmt->bindValue(':userID', $userID);
         }
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
