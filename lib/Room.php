@@ -1,4 +1,5 @@
 <?php
+
 require_once '../Const.php';
 
 class Room
