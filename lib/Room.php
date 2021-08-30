@@ -85,8 +85,8 @@ class Room
         $stmt->bindValue(':roomID', $roomID);
         $stmt->bindValue(':flag', 1);
         $stmt->execute();
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
     }
 
     public function getGameInfo($userID)
@@ -98,7 +98,7 @@ class Room
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function AddRoom($userID, $roomID, $gameID, $flag)
+    public function AddRoom($gameID, $playerID, $userID, $roomID, $flag)
     {
         $sql = "INSERT INTO {$this->table}(gameID, playerID, userID, roomID, flag)
         VALUES
@@ -107,7 +107,7 @@ class Room
         try {
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':gameID', $gameID);
-            $stmt->bindValue(':playerID', $gameID);
+            $stmt->bindValue(':playerID', $playerID);
             $stmt->bindValue(':userID', $userID);
             $stmt->bindValue(':roomID', $roomID);
             $stmt->bindValue(':flag', $flag);
