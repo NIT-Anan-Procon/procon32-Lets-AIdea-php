@@ -3,9 +3,9 @@
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
-require_once '../room_connect/room.php';
+require_once '../lib/Room.php';
 
-require_once '../userInfo/userInfo.php';
+require_once '../lib/UserInfo.php';
 
 $room = new Room();
 $userInfo = new userInfo();
