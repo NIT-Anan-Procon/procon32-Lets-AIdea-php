@@ -13,7 +13,6 @@ $room = new Room();
 $userInfo = new userInfo();
 
 if (false === $userInfo->CheckLogin()) {
-    echo json_encode(['state' => 'ログインしていません。']);
     http_response_code(403);
 
     exit;
@@ -23,12 +22,16 @@ if (filter_input(INPUT_POST, 'roomID')) {
     $userID = $userInfo->CheckLogin()['userID'];
     $roomID = (int) ($_POST['roomID']);
     $result = $room->JoinRoom($userID, $roomID);
-    if (null !== $result['playerID']) {
+    if (false !== $result) {
         $result = $result['playerID'];
+        echo json_encode($result);
+        http_response_code(200);
+        exit;
+    } else {
+        http_response_code(403);
+        exit;
     }
 } else {
-    $result = ['state' => '部屋番号が入力されていません。'];
+    http_response_code(401);
+    exit;
 }
-
-echo json_encode($result);
-http_response_code(200);

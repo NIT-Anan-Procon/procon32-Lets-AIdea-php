@@ -11,7 +11,6 @@ $room = new Room();
 $userInfo = new userInfo();
 
 if (false === $userInfo->CheckLogin()) {
-    echo json_encode(['state' => 'ログインしていません。']);
     http_response_code(403);
 
     exit;
@@ -23,7 +22,8 @@ if ($gameID) {
     $room->DeleteRoom($gameID);
     $result = ['state' => true];
 } else {
-    $result = ['state' => 'ユーザーは部屋に入っていません。'];
+    http_response_code(403);
+    exit;
 }
 
 echo json_encode($result);
