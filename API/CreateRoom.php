@@ -6,18 +6,18 @@ header('Content-Type: application/json; charset=utf-8');
 
 require_once '../lib/Room.php';
 
-// require_once '../lib/UserInfo.php';
+require_once '../lib/UserInfo.php';
 
 $room = new Room();
-// $userInfo = new userInfo();
-/*
+$userInfo = new userInfo();
+
 if (false === $userInfo->CheckLogin()) {
     http_response_code(403);
 
     exit;
 }
 
-$userID = $userInfo->CheckLogin()['userID'];*/
+$userID = $userInfo->CheckLogin()['userID'];
 $userID = 3;
 $roomID = $room->CreateRoomID();
 $gameID = $room->GetGameID() + 1;

@@ -10,7 +10,7 @@ require_once '../lib/UserInfo.php';
 
 $room = new Room();
 $userInfo = new userInfo();
-/*
+
 if (false === $userInfo->CheckLogin()) {
     echo json_encode(['state' => 'login failed']);
     http_response_code(403);
@@ -18,7 +18,7 @@ if (false === $userInfo->CheckLogin()) {
     exit;
 }
 
-$userID = $userInfo->CheckLogin()['userID']; */
+$userID = $userInfo->CheckLogin()['userID'];
 $userID = 1;
 $gameID = $room->getGameInfo($userID)['gameID'];
 $gameInfo = $room->GameInfo($gameID);
