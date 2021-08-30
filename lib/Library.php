@@ -1,5 +1,7 @@
 <?php
+
 ini_set('display_errors', 1);
+
 require_once '../Const.php';
 
 class Library
@@ -65,8 +67,8 @@ class Library
         }
         if ($period > 0) {
             $date = new DateTime();
-            $time = $date->modify("-".$period." days")->format('Y/m/d H:i:s');
-            if ($p == 0) {
+            $time = $date->modify('-'.$period.' days')->format('Y/m/d H:i:s');
+            if (0 === $p) {
                 $sql .= 'WHERE ';
                 $p = 1;
             } else {
