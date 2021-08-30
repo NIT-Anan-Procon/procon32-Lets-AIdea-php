@@ -26,12 +26,13 @@ if (filter_input(INPUT_POST, 'roomID')) {
         $result = $result['playerID'];
         echo json_encode($result);
         http_response_code(200);
-        exit;
-    } else {
-        http_response_code(403);
+
         exit;
     }
-} else {
-    http_response_code(401);
+    http_response_code(403);
+
     exit;
 }
+    http_response_code(401);
+
+    exit;
