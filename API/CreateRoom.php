@@ -26,7 +26,7 @@ $playerID = 1;
 $room->AddRoom($gameID, $playerID, $userID, $roomID, 1);
 ++$playerID;
 for ($i = 0; $i < 3; ++$i) {
-    $room->AddRoom($gameID, $playerID, NULL, $roomID, 0);
+    $room->AddRoom($gameID, $playerID, null, $roomID, 0);
     ++$playerID;
 }
 $result = $room->OwnerInfo($roomID);

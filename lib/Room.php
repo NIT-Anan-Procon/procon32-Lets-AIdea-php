@@ -85,8 +85,8 @@ class Room
         $stmt->bindValue(':roomID', $roomID);
         $stmt->bindValue(':flag', 1);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result;
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getGameInfo($userID)

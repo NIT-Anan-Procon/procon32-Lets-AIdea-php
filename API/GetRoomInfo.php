@@ -28,7 +28,7 @@ for ($i = 1; $i <= $playerNum; ++$i) {
     $userID = $gameInfo[$i - 1]['userID'];
     $flag = $gameInfo[$i - 1]['flag'];
     $user = $userInfo->GetUserInfo($userID);
-    if($userID !== null) {
+    if (null !== $userID) {
         $result += [$i => ['userID' => $userID, 'flag' => $flag, 'name' => $user['name'], 'image_icon' => $user['image_icon'], 'badge' => '']];
     } else {
         $result += [$i => ['userID' => '0', 'flag' => $flag, 'name' => '', 'image_icon' => '', 'badge' => '']];
