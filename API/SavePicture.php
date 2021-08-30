@@ -19,14 +19,19 @@ $userInfo = new UserInfo();
 $explanation = new Explanation();
 
 if (false === $userInfo->CheckLogin()) {
-    echo json_encode('ログインしていません');
     http_response_code(403);
 
     exit;
 }
 
 $userID = $userInfo->CheckLogin()['userID'];
-$gameID = $room->getGameInfo($userID)['gameID'];
+$response = $room->getGameInfo($userID)['gameID'];
+if($response !== false) {
+    $gameID = $response['gameID'];
+} else {
+    http_response_code(403);
+    exit;
+}
 $infos = $room->gameInfo($gameID);
 $result = [];
 $i = 0;
