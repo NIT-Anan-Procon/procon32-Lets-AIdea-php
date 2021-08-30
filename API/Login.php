@@ -31,13 +31,14 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
             'secure' => false,
             'httponly' => true,
         ];
-        setcookie('token', $jwt, $options);
-        echo json_encode(['token' => $jwt, 'state' => 0]); //tokenを返却
+        setcookie('token', $jwt, $options);    
+        http_response_code(200);
     } else {
-        echo json_encode(['state' => 'usernameもしくはpasswordが違います。']);
+        http_response_code(401);
+        exit;
     }
 } else {
-    echo json_encode(['state' => 'usernameもしくはpasswordが未入力です。']);
+    http_response_code(401);
+    exit;
 }
 
-http_response_code(200);

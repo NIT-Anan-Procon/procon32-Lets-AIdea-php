@@ -7,9 +7,9 @@ require_once '../vendor/autoload.php';
 
 if (!empty($_COOKIE['token'])) {
     setcookie('token', '', (time() + -3600), '/', false, true);
-    echo json_encode(['state' => true]);
+    http_response_code(200);
+    exit;
 } else {
-    echo json_encode(['state' => 'ログインしていません。']);
+    http_response_code(401);
+    exit;
 }
-
-http_response_code(200);
