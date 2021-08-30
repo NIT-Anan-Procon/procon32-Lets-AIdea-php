@@ -124,8 +124,9 @@ class Room
         $room = $this->RoomInfo($roomID);
         $user = $this->getGameInfo($userID);
 
-        if ((false !== $result) && (false === $user)) {
-            $playerID = (int) ($result['playerID']);
+        if ((false !== $room) && (false === $user)) {
+            $playerID = (int) ($room['playerID']);
+            $gameID = (int)($room['gameID']);
             $this->dbh->beginTransaction();
 
             try {
@@ -135,7 +136,7 @@ class Room
                 $stmt->execute();
                 $this->dbh->commit();
 
-                return $this->PlayerInfo($playerID);
+                return $this->PlayerInfo($gameID,$playerID);
             } catch (PDOException $e) {
                 $this->dbh->rollBack();
 
