@@ -120,9 +120,10 @@ class Room
 
     public function JoinRoom($userID, $roomID)
     {
-        $result = $this->RoomInfo($roomID);
+        $room = $this->RoomInfo($roomID);
+        $user = $this->getGameInfo($userID);
 
-        if (false !== $result) {
+        if ((false !== $result) && (false === $user)) {
             $playerID = (int) ($result['playerID']);
             $this->dbh->beginTransaction();
 
@@ -137,12 +138,12 @@ class Room
             } catch (PDOException $e) {
                 $this->dbh->rollBack();
 
-                return ['state' => 3];
+                return ['state' => 'DBとの接続に失敗しました。'];
 
                 exit;
             }
         } else {
-            return ['state' => 2];
+            return ['state' => '部屋が満員か入力した部屋が存在しません。'];
         }
     }
 
