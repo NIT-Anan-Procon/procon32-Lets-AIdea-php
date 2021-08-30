@@ -1,5 +1,4 @@
 <?php
-
 require_once '../Const.php';
 
 class Room
@@ -40,7 +39,7 @@ class Room
 
     public function GetGameID()
     {
-        $stmt = $this->dbh->prepare("SELECT gameID FROM {$this->table} ORDER BY playerID DESC LIMIT 1");
+        $stmt = $this->dbh->prepare("SELECT gameID FROM {$this->table} ORDER BY gameID DESC LIMIT 1");
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -53,16 +52,17 @@ class Room
 
     public function GameInfo($gameID)
     {
-        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE gameID = :gameID");
+        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE gameID = :gameID ORDER BY playerID ASC");
         $stmt->bindValue(':gameID', $gameID);
         $stmt->execute();
 
         return $stmt->fetchall(PDO::FETCH_ASSOC);
     }
 
-    public function PlayerInfo($playerID)
+    public function PlayerInfo($gameID, $playerID)
     {
-        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE playerID = :playerID");
+        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE gameID = :gameID AND playerID = :playerID ORDER BY playerID ASC");
+        $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->execute();
 

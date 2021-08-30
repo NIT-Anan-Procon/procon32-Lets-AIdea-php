@@ -1,5 +1,5 @@
 <?php
-
+ini_set( 'display_errors', 1 );
 header('Access-Control-Allow-Origin:*');     //localhostからのアクセスのみに制限する
 header('Content-Type: application/json; charset=utf-8');    //レスポンスする形式はjson
 
@@ -9,7 +9,7 @@ require_once '../lib/UserInfo.php';
 
 $room = new Room();
 $userInfo = new userInfo();
-
+/*
 if (false === $userInfo->CheckLogin()) {
     echo json_encode(['state' => 'ログインしていません。']);
     http_response_code(403);
@@ -17,7 +17,8 @@ if (false === $userInfo->CheckLogin()) {
     exit;
 }
 
-$userID = $userInfo->CheckLogin()['userID'];
+$userID = $userInfo->CheckLogin()['userID'];*/
+$userID = 1;
 $roomID = $room->CreateRoomID();
 $gameID = $room->GetGameID() + 1;
 $playerID = 1;
