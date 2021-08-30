@@ -35,6 +35,7 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
         http_response_code(200);
     } else {
         http_response_code(403);
+
         exit;
     }
 } else {
