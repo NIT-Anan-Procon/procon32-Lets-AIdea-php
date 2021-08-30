@@ -50,11 +50,18 @@ class Picture
 
     public function GetPicture($gameID, $playerID)
     {
-        $stmt = $this->dbh->prepare('SELECT pictureURL, answer FROM picture WHERE gameID = :gameID AND playerID = :playerID');
+        $sql = 'SELECT pictureURL, answer FROM picture WHERE gameID = :gameID AND playerID ';
+        if(is_null($playerID)){
+            $sql.= 'IS NULL';
+        } else {
+            $sql .= '= :playerID';
+        }
+        $stmt = $this->dbh->prepare($sql);
         $stmt->bindValue(':gameID', $gameID);
-        $stmt->bindValue(':playerID', $playerID);
+        if (null !== $playerID) {
+            $stmt->bindValue(':playerID', $playerID);
+        }
         $stmt->execute();
-
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
