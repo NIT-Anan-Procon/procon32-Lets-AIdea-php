@@ -51,8 +51,8 @@ class Picture
     public function GetPicture($gameID, $playerID)
     {
         $sql = 'SELECT pictureURL, answer FROM picture WHERE gameID = :gameID AND playerID ';
-        if(is_null($playerID)){
-            $sql.= 'IS NULL';
+        if (null === $playerID) {
+            $sql .= 'IS NULL';
         } else {
             $sql .= '= :playerID';
         }
@@ -62,6 +62,7 @@ class Picture
             $stmt->bindValue(':playerID', $playerID);
         }
         $stmt->execute();
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
