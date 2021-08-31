@@ -22,7 +22,7 @@ $gameID = $room->getGameInfo($userID)['gameID'];
 $count = count($room->getRoomCount($gameID));
 $num = 4 - $count;
 
-for($i = 0; $i < $num; $i++) {
+for ($i = 0; $i < $num; ++$i) {
     $room->deleteRecord(4 - $i);
 }
 

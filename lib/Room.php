@@ -98,10 +98,12 @@ class Room
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    function getRoomCount($gameID) {
-        $stmt = $this->dbh->prepare("SELECT * FROM $this->table WHERE gameID = :gameID AND userID IS NULL");
+    public function getRoomCount($gameID)
+    {
+        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE gameID = :gameID AND userID IS NULL");
         $stmt->bindValue(':gameID', $gameID);
         $stmt->execute();
+
         return $stmt->fetchall(PDO::FETCH_ASSOC);
     }
 
@@ -182,8 +184,9 @@ class Room
         }
     }
 
-    function deleteRecord($playerID) {
-        $stmt = $this->dbh->prepare("DELETE FROM $this->table WHERE playerID = :playerID");
+    public function deleteRecord($playerID)
+    {
+        $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE playerID = :playerID");
         $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
         $stmt->execute();
     }
