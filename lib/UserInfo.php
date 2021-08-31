@@ -9,14 +9,13 @@ use Firebase\JWT\JWT;
 class UserInfo
 {
     protected $dbh;
-    protected $table;
+    protected $table = 'userinfo';
 
     public function __construct()
     {
         $dbname = db_name;
         $db_password = password;
         $user_name = db_user;
-        $this->table = 'userinfo';
         $dsn = "mysql:host=localhost;dbname={$dbname};charset=utf8";
 
         try {
