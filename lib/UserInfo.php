@@ -179,7 +179,13 @@ class UserInfo
                 $decode_array['exp'] = time() + JWT_EXPIRES;
                 $jwt = JWT::encode($decode_array, JWT_KEY, JWT_ALG);
                 if ($result) {
-                    setcookie('token', $jwt, (time() + 3600), '/', false, true);
+                    $options = [
+                        'expires' => time() + 3600,
+                        'path' => '/',
+                        'secure' => false,
+                        'httponly' => true,
+                    ];
+                    setcookie('token', $jwt, $options);
                 } else {
                     $result = false;
                 }

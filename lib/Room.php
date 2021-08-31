@@ -28,7 +28,7 @@ class Room
 
     public function CreateRoomID()
     {
-        $roomID = random_int(0, 9999);
+        $roomID = random_int(100000, 999999);
         $code = (int) (sprintf('%04d', $roomID));
         $result = $this->RoomInfo($code);
 
