@@ -21,7 +21,7 @@ if (false === $userInfo->CheckLogin()) {
 $userID = $userInfo->CheckLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 if (false !== $gameInfo) {
-    if (1 == $gameInfo['flag']) {
+    if (1 === $gameInfo['flag']) {
         $room->DeleteRoom($gameInfo['gameID']);
     } else {
         $room->LeaveRoom($gameInfo['gameID'], $gameInfo['playerID']);
