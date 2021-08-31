@@ -8,7 +8,7 @@ require_once '../lib/Room.php';
 require_once '../lib/UserInfo.php';
 
 $room = new Room();
-$userInfo = new userInfo();
+$userInfo = new UserInfo();
 
 if (false === $userInfo->CheckLogin()) {
     http_response_code(403);

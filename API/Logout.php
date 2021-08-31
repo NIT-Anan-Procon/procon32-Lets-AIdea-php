@@ -10,7 +10,8 @@ if (!empty($_COOKIE['token'])) {
     http_response_code(200);
 
     exit;
-}
+} else {
     http_response_code(401);
 
     exit;
+}

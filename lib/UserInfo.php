@@ -178,14 +178,12 @@ class UserInfo
                 $result = $this->GetUserInfo($decode_array['userID']);
                 $decode_array['exp'] = time() + JWT_EXPIRES;
                 $jwt = JWT::encode($decode_array, JWT_KEY, JWT_ALG);
-                echo '成功';
                 if ($result) {
-                    setcookie('token', $jwt, (time() + 50), '/', false, true);
+                    setcookie('token', $jwt, (time() + 3600), '/', false, true);
                 } else {
                     $result = false;
                 }
             } catch (Exception $e) {
-                echo '失敗';
                 $result = false;
             }
         } else {

@@ -10,7 +10,7 @@ require_once '../lib/Room.php';
 require_once '../lib/UserInfo.php';
 
 $room = new Room();
-$userInfo = new userInfo();
+$userInfo = new UserInfo();
 
 if (false === $userInfo->CheckLogin()) {
     http_response_code(403);
@@ -32,7 +32,9 @@ if (filter_input(INPUT_POST, 'roomID')) {
     http_response_code(403);
 
     exit;
-}
+} else {
+    echo json_encode($result);
     http_response_code(401);
 
     exit;
+}

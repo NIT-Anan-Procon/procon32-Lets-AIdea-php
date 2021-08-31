@@ -1,5 +1,7 @@
 <?php
 
+ini_set('display_errors', 1);
+
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
@@ -8,7 +10,7 @@ require_once '../lib/Room.php';
 require_once '../lib/UserInfo.php';
 
 $room = new Room();
-$userInfo = new userInfo();
+$userInfo = new UserInfo();
 
 if (false === $userInfo->CheckLogin()) {
     http_response_code(403);
@@ -17,13 +19,12 @@ if (false === $userInfo->CheckLogin()) {
 }
 
 $userID = $userInfo->CheckLogin()['userID'];
-$playerID = $room->getGameInfo($userID)['playerID'];
-$playerInfo = $room->PlayerInfo($playerID);
-if (false !== $playerInfo) {
-    if (1 === $playerInfo['flag']) {
-        $room->DeleteRoom($playerInfo['gameID']);
+$gameInfo = $room->getGameInfo($userID);
+if (false !== $gameInfo) {
+    if (1 == $gameInfo['flag']) {
+        $room->DeleteRoom($gameInfo['gameID']);
     } else {
-        $room->LeaveRoom($playerID);
+        $room->LeaveRoom($gameInfo['gameID'], $gameInfo['playerID']);
     }
     $result = ['state' => true];
     echo json_encode($result);

@@ -62,7 +62,7 @@ class Room
 
     public function PlayerInfo($gameID, $playerID)
     {
-        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE gameID = :gameID AND playerID = :playerID ORDER BY playerID ASC");
+        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE gameID = :gameID AND playerID = :playerID");
         $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->execute();
@@ -156,9 +156,9 @@ class Room
         $stmt->execute();
     }
 
-    public function LeaveRoom($playerID)
+    public function LeaveRoom($gameID, $playerID)
     {
-        $result = $this->PlayerInfo($playerID);
+        $result = $this->PlayerInfo($gameID, $playerID);
         if (false !== $result) {
             $this->dbh->beginTransaction();
 
