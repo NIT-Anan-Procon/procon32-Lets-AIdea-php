@@ -18,7 +18,13 @@ if (false === $userInfo->CheckLogin()) {
 }
 
 $userID = $userInfo->CheckLogin()['userID'];
-$userID = 3;
+$gameInfo = $room->getGameInfo($userID);
+
+if ($gameInfo !== false) {
+    http_response_code(403);
+    exit;
+}
+
 $roomID = $room->CreateRoomID();
 $gameID = $room->GetGameID() + 1;
 $playerID = 1;
