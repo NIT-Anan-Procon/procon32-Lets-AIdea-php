@@ -89,6 +89,9 @@ class UserInfo
 
     public function ChangeUserName($userID, $name)
     {
+        if ($this->CheckName($name)) {
+            return false;
+        }
         $sql = 'UPDATE userinfo SET name = :name WHERE userID = :userID';
 
         try {
@@ -141,9 +144,9 @@ class UserInfo
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
 
-            exit();
-
             return false;
+
+            exit();
         }
     }
 
@@ -158,9 +161,9 @@ class UserInfo
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
 
-            exit();
-
             return false;
+
+            exit();
         }
     }
 
@@ -175,7 +178,7 @@ class UserInfo
             return true;
         }
 
-        return $result;
+        return false;
     }
 
     public function CheckLogin()

@@ -39,7 +39,7 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
         exit;
     }
 } else {
-    http_response_code(401);
+    http_response_code(400);
 
     exit;
 }
