@@ -1,6 +1,5 @@
 <?php
 
-// require_once('../../info.php');
 require_once '../Const.php';
 
 class Room
@@ -29,112 +28,166 @@ class Room
 
     public function CreateRoomID()
     {
-        $roomID = random_int(0, 9999);
+        $roomID = random_int(100000, 999999);
         $code = (int) (sprintf('%04d', $roomID));
         $result = $this->RoomInfo($code);
-        if (0 === count($result)) {
+
+        if (false === $result) {
             return $code;
         }
         $this->CreateRoomID();
     }
 
-    public function CreateGameID()
+    public function GetGameID()
     {
-        $roomID = random_int(0, 9999);
-        $code = (int) (sprintf('%04d', $roomID));
-        $result = $this->RoomInfo($code);
-        if (0 === count($result)) {
-            return $code;
+        $stmt = $this->dbh->prepare("SELECT gameID FROM {$this->table} ORDER BY gameID DESC LIMIT 1");
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (false === $result) {
+            return 0;
         }
-        $this->CreateGameID();
+
+        return $result['gameID'];
     }
 
-    public function AddRoom($userID, $roomID)
+    public function GameInfo($gameID)
     {
-        $sql = "INSERT INTO {$this->table}(gameID, userID, roomID)
-        VALUES
-            (:gameID, :userID, :roomID)";
+        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE gameID = :gameID ORDER BY playerID ASC");
+        $stmt->bindValue(':gameID', $gameID);
+        $stmt->execute();
 
-        $st = $this->dbh->prepare("SELECT * FROM {$this->table}");
+        return $stmt->fetchall(PDO::FETCH_ASSOC);
+    }
+
+    public function PlayerInfo($gameID, $playerID)
+    {
+        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE gameID = :gameID AND playerID = :playerID");
+        $stmt->bindValue(':gameID', $gameID);
+        $stmt->bindValue(':playerID', $playerID);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function RoomInfo($roomID)
+    {
+        $st = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE roomID = :roomID AND userID IS NULL");
+        $st->bindValue(':roomID', $roomID);
         $st->execute();
-        $result = $st->fetchall(PDO::FETCH_ASSOC);
-        $count = count($result);
-        if (null !== $count) {
-            $last = $result[$count - 1]['gameID'];
-            if (0 === $count % 4) {
-                $gameID = $last + 1;
-            } else {
-                $gameID = $last;
-            }
-        } else {
-            $gameID = 1;
-        }
+
+        return $st->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function OwnerInfo($roomID)
+    {
+        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE roomID = :roomID AND flag = :flag");
+        $stmt->bindValue(':roomID', $roomID);
+        $stmt->bindValue(':flag', 1);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getGameInfo($userID)
+    {
+        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE userID = :userID");
+        $stmt->bindValue(':userID', $userID);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getRoomCount($gameID)
+    {
+        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE gameID = :gameID AND userID IS NULL");
+        $stmt->bindValue(':gameID', $gameID);
+        $stmt->execute();
+
+        return $stmt->fetchall(PDO::FETCH_ASSOC);
+    }
+
+    public function AddRoom($gameID, $playerID, $userID, $roomID, $flag)
+    {
+        $sql = "INSERT INTO {$this->table}(gameID, playerID, userID, roomID, flag)
+        VALUES
+            (:gameID, :playerID, :userID, :roomID, :flag)";
 
         try {
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':gameID', $gameID);
+            $stmt->bindValue(':playerID', $playerID);
             $stmt->bindValue(':userID', $userID);
             $stmt->bindValue(':roomID', $roomID);
+            $stmt->bindValue(':flag', $flag);
             $stmt->execute();
         } catch (PDOException $e) {
-            exit($e);
+            return false;
+
+            exit;
         }
     }
 
     public function JoinRoom($userID, $roomID)
     {
-        $st = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE roomID = :roomID AND userID IS NULL");
-        $st->bindValue(':roomID', $roomID);
-        $st->execute();
-        if (($result = $st->fetch(PDO::FETCH_ASSOC)) !== false) {
-            $playerID = (int) ($result['playerID']);
-            $sql = "UPDATE {$this->table} SET userID = :userID WHERE playerID = :playerID";
+        $room = $this->RoomInfo($roomID);
+        $user = $this->getGameInfo($userID);
+
+        if ((false !== $room) && (false === $user)) {
+            $playerID = (int) ($room['playerID']);
+            $gameID = (int) ($room['gameID']);
             $this->dbh->beginTransaction();
 
             try {
-                $stmt = $this->dbh->prepare($sql);
+                $stmt = $this->dbh->prepare("UPDATE {$this->table} SET userID = :userID WHERE playerID = :playerID");
                 $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
                 $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
                 $stmt->execute();
                 $this->dbh->commit();
-                $st = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE playerID = :playerID");
-                $st->bindValue(':playerID', $playerID);
-                $st->execute();
 
-                return $st->fetch(PDO::FETCH_ASSOC);
+                return $this->PlayerInfo($gameID, $playerID);
             } catch (PDOException $e) {
-                $dbh->rollBack();
+                $this->dbh->rollBack();
 
-                return false;
+                return ['state' => 'DBとの接続に失敗しました。'];
 
                 exit;
             }
         } else {
-            return false;
+            return ['state' => '部屋が満員か入力した部屋が存在しません。'];
         }
     }
 
-    public function DeleteRoom($playerID)
+    public function DeleteRoom($gameID)
     {
-        if (empty($playerID)) {
-            exit;
-        }
+        $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE gameID = :gameID");
+        $stmt->bindValue(':gameID', $gameID);
+        $stmt->execute();
+    }
 
+    public function LeaveRoom($gameID, $playerID)
+    {
+        $result = $this->PlayerInfo($gameID, $playerID);
+        if (false !== $result) {
+            $this->dbh->beginTransaction();
+
+            try {
+                $stmt = $this->dbh->prepare("UPDATE {$this->table} SET userID = null WHERE playerID = :playerID");
+                $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
+                $stmt->execute();
+                $this->dbh->commit();
+            } catch (PDOException $e) {
+                return ['state' => 3];
+
+                exit;
+            }
+        }
+    }
+
+    public function deleteRecord($playerID)
+    {
         $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE playerID = :playerID");
-        $stmt->bindValue(':playerID', $playerID);
+        $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
         $stmt->execute();
-    }
-
-    public function RoomInfo($roomID)
-    {
-        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} where roomID = :roomID");
-        $stmt->bindValue(':roomID', $roomID);
-        $stmt->execute();
-
-        return $stmt->fetchall(PDO::FETCH_ASSOC);
     }
 }
-
-$room = new Room();
-$result = $room->RoomInfo(677);
-var_dump($result);

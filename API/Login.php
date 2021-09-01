@@ -26,7 +26,7 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
         header('Content-Type: application/json');
         header('Access-Control-Allow-Origin: *');
         $options = [
-            'expires' => time() + 1800,
+            'expires' => time() + 3600,
             'path' => '/',
             'secure' => false,
             'httponly' => true,
