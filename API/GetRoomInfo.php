@@ -12,7 +12,7 @@ $room = new Room();
 $userInfo = new UserInfo();
 
 if (false === $userInfo->CheckLogin()) {
-    echo json_encode(['state' => 'login failed']);
+    header('Error: Login failed.');
     http_response_code(403);
 
     exit;

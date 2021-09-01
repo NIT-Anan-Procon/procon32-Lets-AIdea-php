@@ -14,6 +14,7 @@ $userInfo = new UserInfo();
 
 if (false === $userInfo->CheckLogin()) {
     http_response_code(403);
+    header('Error: Login failed.');
 
     exit;
 }
@@ -31,6 +32,7 @@ if (false !== $gameInfo) {
     http_response_code(200);
 } else {
     http_response_code(403);
+    header('Error: The user is not in the room.');
 
     exit;
 }

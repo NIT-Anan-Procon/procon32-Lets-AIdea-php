@@ -14,6 +14,7 @@ $userInfo = new UserInfo();
 
 if (false === $userInfo->CheckLogin()) {
     http_response_code(403);
+    header('Error: Login failed.');
 
     exit;
 }
@@ -30,10 +31,11 @@ if (filter_input(INPUT_POST, 'roomID')) {
         exit;
     }
     http_response_code(403);
+    header('Error: The maximum number of people in the room has been reached.');
 
     exit;
 }
-    echo json_encode($result);
     http_response_code(401);
+    header('Error: The requested value is different from the specified format.');
 
     exit;

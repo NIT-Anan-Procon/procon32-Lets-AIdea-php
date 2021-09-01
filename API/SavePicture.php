@@ -20,6 +20,7 @@ $explanation = new Explanation();
 
 if (false === $userInfo->CheckLogin()) {
     http_response_code(403);
+    header('Error: Login failed.');
 
     exit;
 }
@@ -30,6 +31,7 @@ if (false !== $response) {
     $gameID = $response['gameID'];
 } else {
     http_response_code(403);
+    header('Error: The user is not in the room.');
 
     exit;
 }

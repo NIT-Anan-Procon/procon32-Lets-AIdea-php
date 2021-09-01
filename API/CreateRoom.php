@@ -13,6 +13,7 @@ $userInfo = new UserInfo();
 
 if (false === $userInfo->CheckLogin()) {
     http_response_code(403);
+    header('Error: Login failed.');
 
     exit;
 }
@@ -22,6 +23,7 @@ $gameInfo = $room->getGameInfo($userID);
 
 if (false !== $gameInfo) {
     http_response_code(403);
+    header('Error: The user is already in the other room.');
 
     exit;
 }

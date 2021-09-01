@@ -1,5 +1,8 @@
 <?php
 
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+
 require_once '../Const.php';
 
 require_once '../vendor/autoload.php';
@@ -23,8 +26,6 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
         ];
         $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
 
-        header('Content-Type: application/json');
-        header('Access-Control-Allow-Origin: *');
         $options = [
             'expires' => time() + 3600,
             'path' => '/',
@@ -40,6 +41,7 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
     }
 } else {
     http_response_code(401);
+    header('Error: The requested value is different from the specified format.');
 
     exit;
 }
