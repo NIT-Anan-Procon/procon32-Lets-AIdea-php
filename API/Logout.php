@@ -11,6 +11,6 @@ if (!empty($_COOKIE['token'])) {
 
     exit;
 }
-    http_response_code(401);
+    http_response_code(403);
 
     exit;

@@ -10,11 +10,11 @@ use Firebase\JWT\JWT;
 
 $userInfo = new userInfo();
 
-if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')) {
-    $username = $_POST['username'];
+if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
+    $name = $_POST['name'];
     $password = $_POST['password'];
 
-    $ok = $userInfo->userAuth($username, $password);
+    $ok = $userInfo->userAuth($name, $password);
     if ($ok) {
         $payload = [
             'iss' => JWT_ISSUER,
@@ -34,12 +34,12 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
         setcookie('token', $jwt, $options);
         http_response_code(200);
     } else {
-        http_response_code(403);
+        http_response_code(401);
 
         exit;
     }
 } else {
-    http_response_code(400);
+    http_response_code(401);
 
     exit;
 }

@@ -30,13 +30,12 @@ class UserInfo
 
     public function AddUserInfo($name, $password, $image)
     {
-        if (null === $name || null === $password) {
-            return false;
+        if ($this->CheckName($name)) {
+            $result['name'] = false;
+
+            return $result;
         }
-        $check = $this->CheckName($name);   //同じ名前のアカウントが存在するか
-        if ($check) {
-            return false;
-        }
+        $result['name'] = true;
         $sql = 'INSERT INTO userinfo(name, password, image_icon)
         VALUES
             (:name, :password, :image_icon)';
@@ -47,12 +46,14 @@ class UserInfo
             $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));
             $stmt->bindValue(':image_icon', $image);
             $stmt->execute();
+            $result['state'] = true;
 
-            return true;
+            return $result;
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+            $result['state'] = false;
 
-            return false;
+            return $result;
 
             exit();
         }
@@ -90,8 +91,11 @@ class UserInfo
     public function ChangeUserName($userID, $name)
     {
         if ($this->CheckName($name)) {
-            return false;
+            $result['name'] = false;
+
+            return $result;
         }
+        $result['name'] = true;
         $sql = 'UPDATE userinfo SET name = :name WHERE userID = :userID';
 
         try {
@@ -99,14 +103,16 @@ class UserInfo
             $stmt->bindValue(':name', $name);
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
+            $result['state'] = true;
 
-            return true;
+            return $result;
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+            $result['state'] = false;
+
+            return $result;
 
             exit();
-
-            return false;
         }
     }
 
