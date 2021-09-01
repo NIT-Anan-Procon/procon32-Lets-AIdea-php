@@ -20,7 +20,7 @@ if (false === $userInfo->CheckLogin()) {
 $userID = $userInfo->CheckLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 
-if ($gameInfo === false) {
+if (false === $gameInfo) {
     http_response_code(403);
 }
 
