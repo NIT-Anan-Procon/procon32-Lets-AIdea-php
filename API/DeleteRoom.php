@@ -13,7 +13,7 @@ $userInfo = new UserInfo();
 if (false === $userInfo->CheckLogin()) {
     http_response_code(403);
     header('Error: Login failed.');
-    
+
     exit;
 }
 

@@ -24,6 +24,7 @@ $gameInfo = $room->getGameInfo($userID);
 if (false === $gameInfo) {
     http_response_code(403);
     header('The user is not in the room.');
+
     exit;
 }
 
