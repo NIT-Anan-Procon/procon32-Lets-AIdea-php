@@ -1,10 +1,10 @@
 <?php
 
-require __DIR__.'../Const.php';
+require_once '../Const.php';
 
-require __DIR__.'../vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
-require_once '../lib/userInfo.php';
+require_once '../lib/UserInfo.php';
 
 use Firebase\JWT\JWT;
 
@@ -25,13 +25,21 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
 
         header('Content-Type: application/json');
         header('Access-Control-Allow-Origin: *');
-        setcookie('token', $jwt, (time() + 1800), '/', false, true);
-        echo json_encode(['token' => $jwt, 'state' => 0]); //tokenを返却
+        $options = [
+            'expires' => time() + 3600,
+            'path' => '/',
+            'secure' => false,
+            'httponly' => true,
+        ];
+        setcookie('token', $jwt, $options);
+        http_response_code(200);
     } else {
-        echo json_encode(['state' => 4]);
+        http_response_code(403);
+
+        exit;
     }
 } else {
-    echo json_encode(['state' => 1]);
-}
+    http_response_code(401);
 
-http_response_code(200);
+    exit;
+}
