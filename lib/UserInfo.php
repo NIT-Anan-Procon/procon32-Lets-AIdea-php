@@ -9,7 +9,6 @@ use Firebase\JWT\JWT;
 class UserInfo
 {
     protected $dbh;
-    protected $table = 'userinfo';
 
     public function __construct()
     {
@@ -38,9 +37,9 @@ class UserInfo
         if ($check) {
             return false;
         }
-        $sql = "INSERT INTO {$this->table}(name, password, image_icon)
+        $sql = 'INSERT INTO userinfo(name, password, image_icon)
         VALUES
-            (:name, :password, :image_icon)";
+            (:name, :password, :image_icon)';
 
         try {
             $stmt = $this->dbh->prepare($sql);
@@ -65,7 +64,7 @@ class UserInfo
             return false;
         }
 
-        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE name = :name");
+        $stmt = $this->dbh->prepare('SELECT * FROM userinfo WHERE name = :name');
         $stmt->bindValue(':name', $name);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -81,28 +80,20 @@ class UserInfo
 
     public function GetUserInfo($userID)
     {
-        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE userID = :userID");
+        $stmt = $this->dbh->prepare('SELECT * FROM userinfo WHERE userID = :userID');
         $stmt->bindValue(':userID', $userID);
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function ChangeUserInfo($userID, $newName, $newImage)
+    public function ChangeUserName($userID, $name)
     {
-        if (null === $newName || null === $userID) {
-            return false;
-        }
-        $check = $this->CheckName($newName);   //同じ名前のアカウントが存在するか
-        if ($check) {
-            return false;
-        }
+        $sql = 'UPDATE userinfo SET name = :name WHERE userID = :userID';
 
         try {
-            $sql = "UPDATE {$this->table} SET name = :newName, image_icon = :newImage WHERE userID = :userID";
             $stmt = $this->dbh->prepare($sql);
-            $stmt->bindValue(':newName', $newName);
-            $stmt->bindValue(':newImage', $newImage);
+            $stmt->bindValue(':name', $name);
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
 
@@ -116,12 +107,33 @@ class UserInfo
         }
     }
 
-    public function ChangePassword($userID, $newPassword)
+    public function ChangePassword($userID, $Password)
     {
+        $sql = 'UPDATE userinfo SET password = :Password WHERE userID = :userID';
+
         try {
-            $sql = "UPDATE {$this->table} SET password = :newPassword WHERE userID = :userID";
             $stmt = $this->dbh->prepare($sql);
-            $stmt->bindValue(':newPassword', password_hash($newPassword, PASSWORD_DEFAULT));
+            $stmt->bindValue(':Password', password_hash($Password, PASSWORD_DEFAULT));
+            $stmt->bindValue(':userID', $userID);
+            $stmt->execute();
+
+            return true;
+        } catch (PDOException $e) {
+            echo '接続失敗'.$e->getMessage();
+
+            exit();
+
+            return false;
+        }
+    }
+
+    public function ChangeUserIcon($userID, $image)
+    {
+        $sql = 'UPDATE userinfo SET image = :image WHERE userID = :userID';
+
+        try {
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->bindValue(':image', $image);
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
 
@@ -138,7 +150,7 @@ class UserInfo
     public function DelUserInfo($userID)
     {
         try {
-            $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE userID = :userID");
+            $stmt = $this->dbh->prepare('DELETE FROM userinfo WHERE userID = :userID');
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
 
@@ -154,7 +166,7 @@ class UserInfo
 
     public function CheckName($name)
     {
-        $sql = "SELECT name FROM {$this->table} WHERE name=:name";
+        $sql = 'SELECT name FROM userinfo WHERE name=:name';
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindValue(':name', $name);
         $stmt->execute();
