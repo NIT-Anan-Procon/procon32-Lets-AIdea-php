@@ -18,6 +18,12 @@ if (false === $userInfo->CheckLogin()) {
 }
 
 $userID = $userInfo->CheckLogin()['userID'];
+$gameInfo = $room->getGameInfo($userID);
+
+if ($gameInfo === false) {
+    http_response_code(403);
+}
+
 $gameID = $room->getGameInfo($userID)['gameID'];
 $count = count($room->getRoomCount($gameID));
 $num = 4 - $count;
