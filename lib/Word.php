@@ -37,11 +37,11 @@ class Word
             $stmt->bindValue(':word', $word);
             $stmt->bindValue(':flag', $flag);
             $stmt->execute();
-            $result = array('state'=>true);
+            $result = array('state' => true);
             return $result;
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
-            $result = array('state'=>'DBとの接続エラー');
+            $result = false;
             return $result;
             exit();
         }
@@ -71,12 +71,10 @@ class Word
             $stmt = $this->dbh->prepare("DELETE FROM word WHERE gameID = :gameID");
             $stmt->bindValue(':gameID', $gameID);
             $stmt->execute();
-            $result = array('state'=>0);
-            return $result;
+            return true;
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
-            $result = array('state'=>'DBとの接続エラー');
-            return $result;
+            return false;
             exit();
         }
     }
