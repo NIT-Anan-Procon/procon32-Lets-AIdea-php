@@ -12,12 +12,12 @@ if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
     $password = $_POST['passowrd'];
     $image = $_POST['image_icon'];
     $result = $userInfo->AddUserInfo($name, $password, $image);
-    if(false === $result['name']){
+    if (false === $result['name']) {
         http_response_code(401);
 
         exit;
     }
-    if(false === $result['state']){
+    if (false === $result['state']) {
         http_response_code(400);
 
         exit;

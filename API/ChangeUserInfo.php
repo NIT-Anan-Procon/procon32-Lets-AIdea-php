@@ -12,12 +12,12 @@ $password = $_POST['passowrd'];
 $image = $_POST['image_icon'];
 if (isset($name)) {
     $result = $userInfo->ChangeUserName($userID, $name);
-    if(false === $result['name']){
+    if (false === $result['name']) {
         http_response_code(401);
 
         exit;
     }
-    if(false === $result['state']){
+    if (false === $result['state']) {
         http_response_code(400);
 
         exit;
@@ -26,7 +26,7 @@ if (isset($name)) {
 }
 if (isset($password)) {
     $result = $userInfo->ChangePassword($userID, $password);
-    if(false === $result){
+    if (false === $result) {
         http_response_code(400);
 
         exit;
@@ -34,7 +34,7 @@ if (isset($password)) {
 }
 if (isset($image)) {
     $result = $userInfo->ChangeUserName($userID, $image);
-    if(false === $result){
+    if (false === $result) {
         http_response_code(400);
 
         exit;
