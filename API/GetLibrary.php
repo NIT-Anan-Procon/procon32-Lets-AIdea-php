@@ -1,11 +1,18 @@
 <?php
+
 ini_set('display_errors', 1);
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
 require_once '../lib/Library.php';
 $library = new Library();
-if (isset($_GET['search']) && isset($_GET['sort']) && isset($_GET['period']) && filter_input(INPUT_GET, 'page') && isset($_GET['userID'])) {
+if (false === $userInfo->CheckLogin()) {
+    echo json_encode(['state' => 'login failed']);
+    http_response_code(403);
+
+    exit;
+}
+if (isset($_GET['search'], $_GET['sort'], $_GET['period']) && filter_input(INPUT_GET, 'page') && isset($_GET['userID'])) {
     $search = (int) $_GET['search'];
     $sort = (int) $_GET['sort'];
     $period = (int) $_GET['period'];
