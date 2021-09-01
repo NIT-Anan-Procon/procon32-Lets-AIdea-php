@@ -1,11 +1,10 @@
 <?php
 
-require_once '../../info.php';
+require_once '../Const.php';
 
 class Picture
 {
     protected $dbh;
-    protected $table = picture_table;
 
     public function __construct()
     {
@@ -25,11 +24,11 @@ class Picture
         }
     }
 
-    public function AddGameInfo($gameID, $playerID, $PictureUrl, $answer)
+    public function AddPicture($gameID, $playerID, $PictureUrl, $answer)
     {
-        $sql = "INSERT INTO {$this->table}(gameID, playerID, pictureURL, answer)
+        $sql = 'INSERT INTO picture(gameID, playerID, pictureURL, answer)
         VALUES
-            (:gameID, :playerID, :pictureURL, :answer)";
+            (:gameID, :playerID, :pictureURL, :answer)';
 
         try {
             $stmt = $this->dbh->prepare($sql);
@@ -38,19 +37,32 @@ class Picture
             $stmt->bindValue(':pictureURL', $PictureUrl);
             $stmt->bindValue(':answer', $answer);
             $stmt->execute();
+
+            return ['state' => true];
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
+            return ['state' => 'DBとの接続エラー'];
 
             exit();
         }
     }
 
-    public function GetGameInfo($playerID)
+    public function GetPicture($gameID, $playerID)
     {
-        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE playerID = :playerID");
-        $stmt->bindValue(':playerID', $playerID);
+        $sql = 'SELECT pictureURL, answer FROM picture WHERE gameID = :gameID AND playerID ';
+        if (null === $playerID) {
+            $sql .= 'IS NULL';
+        } else {
+            $sql .= '= :playerID';
+        }
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindValue(':gameID', $gameID);
+        if (null !== $playerID) {
+            $stmt->bindValue(':playerID', $playerID);
+        }
         $stmt->execute();
 
-        return $stmt->fetchall(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
