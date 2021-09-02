@@ -183,4 +183,8 @@ class Room
             exit;
         }
     }
+
+    function joinAgain($roomID) {
+
+    }
 }
