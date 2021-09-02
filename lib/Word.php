@@ -2,7 +2,7 @@
 
 require_once '../Const.php';
 
-class word
+class Word
 {
     protected $dbh;
 
@@ -38,10 +38,13 @@ class word
             $stmt->bindValue(':word', $word);
             $stmt->bindValue(':flag', $flag);
             $stmt->execute();
+
             return true;
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             return false;
+
             exit();
         }
     }
@@ -71,10 +74,13 @@ class word
             $stmt = $this->dbh->prepare('DELETE FROM word WHERE gameID = :gameID');
             $stmt->bindValue(':gameID', $gameID);
             $stmt->execute();
+
             return true;
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
+
             return false;
+
             exit();
         }
     }

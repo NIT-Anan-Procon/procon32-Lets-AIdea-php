@@ -15,14 +15,14 @@ $room = new Room();
 $userInfo = new userInfo();
 
 if (false === $userInfo->CheckLogin()) {
-    header("Error:Login failed.");
+    header('Error:Login failed.');
     http_response_code(403);
 
     exit;
 }
 $userID = $userInfo->CheckLogin()['userID'];
 if (false === $room->getGameInfo($userID)) {
-    header("Error:The user is not in the room.");
+    header('Error:The user is not in the room.');
     http_response_code(403);
 
     exit;
