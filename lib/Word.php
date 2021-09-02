@@ -37,12 +37,10 @@ class Word
             $stmt->bindValue(':word', $word);
             $stmt->bindValue(':flag', $flag);
             $stmt->execute();
-            $result = array('state' => true);
-            return $result;
+            return true;
         } catch (PDOException $e) {
             echo '接続失敗'.$e->getMessage();
-            $result = false;
-            return $result;
+            return false;
             exit();
         }
     }
