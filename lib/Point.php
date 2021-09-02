@@ -55,7 +55,8 @@ class Point
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    function deleteGameInfo($gameID) {
+    public function deleteGameInfo($gameID)
+    {
         $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE gameID = :gameID");
         $stmt->bindValue(':gameID', $gameID);
         $stmt->execute();

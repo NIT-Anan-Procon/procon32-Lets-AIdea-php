@@ -23,6 +23,7 @@ if (filter_input(INPUT_POST, 'roomID')) {
     $result = $room->JoinRoom($userID, $roomID);
     echo json_encode($result);
     http_response_code(200);
+
     exit;
 }
     http_response_code(401);

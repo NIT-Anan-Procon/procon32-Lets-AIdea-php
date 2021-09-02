@@ -30,15 +30,15 @@ if (false === $userInfo->CheckLogin()) {
 $userID = $userInfo->CheckLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 $gameID = $gameInfo['gameID'];
-$roomID = (int)$gameInfo['roomID'];
+$roomID = (int) $gameInfo['roomID'];
 $count = count($room->GameInfo($gameID));
 if (false !== $gameInfo) {
-    if($count === 0) {
+    if (0 === $count) {
         $room->LeaveRoom($gameID, $gameInfo['playerID']);
         $picture->deleteGameInfo($gameID);
         $point->deleteGameInfo($gameID);
         $explanation->deleteGameInfo($gameID);
-    } else if (1 === (int)$gameInfo['flag']) {
+    } elseif (1 === (int) $gameInfo['flag']) {
         $room->updateOwner($roomID);
         $room->LeaveRoom($gameInfo['gameID'], $gameInfo['playerID']);
     } else {
@@ -46,7 +46,7 @@ if (false !== $gameInfo) {
     }
     http_response_code(200);
 } else {
-    header("Error: a");
+    header('Error: a');
     http_response_code(403);
 
     exit;

@@ -29,7 +29,6 @@ class Explanation
 
     public function AddExplanation($gameID, $playerID, $explanation, $flag)
     {
-
         $sql = "INSERT INTO {$this->table}(gameID, playerID, explanation, flag)
         VALUES
             (:gameID, :playerID, :explanation, :flag)";
@@ -61,7 +60,8 @@ class Explanation
         return $stmt->fetchall(PDO::FETCH_ASSOC);
     }
 
-    function deleteGameInfo($gameID) {
+    public function deleteGameInfo($gameID)
+    {
         $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE gameID = :gameID");
         $stmt->bindValue(':gameID', $gameID);
         $stmt->execute();

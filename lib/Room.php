@@ -124,7 +124,7 @@ class Room
         $user = $this->getGameInfo($userID);
         $count = count($room);
 
-        if ((false !== $room) && (false === $user) && ($count != 4)) {
+        if ((false !== $room) && (false === $user) && (4 !== $count)) {
             $playerID = (int) ($room[$count - 1]['playerID']) + 1;
             $gameID = (int) ($room[$count - 1]['gameID']);
 
@@ -140,14 +140,13 @@ class Room
                 $stmt->bindValue(':roomID', $roomID);
                 $stmt->bindValue(':flag', 0);
                 $stmt->execute();
+
                 return $this->PlayerInfo($gameID, $playerID);
             } catch (PDOException $e) {
                 header('Error: '.$e->getMessage());
 
                 exit;
             }
-        } else {
-            
         }
     }
 
@@ -166,9 +165,11 @@ class Room
         $stmt->execute();
     }
 
-    function updateOwner($roomID) {
-        $playerID = (int)$this->RoomInfo($roomID)[1]['playerID'];
+    public function updateOwner($roomID)
+    {
+        $playerID = (int) $this->RoomInfo($roomID)[1]['playerID'];
         $this->dbh->beginTransaction();
+
         try {
             $stmt = $this->dbh->prepare("UPDATE {$this->table} SET flag = :flag WHERE playerID = :playerID AND roomID = :roomID");
             $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
@@ -178,6 +179,7 @@ class Room
             $this->dbh->commit();
         } catch (PDOException $e) {
             header('Error: '.$e->getMessage());
+
             exit;
         }
     }
