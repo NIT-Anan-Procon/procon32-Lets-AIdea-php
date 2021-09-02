@@ -157,10 +157,10 @@ class Room
         $stmt->execute();
     }
 
-    public function LeaveRoom($gameID, $playerID)
+    public function LeaveRoom($roomID, $playerID)
     {
-        $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE gameID = :gameID AND playerID = :playerID");
-        $stmt->bindValue(':gameID', $gameID);
+        $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE roomID = :roomID AND playerID = :playerID");
+        $stmt->bindValue(':roomID', $roomID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->execute();
     }

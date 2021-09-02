@@ -31,18 +31,18 @@ $userID = $userInfo->CheckLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 $gameID = $gameInfo['gameID'];
 $roomID = (int) $gameInfo['roomID'];
-$count = count($room->GameInfo($gameID));
+$count = count($room->RoomInfo($roomID));
 if (false !== $gameInfo) {
     if (1 === $count) {
-        $room->LeaveRoom($gameID, $gameInfo['playerID']);
+        $room->LeaveRoom($roomID, $gameInfo['playerID']);
         $picture->deleteGameInfo($gameID);
         $point->deleteGameInfo($gameID);
         $explanation->deleteGameInfo($gameID);
     } elseif (1 === (int) $gameInfo['flag']) {
         $room->updateOwner($roomID);
-        $room->LeaveRoom($gameInfo['gameID'], $gameInfo['playerID']);
+        $room->LeaveRoom($roomID, $gameInfo['playerID']);
     } else {
-        $room->LeaveRoom($gameInfo['gameID'], $gameInfo['playerID']);
+        $room->LeaveRoom($roomID, $gameInfo['playerID']);
     }
     http_response_code(200);
 } else {
