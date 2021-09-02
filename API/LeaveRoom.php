@@ -33,12 +33,12 @@ $gameID = $gameInfo['gameID'];
 $roomID = (int) $gameInfo['roomID'];
 $count = count($room->GameInfo($gameID));
 if (false !== $gameInfo) {
-    if (0 === $count) {
+    if (1 === $count) {
         $room->LeaveRoom($gameID, $gameInfo['playerID']);
         $picture->deleteGameInfo($gameID);
         $point->deleteGameInfo($gameID);
         $explanation->deleteGameInfo($gameID);
-    } elseif (1 === (int) $gameInfo['flag']) {
+    } else if (1 === (int) $gameInfo['flag']) {
         $room->updateOwner($roomID);
         $room->LeaveRoom($gameInfo['gameID'], $gameInfo['playerID']);
     } else {

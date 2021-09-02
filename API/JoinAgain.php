@@ -12,24 +12,45 @@ $room = new Room();
 $userInfo = new UserInfo();
 
 if (false === $userInfo->CheckLogin()) {
-    http_response_code(403);
+    echo "a";
+    // http_response_code(403);
 
     exit;
 }
 
+/* userIDでプレイヤーの情報を取得 */
 $userID = $userInfo->CheckLogin()['userID'];
-$gameInfo = $room->getGameInfo($userID)['roomID'];
+$userInfo = $room->getGameInfo($userID);
 
-if (false !== $gameInfo) {
+if (false === $userInfo) {
     http_response_code(403);
 
     exit;
 }
 
-$roomID = $room->CreateRoomID();
-$gameID = $room->GetGameID() + 1;
-$playerID = 1;
-$room->AddRoom($gameID, $playerID, $userID, $roomID, 1);
+$gameID = $userInfo['gameID'];
+$playerID = $userInfo['playerID'];
+
+/* roomIDで部屋の情報を取得 */
+$roomID = $userInfo['roomID'];
+$roomInfo = $room->RoomInfo($roomID);
+
+$count = count($roomInfo);
+$flag = 0;
+for ($i = 0; $i < $count; $i++) {
+    if($gameID < $roomInfo[$i]['gameID']) {
+        $gameID = $roomInfo[$i]['gameID'];
+        $flag = 1;
+    }
+}
+
+if($flag === 0) {
+    $gameID = $room->GetGameID() + 1;
+    $room->joinAgain($gameID, $userID);
+} else {
+    $room->joinAgain($gameID, $userID);
+}
+
 $result = $room->PlayerInfo($gameID, $playerID);
 
 echo json_encode($result);

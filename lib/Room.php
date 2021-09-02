@@ -184,7 +184,19 @@ class Room
         }
     }
 
-    function joinAgain($roomID) {
+    function joinAgain($gameID, $userID) {
+        $this->dbh->beginTransaction();
 
+        try {
+            $stmt = $this->dbh->prepare("UPDATE {$this->table} SET gameID = :gameID WHERE userID = :userID");
+            $stmt->bindValue(':gameID', $gameID, PDO::PARAM_INT);
+            $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
+            $stmt->execute();
+            $this->dbh->commit();
+        } catch (PDOException $e) {
+            header('Error: '.$e->getMessage());
+
+            exit;
+        }
     }
 }
