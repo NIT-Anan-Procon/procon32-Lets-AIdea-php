@@ -38,7 +38,7 @@ if (false !== $gameInfo) {
         $picture->deleteGameInfo($gameID);
         $point->deleteGameInfo($gameID);
         $explanation->deleteGameInfo($gameID);
-    } else if (1 === (int) $gameInfo['flag']) {
+    } elseif (1 === (int) $gameInfo['flag']) {
         $room->updateOwner($roomID);
         $room->LeaveRoom($gameInfo['gameID'], $gameInfo['playerID']);
     } else {

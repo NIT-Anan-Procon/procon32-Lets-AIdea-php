@@ -12,13 +12,13 @@ $room = new Room();
 $userInfo = new UserInfo();
 
 if (false === $userInfo->CheckLogin()) {
-    echo "a";
+    echo 'a';
     // http_response_code(403);
 
     exit;
 }
 
-/* userIDでプレイヤーの情報を取得 */
+// userIDでプレイヤーの情報を取得
 $userID = $userInfo->CheckLogin()['userID'];
 $userInfo = $room->getGameInfo($userID);
 
@@ -31,20 +31,20 @@ if (false === $userInfo) {
 $gameID = $userInfo['gameID'];
 $playerID = $userInfo['playerID'];
 
-/* roomIDで部屋の情報を取得 */
+// roomIDで部屋の情報を取得
 $roomID = $userInfo['roomID'];
 $roomInfo = $room->RoomInfo($roomID);
 
 $count = count($roomInfo);
 $flag = 0;
-for ($i = 0; $i < $count; $i++) {
-    if($gameID < $roomInfo[$i]['gameID']) {
+for ($i = 0; $i < $count; ++$i) {
+    if ($gameID < $roomInfo[$i]['gameID']) {
         $gameID = $roomInfo[$i]['gameID'];
         $flag = 1;
     }
 }
 
-if($flag === 0) {
+if (0 === $flag) {
     $gameID = $room->GetGameID() + 1;
     $room->joinAgain($gameID, $userID);
 } else {

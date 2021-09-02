@@ -184,7 +184,8 @@ class Room
         }
     }
 
-    function joinAgain($gameID, $userID) {
+    public function joinAgain($gameID, $userID)
+    {
         $this->dbh->beginTransaction();
 
         try {
