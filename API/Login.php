@@ -8,7 +8,7 @@ require_once '../lib/UserInfo.php';
 
 use Firebase\JWT\JWT;
 
-$userInfo = new userInfo();
+$userInfo = new UserInfo();
 
 if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')) {
     $username = $_POST['username'];

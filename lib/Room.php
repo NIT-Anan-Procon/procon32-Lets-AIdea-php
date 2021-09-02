@@ -20,7 +20,7 @@ class Room
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header('Error: '.$e->getMessage());
 
             exit();
         }
@@ -32,7 +32,7 @@ class Room
         $code = (int) (sprintf('%04d', $roomID));
         $result = $this->RoomInfo($code);
 
-        if (false === $result) {
+        if (0 === count($result)) {
             return $code;
         }
         $this->CreateRoomID();
@@ -72,21 +72,11 @@ class Room
 
     public function RoomInfo($roomID)
     {
-        $st = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE roomID = :roomID AND userID IS NULL");
+        $st = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE roomID = :roomID");
         $st->bindValue(':roomID', $roomID);
         $st->execute();
 
-        return $st->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function OwnerInfo($roomID)
-    {
-        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE roomID = :roomID AND flag = :flag");
-        $stmt->bindValue(':roomID', $roomID);
-        $stmt->bindValue(':flag', 1);
-        $stmt->execute();
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $st->fetchall(PDO::FETCH_ASSOC);
     }
 
     public function getGameInfo($userID)
@@ -122,7 +112,7 @@ class Room
             $stmt->bindValue(':flag', $flag);
             $stmt->execute();
         } catch (PDOException $e) {
-            return false;
+            header('Error: '.$e->getMessage());
 
             exit;
         }
@@ -132,29 +122,32 @@ class Room
     {
         $room = $this->RoomInfo($roomID);
         $user = $this->getGameInfo($userID);
+        $count = count($room);
 
-        if ((false !== $room) && (false === $user)) {
-            $playerID = (int) ($room['playerID']);
-            $gameID = (int) ($room['gameID']);
-            $this->dbh->beginTransaction();
+        if ((false !== $room) && (false === $user) && ($count != 4)) {
+            $playerID = (int) ($room[$count - 1]['playerID']) + 1;
+            $gameID = (int) ($room[$count - 1]['gameID']);
+
+            $sql = "INSERT INTO {$this->table}(gameID, playerID, userID, roomID, flag)
+            VALUES
+                (:gameID, :playerID, :userID, :roomID, :flag)";
 
             try {
-                $stmt = $this->dbh->prepare("UPDATE {$this->table} SET userID = :userID WHERE playerID = :playerID");
-                $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
-                $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
+                $stmt = $this->dbh->prepare($sql);
+                $stmt->bindValue(':gameID', $gameID);
+                $stmt->bindValue(':playerID', $playerID);
+                $stmt->bindValue(':userID', $userID);
+                $stmt->bindValue(':roomID', $roomID);
+                $stmt->bindValue(':flag', 0);
                 $stmt->execute();
-                $this->dbh->commit();
-
                 return $this->PlayerInfo($gameID, $playerID);
             } catch (PDOException $e) {
-                $this->dbh->rollBack();
-
-                return ['state' => 'DBとの接続に失敗しました。'];
+                header('Error: '.$e->getMessage());
 
                 exit;
             }
         } else {
-            return ['state' => '部屋が満員か入力した部屋が存在しません。'];
+            
         }
     }
 
@@ -167,27 +160,25 @@ class Room
 
     public function LeaveRoom($gameID, $playerID)
     {
-        $result = $this->PlayerInfo($gameID, $playerID);
-        if (false !== $result) {
-            $this->dbh->beginTransaction();
-
-            try {
-                $stmt = $this->dbh->prepare("UPDATE {$this->table} SET userID = null WHERE playerID = :playerID");
-                $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
-                $stmt->execute();
-                $this->dbh->commit();
-            } catch (PDOException $e) {
-                return ['state' => 3];
-
-                exit;
-            }
-        }
+        $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE gameID = :gameID AND playerID = :playerID");
+        $stmt->bindValue(':gameID', $gameID);
+        $stmt->bindValue(':playerID', $playerID);
+        $stmt->execute();
     }
 
-    public function deleteRecord($playerID)
-    {
-        $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE playerID = :playerID");
-        $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
-        $stmt->execute();
+    function updateOwner($roomID) {
+        $playerID = (int)$this->RoomInfo($roomID)[1]['playerID'];
+        $this->dbh->beginTransaction();
+        try {
+            $stmt = $this->dbh->prepare("UPDATE {$this->table} SET flag = :flag WHERE playerID = :playerID AND roomID = :roomID");
+            $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
+            $stmt->bindValue(':roomID', $roomID, PDO::PARAM_INT);
+            $stmt->bindValue(':flag', 1, PDO::PARAM_INT);
+            $stmt->execute();
+            $this->dbh->commit();
+        } catch (PDOException $e) {
+            header('Error: '.$e->getMessage());
+            exit;
+        }
     }
 }

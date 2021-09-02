@@ -1,10 +1,11 @@
 <?php
 
-require_once '../../info.php';             //DBのログイン情報を取得
+require_once '../Const.php';             //DBのログイン情報を取得
 
 class Explanation
 {
-    public $dbh;
+    protected $dbh;
+    protected $table = 'word';
 
     public function __construct()
     {
@@ -28,10 +29,8 @@ class Explanation
 
     public function AddExplanation($gameID, $playerID, $explanation, $flag)
     {
-        // 3行目で取得したログイン情報を変数に代入
-        $table = explanation_table;
 
-        $sql = "INSERT INTO {$table}(gameID, playerID, explanation, flag)
+        $sql = "INSERT INTO {$this->table}(gameID, playerID, explanation, flag)
         VALUES
             (:gameID, :playerID, :explanation, :flag)";
 
@@ -54,11 +53,17 @@ class Explanation
         // 3行目で取得したログイン情報を変数に代入
         $table = explanation_table;
 
-        $stmt = $this->dbh->prepare("SELECT * FROM {$table} WHERE gameID = :gameID AND playerID = :playerID");
+        $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE gameID = :gameID AND playerID = :playerID");
         $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->execute();
 
         return $stmt->fetchall(PDO::FETCH_ASSOC);
+    }
+
+    function deleteGameInfo($gameID) {
+        $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE gameID = :gameID");
+        $stmt->bindValue(':gameID', $gameID);
+        $stmt->execute();
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
-require_once '../../info.php';
+require_once '../Const.php';
 
 class Point
 {
     protected $dbh;
-    protected $table = point_table;
+    protected $table = 'point';
 
     public function __construct()
     {
@@ -53,5 +53,11 @@ class Point
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    function deleteGameInfo($gameID) {
+        $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE gameID = :gameID");
+        $stmt->bindValue(':gameID', $gameID);
+        $stmt->execute();
     }
 }

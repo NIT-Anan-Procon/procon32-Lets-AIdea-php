@@ -5,6 +5,7 @@ require_once '../Const.php';
 class Picture
 {
     protected $dbh;
+    protected $table = 'picture';
 
     public function __construct()
     {
@@ -26,9 +27,9 @@ class Picture
 
     public function AddPicture($gameID, $playerID, $PictureUrl, $answer)
     {
-        $sql = 'INSERT INTO picture(gameID, playerID, pictureURL, answer)
+        $sql = "INSERT INTO $this->table(gameID, playerID, pictureURL, answer)
         VALUES
-            (:gameID, :playerID, :pictureURL, :answer)';
+            (:gameID, :playerID, :pictureURL, :answer)";
 
         try {
             $stmt = $this->dbh->prepare($sql);
@@ -50,11 +51,11 @@ class Picture
 
     public function GetPicture($gameID, $playerID)
     {
-        $sql = 'SELECT pictureURL, answer FROM picture WHERE gameID = :gameID AND playerID ';
+        $sql = "SELECT pictureURL, answer FROM $this->table WHERE gameID = :gameID AND playerID ";
         if (null === $playerID) {
-            $sql .= 'IS NULL';
+            $sql .= "IS NULL";
         } else {
-            $sql .= '= :playerID';
+            $sql .= "= :playerID";
         }
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindValue(':gameID', $gameID);
@@ -64,5 +65,11 @@ class Picture
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    function deleteGameInfo($gameID) {
+        $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE gameID = :gameID");
+        $stmt->bindValue(':gameID', $gameID);
+        $stmt->execute();
     }
 }

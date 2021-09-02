@@ -190,7 +190,9 @@ class UserInfo
                     $result = false;
                 }
             } catch (Exception $e) {
-                $result = false;
+                header('Error: '.$e->getMessage());
+
+                exit;
             }
         } else {
             $result = false;
