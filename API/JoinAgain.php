@@ -12,8 +12,7 @@ $room = new Room();
 $userInfo = new UserInfo();
 
 if (false === $userInfo->CheckLogin()) {
-    echo 'a';
-    // http_response_code(403);
+    http_response_code(403);
 
     exit;
 }
