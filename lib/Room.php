@@ -124,7 +124,7 @@ class Room
         $user = $this->getGameInfo($userID);
         $count = count($room);
 
-        if ((false !== $room) && (false === $user) && (4 !== $count)) {
+        if ((0 !== $count) && (false === $user) && (4 !== $count)) {
             $playerID = (int) ($room[$count - 1]['playerID']) + 1;
             $gameID = (int) ($room[$count - 1]['gameID']);
 
