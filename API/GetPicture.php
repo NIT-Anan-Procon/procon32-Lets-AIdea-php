@@ -15,13 +15,18 @@ $room = new Room();
 $userInfo = new userInfo();
 
 if (false === $userInfo->CheckLogin()) {
-    $result = ['state' => 'ログインしていません'];
-    echo json_encode($result);
+    header('Error:Login failed.');
     http_response_code(403);
 
     exit;
 }
 $userID = $userInfo->CheckLogin()['userID'];
+if (false === $room->getGameInfo($userID)) {
+    header('Error:The user is not in the room.');
+    http_response_code(403);
+
+    exit;
+}
 $gameID = $room->getGameInfo($userID)['gameID'];
 $judge = $picture->GetPicture($gameID, null);
 
