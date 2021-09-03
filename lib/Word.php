@@ -44,8 +44,6 @@ class Word
             echo '接続失敗'.$e->getMessage();
 
             return false;
-
-            exit();
         }
     }
 
@@ -80,8 +78,6 @@ class Word
             echo '接続失敗'.$e->getMessage();
 
             return false;
-
-            exit();
         }
     }
 }
