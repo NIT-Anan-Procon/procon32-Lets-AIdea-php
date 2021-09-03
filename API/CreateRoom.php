@@ -26,11 +26,14 @@ if (false !== $gameInfo) {
     exit;
 }
 
-$roomID = $room->CreateRoomID();
-$gameID = $room->GetGameID() + 1;
-$playerID = 1;
-$room->AddRoom($gameID, $playerID, $userID, $roomID, 1);
-$result = $room->PlayerInfo($gameID, $playerID);
+if (filter_input(INPUT_POST, 'gamemode')) {
+    $roomID = $room->CreateRoomID();
+    $gameID = $room->GetGameID() + 1;
+    $playerID = 1;
+    $gamemode = $_POST['gamemode'];
+    $room->AddRoom($gameID, $playerID, $userID, $roomID, 1, $gamemode);
+    $result = $room->PlayerInfo($gameID, $playerID);
+}
 
 echo json_encode($result);
 http_response_code(200);

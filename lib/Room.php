@@ -97,11 +97,11 @@ class Room
         return $stmt->fetchall(PDO::FETCH_ASSOC);
     }
 
-    public function AddRoom($gameID, $playerID, $userID, $roomID, $flag)
+    public function AddRoom($gameID, $playerID, $userID, $roomID, $flag, $gamemode)
     {
-        $sql = "INSERT INTO {$this->table}(gameID, playerID, userID, roomID, flag)
+        $sql = "INSERT INTO {$this->table}(gameID, playerID, userID, roomID, flag, gamemode)
         VALUES
-            (:gameID, :playerID, :userID, :roomID, :flag)";
+            (:gameID, :playerID, :userID, :roomID, :flag, :gamemode)";
 
         try {
             $stmt = $this->dbh->prepare($sql);
@@ -110,6 +110,7 @@ class Room
             $stmt->bindValue(':userID', $userID);
             $stmt->bindValue(':roomID', $roomID);
             $stmt->bindValue(':flag', $flag);
+            $stmt->bindValue(':gamemode', $gamemode);
             $stmt->execute();
         } catch (PDOException $e) {
             header('Error: '.$e->getMessage());
@@ -127,10 +128,11 @@ class Room
         if ((0 !== $count) && (false === $user) && (4 !== $count)) {
             $playerID = (int) ($room[$count - 1]['playerID']) + 1;
             $gameID = (int) ($room[$count - 1]['gameID']);
+            $gamemode = (int)($room[$count - 1]['gamemode']);
 
-            $sql = "INSERT INTO {$this->table}(gameID, playerID, userID, roomID, flag)
+            $sql = "INSERT INTO {$this->table}(gameID, playerID, userID, roomID, flag, gamemode)
             VALUES
-                (:gameID, :playerID, :userID, :roomID, :flag)";
+                (:gameID, :playerID, :userID, :roomID, :flag, :gamemode)";
 
             try {
                 $stmt = $this->dbh->prepare($sql);
@@ -139,6 +141,7 @@ class Room
                 $stmt->bindValue(':userID', $userID);
                 $stmt->bindValue(':roomID', $roomID);
                 $stmt->bindValue(':flag', 0);
+                $stmt->bindValue(':gamemode', $gamemode);
                 $stmt->execute();
 
                 return $this->PlayerInfo($gameID, $playerID);
