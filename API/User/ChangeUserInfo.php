@@ -1,18 +1,26 @@
 <?php
 
-require_once '../Const.php';
+header('Access-Control-Allow-Origin:*');
+header('Content-Type: application/json; charset=utf-8');
 
-require_once '../lib/UserInfo.php';
+require_once '../../lib/UserInfo.php';
 
-$userInfo = new userInfo();
+$userInfo = new UserInfo();
 
-//$userID
+if (false === $userInfo->CheckLogin()) {
+    header('Error:Login failed.');
+    http_response_code(403);
+
+    exit;
+}
+
 $name = $_POST['name'];
-$password = $_POST['passowrd'];
-$image = $_POST['image_icon'];
+$password = $_POST['password'];
+$image = $_POST['icon'];
 if (isset($name)) {
     $result = $userInfo->ChangeUserName($userID, $name);
     if (false === $result['name']) {
+        header('Error:This name is already in use and cannot be used. You need to register with a different name.');
         http_response_code(401);
 
         exit;
@@ -22,7 +30,6 @@ if (isset($name)) {
 
         exit;
     }
-    unset($result['name']);
 }
 if (isset($password)) {
     $result = $userInfo->ChangePassword($userID, $password);
@@ -41,10 +48,9 @@ if (isset($image)) {
     }
 }
 if (empty($result)) {
+    header('Error:The requested value is different from the specified format.');
     http_response_code(401);
 
     exit;
 }
-
-echo json_encode($result);
 http_response_code(200);

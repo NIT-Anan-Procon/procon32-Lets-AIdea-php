@@ -1,8 +1,8 @@
 <?php
 
-require_once '../Const.php';
+require_once __DIR__.'/../Const.php';
 
-require_once '../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 use Firebase\JWT\JWT;
 
@@ -22,13 +22,13 @@ class UserInfo
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header("Error:".$e->getMessage());
 
             exit();
         }
     }
 
-    public function AddUserInfo($name, $password, $image)
+    public function AddUserInfo($name, $password, $icon)
     {
         if ($this->CheckName($name)) {
             $result['name'] = false;
@@ -36,26 +36,24 @@ class UserInfo
             return $result;
         }
         $result['name'] = true;
-        $sql = 'INSERT INTO userinfo(name, password, image_icon)
+        $sql = 'INSERT INTO userinfo(name, password, icon)
         VALUES
-            (:name, :password, :image_icon)';
+            (:name, :password, :icon)';
 
         try {
             $stmt = $this->dbh->prepare($sql);
-            $stmt->bindValue(':name', $name);
-            $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));
-            $stmt->bindValue(':image_icon', $image);
+            $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+            $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT), PDO::PARAM_STR);
+            $stmt->bindValue(':icon', $icon);
             $stmt->execute();
             $result['state'] = true;
 
             return $result;
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header("Error:".$e->getMessage());
             $result['state'] = false;
 
             return $result;
-
-            exit();
         }
     }
 
@@ -107,12 +105,10 @@ class UserInfo
 
             return $result;
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header("Error:".$e->getMessage());
             $result['state'] = false;
 
             return $result;
-
-            exit();
         }
     }
 
@@ -128,31 +124,27 @@ class UserInfo
 
             return true;
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
-
-            exit();
+            header("Error:".$e->getMessage());
 
             return false;
         }
     }
 
-    public function ChangeUserIcon($userID, $image)
+    public function ChangeUserIcon($userID, $icon)
     {
-        $sql = 'UPDATE userinfo SET image = :image WHERE userID = :userID';
+        $sql = 'UPDATE userinfo SET icon = :icon WHERE userID = :userID';
 
         try {
             $stmt = $this->dbh->prepare($sql);
-            $stmt->bindValue(':image', $image);
+            $stmt->bindValue(':icon', $icon);
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
 
             return true;
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header("Error:".$e->getMessage());
 
             return false;
-
-            exit();
         }
     }
 
@@ -165,11 +157,9 @@ class UserInfo
 
             return true;
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header("Error:".$e->getMessage());
 
             return false;
-
-            exit();
         }
     }
 
@@ -199,14 +189,19 @@ class UserInfo
                 $result = $this->GetUserInfo($decode_array['userID']);
                 $decode_array['exp'] = time() + JWT_EXPIRES;
                 $jwt = JWT::encode($decode_array, JWT_KEY, JWT_ALG);
-                echo '成功';
                 if ($result) {
-                    setcookie('token', $jwt, (time() + 50), '/', false, true);
+                    $options = [
+                        'expires' => time() + 3600,
+                        'path' => '/',
+                        'secure' => false,
+                        'httponly' => true,
+                    ];
+                    setcookie('token', $jwt, $options);
                 } else {
                     $result = false;
                 }
             } catch (Exception $e) {
-                echo '失敗';
+                header("Error:".$e->getMessage());
                 $result = false;
             }
         } else {

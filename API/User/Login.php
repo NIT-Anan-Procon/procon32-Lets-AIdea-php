@@ -1,14 +1,12 @@
 <?php
 
-require_once '../Const.php';
+ini_set('display_errors', 1);
 
-require_once '../vendor/autoload.php';
-
-require_once '../lib/UserInfo.php';
+require_once '../../lib/UserInfo.php';
 
 use Firebase\JWT\JWT;
 
-$userInfo = new userInfo();
+$userInfo = new UserInfo();
 
 if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
     $name = $_POST['name'];
@@ -26,7 +24,7 @@ if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
         header('Content-Type: application/json');
         header('Access-Control-Allow-Origin: *');
         $options = [
-            'expires' => time() + 1800,
+            'expires' => time() + 3600,
             'path' => '/',
             'secure' => false,
             'httponly' => true,
@@ -34,12 +32,11 @@ if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
         setcookie('token', $jwt, $options);
         http_response_code(200);
     } else {
+        header('Error:The user name or password is incorrect.');
         http_response_code(401);
 
-        exit;
     }
 } else {
+    header('Error:The requested value is different from the specified format.');
     http_response_code(401);
-
-    exit;
 }
