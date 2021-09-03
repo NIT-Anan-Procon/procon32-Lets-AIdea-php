@@ -45,6 +45,7 @@ if (false !== $gameInfo) {
         $room->LeaveRoom($roomID, $gameInfo['playerID']);
     }
     http_response_code(200);
+
     exit;
 }
 
