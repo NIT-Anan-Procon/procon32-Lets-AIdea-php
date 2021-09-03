@@ -1,6 +1,5 @@
 <?php
 
-header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
 require_once '../../lib/UserInfo.php';
@@ -13,10 +12,10 @@ if (false === $userInfo->CheckLogin()) {
 
     exit;
 }
-
+$userID = $userInfo->CheckLogin()['userID'];
 $name = $_POST['name'];
 $password = $_POST['password'];
-$image = $_POST['icon'];
+$icon = $_POST['icon'];
 if (isset($name)) {
     $result = $userInfo->ChangeUserName($userID, $name);
     if (false === $result['name']) {
@@ -39,8 +38,8 @@ if (isset($password)) {
         exit;
     }
 }
-if (isset($image)) {
-    $result = $userInfo->ChangeUserName($userID, $image);
+if (isset($icon)) {
+    $result = $userInfo->ChangeUserIcon($userID, $icon);
     if (false === $result) {
         http_response_code(400);
 

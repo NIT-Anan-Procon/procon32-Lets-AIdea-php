@@ -1,6 +1,6 @@
 <?php
 
-ini_set('display_errors', 1);
+header('Access-Control-Allow-Origin: *');
 
 require_once '../../lib/UserInfo.php';
 
@@ -21,7 +21,6 @@ if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
         ];
         $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
 
-        header('Content-Type: application/json');
         header('Access-Control-Allow-Origin: *');
         $options = [
             'expires' => time() + 3600,
@@ -34,7 +33,6 @@ if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
     } else {
         header('Error:The user name or password is incorrect.');
         http_response_code(401);
-
     }
 } else {
     header('Error:The requested value is different from the specified format.');
