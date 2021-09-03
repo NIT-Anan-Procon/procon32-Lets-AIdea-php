@@ -18,21 +18,22 @@ if (false === $userInfo->CheckLogin()) {
 }
 
 $userID = $userInfo->CheckLogin()['userID'];
-$userID = 1;
-$gameID = $room->getGameInfo($userID)['gameID'];
-$gameInfo = $room->GameInfo($gameID);
-$playerNum = count($gameInfo);
-$result = [];
-for ($i = 1; $i <= $playerNum; ++$i) {
-    $userID = $gameInfo[$i - 1]['userID'];
-    $flag = $gameInfo[$i - 1]['flag'];
-    $user = $userInfo->GetUserInfo($userID);
-    if (null !== $userID) {
-        $result += [$i => ['userID' => $userID, 'flag' => $flag, 'name' => $user['name'], 'image_icon' => $user['image_icon'], 'badge' => '']];
-    } else {
-        $result += [$i => ['userID' => '0', 'flag' => $flag, 'name' => '', 'image_icon' => '', 'badge' => '']];
+$game = $room->getGameInfo($userID);
+if($game !== false) {
+    $gameID = $game['gameID'];
+    $gameInfo = $room->GameInfo($gameID);
+    $playerNum = count($gameInfo);
+    $gamemode = $gameInfo[0]['gamemode'];
+    $result = ['gamemode' => $gamemode];
+    for ($i = 1; $i <= $playerNum; ++$i) {
+        $userID = $gameInfo[$i - 1]['userID'];
+        $flag = $gameInfo[$i - 1]['flag'];
+        $user = $userInfo->GetUserInfo($userID);
+        $playerID = $gameInfo[$i - 1]['playerID'];
+        $result += [$playerID => ['flag' => $flag, 'name' => $user['name'], 'icon' => $user['icon'], 'badge' => '']];
     }
+    echo json_encode($result);
+    http_response_code(200);
 }
 
-echo json_encode($result);
-http_response_code(200);
+http_response_code(403);

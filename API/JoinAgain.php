@@ -19,20 +19,20 @@ if (false === $userInfo->CheckLogin()) {
 
 // userIDでプレイヤーの情報を取得
 $userID = $userInfo->CheckLogin()['userID'];
-$userInfo = $room->getGameInfo($userID);
+$player = $room->getGameInfo($userID);
 
 // ユーザーが部屋に入っているかチェック
-if (false === $userInfo) {
+if (false === $player) {
     http_response_code(403);
 
     exit;
 }
 
-$gameID = $userInfo['gameID'];
-$playerID = $userInfo['playerID'];
+$gameID = $player['gameID'];
+$playerID = $player['playerID'];
 
 // roomIDで部屋の情報を取得
-$roomID = $userInfo['roomID'];
+$roomID = $player['roomID'];
 $roomInfo = $room->RoomInfo($roomID);
 
 $count = count($roomInfo);
@@ -52,7 +52,16 @@ if (0 === $flag) {
     $room->joinAgain($gameID, $userID);
 }
 
-$result = $room->PlayerInfo($gameID, $playerID);
+$playerInfo = $room->PlayerInfo($gameID, $playerID);
+$user = $userInfo->GetUserInfo($userID);
+$result = array(
+    'playerID'  => $playerInfo['playerID'],
+    'name'      => $user['name'],
+    'icon'      => $user['icon'],
+    'badge'     => '',
+    'flag'      => $playerInfo['flag'],
+    'gamemode'  => $playerInfo['gamemode']
+);
 
 echo json_encode($result);
 http_response_code(200);
