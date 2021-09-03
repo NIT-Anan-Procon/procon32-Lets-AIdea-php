@@ -20,7 +20,7 @@ if (false === $userInfo->CheckLogin()) {
 if (filter_input(INPUT_POST, 'roomID')) {
     $userID = $userInfo->CheckLogin()['userID'];
     $roomID = (int) ($_POST['roomID']);
-    
+
     $result = $room->JoinRoom($userID, $roomID);
     echo json_encode($result);
     http_response_code(200);
