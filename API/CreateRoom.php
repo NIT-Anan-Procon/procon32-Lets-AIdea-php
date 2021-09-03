@@ -17,6 +17,7 @@ if (false === $userInfo->CheckLogin()) {
     exit;
 }
 
+/* ユーザーが他の部屋に入っていないかチェック */
 $userID = $userInfo->CheckLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 
@@ -26,14 +27,18 @@ if (false !== $gameInfo) {
     exit;
 }
 
-if (filter_input(INPUT_POST, 'gamemode')) {
+/* 部屋を追加 */
+
+if (isset($_POST['gamemode'])) {
     $roomID = $room->CreateRoomID();
     $gameID = $room->GetGameID() + 1;
     $playerID = 1;
     $gamemode = $_POST['gamemode'];
     $room->AddRoom($gameID, $playerID, $userID, $roomID, 1, $gamemode);
     $result = $room->PlayerInfo($gameID, $playerID);
+    echo json_encode($result);
+    http_response_code(200);
+    exit;
 }
 
-echo json_encode($result);
-http_response_code(200);
+http_response_code(401);

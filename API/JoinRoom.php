@@ -27,6 +27,5 @@ if (filter_input(INPUT_POST, 'roomID')) {
 
     exit;
 }
-    http_response_code(401);
 
-    exit;
+http_response_code(401);

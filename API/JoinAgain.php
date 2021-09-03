@@ -21,6 +21,7 @@ if (false === $userInfo->CheckLogin()) {
 $userID = $userInfo->CheckLogin()['userID'];
 $userInfo = $room->getGameInfo($userID);
 
+// ユーザーが部屋に入っているかチェック
 if (false === $userInfo) {
     http_response_code(403);
 
@@ -43,6 +44,7 @@ for ($i = 0; $i < $count; ++$i) {
     }
 }
 
+// gameIDを更新されているかチェック
 if (0 === $flag) {
     $gameID = $room->GetGameID() + 1;
     $room->joinAgain($gameID, $userID);
