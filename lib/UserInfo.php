@@ -22,7 +22,7 @@ class UserInfo
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
         } catch (PDOException $e) {
-            header("Error:".$e->getMessage());
+            header('Error:'.$e->getMessage());
 
             exit();
         }
@@ -50,7 +50,7 @@ class UserInfo
 
             return $result;
         } catch (PDOException $e) {
-            header("Error:".$e->getMessage());
+            header('Error:'.$e->getMessage());
             $result['state'] = false;
 
             return $result;
@@ -105,7 +105,7 @@ class UserInfo
 
             return $result;
         } catch (PDOException $e) {
-            header("Error:".$e->getMessage());
+            header('Error:'.$e->getMessage());
             $result['state'] = false;
 
             return $result;
@@ -124,7 +124,7 @@ class UserInfo
 
             return true;
         } catch (PDOException $e) {
-            header("Error:".$e->getMessage());
+            header('Error:'.$e->getMessage());
 
             return false;
         }
@@ -142,7 +142,7 @@ class UserInfo
 
             return true;
         } catch (PDOException $e) {
-            header("Error:".$e->getMessage());
+            header('Error:'.$e->getMessage());
 
             return false;
         }
@@ -157,7 +157,7 @@ class UserInfo
 
             return true;
         } catch (PDOException $e) {
-            header("Error:".$e->getMessage());
+            header('Error:'.$e->getMessage());
 
             return false;
         }
@@ -201,7 +201,7 @@ class UserInfo
                     $result = false;
                 }
             } catch (Exception $e) {
-                header("Error:".$e->getMessage());
+                header('Error:'.$e->getMessage());
                 $result = false;
             }
         } else {
