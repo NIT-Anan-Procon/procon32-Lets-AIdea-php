@@ -19,7 +19,6 @@ if (false === $userInfo->CheckLogin()) {
 }
 
 $userID = $userInfo->CheckLogin()['userID'];
-$userID = 1;
 $gameID = $room->getGameInfo($userID)['gameID'];
 $gameInfo = $room->GameInfo($gameID);
 $playerNum = count($gameInfo);
