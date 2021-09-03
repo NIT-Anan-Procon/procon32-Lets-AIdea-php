@@ -58,7 +58,7 @@ $result = [
     'playerID' => $playerInfo['playerID'],
     'name' => $user['name'],
     'icon' => $user['icon'],
-    'badge' => '',
+    'badge' => $user['badge'],
     'flag' => $playerInfo['flag'],
     'gamemode' => $playerInfo['gamemode'],
 ];

@@ -27,7 +27,7 @@ if (filter_input(INPUT_POST, 'roomID')) {
         'playerID' => $playerInfo['playerID'],
         'name' => $user['name'],
         'icon' => $user['icon'],
-        'badge' => '',
+        'badge' => $badge['badge'],
         'flag' => $playerInfo['flag'],
         'gamemode' => $playerInfo['gamemode'],
     ];

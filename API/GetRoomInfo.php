@@ -30,7 +30,7 @@ if (false !== $game) {
         $flag = $gameInfo[$i - 1]['flag'];
         $user = $userInfo->GetUserInfo($userID);
         $playerID = $gameInfo[$i - 1]['playerID'];
-        $result += [$playerID => ['flag' => $flag, 'name' => $user['name'], 'icon' => $user['icon'], 'badge' => '']];
+        $result += [$playerID => ['flag' => $flag, 'name' => $user['name'], 'icon' => $user['icon'], 'badge' => $user['badge']]];
     }
     echo json_encode($result);
     http_response_code(200);
