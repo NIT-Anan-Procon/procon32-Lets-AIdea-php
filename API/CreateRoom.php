@@ -37,14 +37,14 @@ if (isset($_POST['gamemode'])) {
     $room->AddRoom($gameID, $playerID, $userID, $roomID, 1, $gamemode);
     $playerInfo = $room->PlayerInfo($gameID, $playerID);
     $user = $userInfo->GetUserInfo($userID);
-    $result = array(
-        'playerID'  => $playerInfo['playerID'],
-        'name'      => $user['name'],
-        'icon'      => $user['icon'],
-        'badge'     => '',
-        'flag'      => $playerInfo['flag'],
-        'gamemode'  => $gamemode
-    );
+    $result = [
+        'playerID' => $playerInfo['playerID'],
+        'name' => $user['name'],
+        'icon' => $user['icon'],
+        'badge' => '',
+        'flag' => $playerInfo['flag'],
+        'gamemode' => $gamemode,
+    ];
     echo json_encode($result);
     http_response_code(200);
 

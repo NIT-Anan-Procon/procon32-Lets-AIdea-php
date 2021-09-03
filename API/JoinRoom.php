@@ -23,14 +23,14 @@ if (filter_input(INPUT_POST, 'roomID')) {
 
     $playerInfo = $room->JoinRoom($userID, $roomID);
     $user = $userInfo->GetUserInfo($userID);
-    $result = array(
-        'playerID'  => $playerInfo['playerID'],
-        'name'      => $user['name'],
-        'icon'      => $user['icon'],
-        'badge'     => '',
-        'flag'      => $playerInfo['flag'],
-        'gamemode'  => $playerInfo['gamemode']
-    );
+    $result = [
+        'playerID' => $playerInfo['playerID'],
+        'name' => $user['name'],
+        'icon' => $user['icon'],
+        'badge' => '',
+        'flag' => $playerInfo['flag'],
+        'gamemode' => $playerInfo['gamemode'],
+    ];
     echo json_encode($result);
     http_response_code(200);
 

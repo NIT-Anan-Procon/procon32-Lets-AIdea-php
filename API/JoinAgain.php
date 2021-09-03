@@ -54,14 +54,14 @@ if (0 === $flag) {
 
 $playerInfo = $room->PlayerInfo($gameID, $playerID);
 $user = $userInfo->GetUserInfo($userID);
-$result = array(
-    'playerID'  => $playerInfo['playerID'],
-    'name'      => $user['name'],
-    'icon'      => $user['icon'],
-    'badge'     => '',
-    'flag'      => $playerInfo['flag'],
-    'gamemode'  => $playerInfo['gamemode']
-);
+$result = [
+    'playerID' => $playerInfo['playerID'],
+    'name' => $user['name'],
+    'icon' => $user['icon'],
+    'badge' => '',
+    'flag' => $playerInfo['flag'],
+    'gamemode' => $playerInfo['gamemode'],
+];
 
 echo json_encode($result);
 http_response_code(200);
