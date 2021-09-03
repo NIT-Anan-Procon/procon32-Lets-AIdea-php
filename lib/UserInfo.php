@@ -82,8 +82,8 @@ class UserInfo
         $stmt = $this->dbh->prepare('SELECT * FROM userinfo WHERE userID = :userID');
         $stmt->bindValue(':userID', $userID);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result;
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function ChangeUserName($userID, $name)
