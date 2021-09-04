@@ -22,6 +22,7 @@ $point = new Point();
 $explanation = new Word();
 
 if (false === $userInfo->CheckLogin()) {
+    header('Error: Login failed.');
     http_response_code(403);
 
     exit;
@@ -31,6 +32,7 @@ $userID = $userInfo->CheckLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 
 if (false === $gameInfo) {
+    header('Error: The user is not in the room.');
     http_response_code(403);
 
     exit;
@@ -39,24 +41,18 @@ if (false === $gameInfo) {
 $gameID = $gameInfo['gameID'];
 $roomID = (int) $gameInfo['roomID'];
 $count = count($room->RoomInfo($roomID));
-if (false !== $gameInfo) {
-    if (1 === $count) {
-        $room->LeaveRoom($roomID, $gameInfo['playerID']);
-        $picture->deleteGameInfo($gameID);
-        $point->deleteGameInfo($gameID);
-        $explanation->DelWord($gameID);
-        $room->updateGame($roomID);
-    } elseif (1 === (int) $gameInfo['flag']) {
-        $room->updateOwner($roomID);
-        $room->LeaveRoom($roomID, $gameInfo['playerID']);
-        $room->updateGame($roomID);
-    } else {
-        $room->LeaveRoom($roomID, $gameInfo['playerID']);
-        $room->updateGame($roomID);
-    }
-    http_response_code(200);
-
-    exit;
+if (1 === $count) {
+    $room->LeaveRoom($roomID, $gameInfo['playerID']);
+    $picture->deleteGameInfo($gameID);
+    $point->deleteGameInfo($gameID);
+    $explanation->DelWord($gameID);
+    $room->updateGame($roomID);
+} else if (1 === (int) $gameInfo['flag']) {
+    $room->updateOwner($roomID);
+    $room->LeaveRoom($roomID, $gameInfo['playerID']);
+    $room->updateGame($roomID);
+} else {
+    $room->LeaveRoom($roomID, $gameInfo['playerID']);
+    $room->updateGame($roomID);
 }
-
-http_response_code(403);
+http_response_code(200);

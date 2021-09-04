@@ -12,6 +12,7 @@ $room = new Room();
 $userInfo = new UserInfo();
 
 if (false === $userInfo->CheckLogin()) {
+    header('Error: Login failed.');
     http_response_code(403);
 
     exit;
@@ -22,12 +23,6 @@ if (filter_input(INPUT_POST, 'roomID')) {
     $roomID = (int) ($_POST['roomID']);
 
     $playerInfo = $room->JoinRoom($userID, $roomID);
-
-    if (null === $playerInfo) {
-        http_response_code(403);
-
-        exit;
-    }
 
     $user = $userInfo->GetUserInfo($userID);
     $result = [
@@ -44,4 +39,5 @@ if (filter_input(INPUT_POST, 'roomID')) {
     exit;
 }
 
+header('Error: The requested value is different from the specified format.');
 http_response_code(401);

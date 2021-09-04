@@ -20,6 +20,7 @@ class Room
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
         } catch (PDOException $e) {
+            echo "a";
             header('Error: '.$e->getMessage());
 
             exit();
@@ -150,6 +151,21 @@ class Room
 
                 exit;
             }
+        } else if (0 === $count) {
+            header('Error: The room does not exist.');
+            http_response_code(403);
+
+            exit;
+        } else if (false !== $user) {
+            header('Error: The user is already in the other room.');
+            http_response_code(403);
+
+            exit;
+        } else {
+            header('The maximum number of people in the room has been reached.');
+            http_response_code(403);
+            
+            exit;
         }
     }
 
@@ -217,8 +233,8 @@ class Room
                 $stmt->bindValue(':playerID', $i + 1, PDO::PARAM_INT);
                 $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
                 $stmt->execute();
-                $this->dbh->commit();
             } catch (PDOException $e) {
+
                 header('Error: '.$e->getMessage());
 
                 exit;

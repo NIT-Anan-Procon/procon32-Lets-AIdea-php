@@ -12,6 +12,7 @@ $room = new Room();
 $userInfo = new UserInfo();
 
 if (false === $userInfo->CheckLogin()) {
+    header('Error: Login failed.');
     http_response_code(403);
 
     exit;
@@ -23,6 +24,7 @@ $player = $room->getGameInfo($userID);
 
 // ユーザーが部屋に入っているかチェック
 if (false === $player) {
+    header('Error: The user is not in the room.');
     http_response_code(403);
 
     exit;

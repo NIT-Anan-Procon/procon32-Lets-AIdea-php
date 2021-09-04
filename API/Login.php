@@ -36,11 +36,13 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
         setcookie('token', $jwt, $options);
         http_response_code(200);
     } else {
+        header('Error: The user name or password is incorrect.');
         http_response_code(403);
 
         exit;
     }
 } else {
+    header('Error: The requested value is different from the specified format.');
     http_response_code(401);
 
     exit;

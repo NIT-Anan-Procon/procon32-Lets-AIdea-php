@@ -12,6 +12,7 @@ $room = new Room();
 $userInfo = new UserInfo();
 
 if (false === $userInfo->CheckLogin()) {
+    header('Error: Login failed.');
     http_response_code(403);
 
     exit;
@@ -22,6 +23,7 @@ $userID = $userInfo->CheckLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 
 if (false !== $gameInfo) {
+    header('Error: The user is not in the room.');
     http_response_code(403);
 
     exit;
@@ -51,4 +53,5 @@ if (isset($_POST['gamemode'])) {
     exit;
 }
 
+header('Error: The requested value is different from the specified format.');
 http_response_code(401);
