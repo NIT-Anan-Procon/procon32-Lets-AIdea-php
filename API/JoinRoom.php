@@ -22,12 +22,19 @@ if (filter_input(INPUT_POST, 'roomID')) {
     $roomID = (int) ($_POST['roomID']);
 
     $playerInfo = $room->JoinRoom($userID, $roomID);
+
+    if($playerInfo === null) {
+        http_response_code(403);
+
+        exit;
+    }
+
     $user = $userInfo->GetUserInfo($userID);
     $result = [
         'playerID' => $playerInfo['playerID'],
         'name' => $user['name'],
         'icon' => $user['icon'],
-        'badge' => $badge['badge'],
+        'badge' => $user['badge'],
         'flag' => $playerInfo['flag'],
         'gamemode' => $playerInfo['gamemode'],
     ];

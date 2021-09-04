@@ -203,4 +203,24 @@ class Room
             exit;
         }
     }
+
+    function updateGame($roomID) {
+        $roomInfo = $this->RoomInfo($roomID);
+        $num = count($roomInfo);
+
+        for($i = 0; $i < $num; $i++) {
+            $userID = $roomInfo[$i]['userID'];
+            try {
+                $stmt = $this->dbh->prepare("UPDATE {$this->table} SET playerID = :playerID WHERE userID = :userID");
+                $stmt->bindValue(':playerID', $i + 1, PDO::PARAM_INT);
+                $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
+                $stmt->execute();
+                $this->dbh->commit();
+            } catch (PDOException $e) {
+                header('Error: '.$e->getMessage());
+    
+                exit;
+            }
+        }
+    }
 }
