@@ -26,9 +26,9 @@ class Point
 
     public function AddPoint($gameID, $playerID, $pointNum, $flag)
     {
-        $sql = "INSERT INTO point(gameID, playerID, pointNum, flag)
+        $sql = 'INSERT INTO point(gameID, playerID, pointNum, flag)
         VALUES
-            (:gameID, :playerID, :pointNum, :flag)";
+            (:gameID, :playerID, :pointNum, :flag)';
 
         try {
             $stmt = $this->dbh->prepare($sql);
@@ -37,9 +37,11 @@ class Point
             $stmt->bindValue(':pointNum', $pointNum);
             $stmt->bindValue('flag', $flag);
             $stmt->execute();
+
             return true;
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
+
             return false;
         }
     }
@@ -56,6 +58,6 @@ class Point
             $result = 0;
         }
 
-        return (int)$result;
+        return (int) $result;
     }
 }
