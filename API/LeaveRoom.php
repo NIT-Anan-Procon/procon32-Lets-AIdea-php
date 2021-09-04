@@ -47,7 +47,7 @@ if (1 === $count) {
     $point->deleteGameInfo($gameID);
     $explanation->DelWord($gameID);
     $room->updateGame($roomID);
-} else if (1 === (int) $gameInfo['flag']) {
+} elseif (1 === (int) $gameInfo['flag']) {
     $room->updateOwner($roomID);
     $room->LeaveRoom($roomID, $gameInfo['playerID']);
     $room->updateGame($roomID);
