@@ -25,11 +25,12 @@ if (false === $room->getGameInfo($userID)) {
 
     exit;
 }
-$gameID = $room->getGameInfo($userID)['gameID'];
+$user = $room->getGameInfo($userID);
 if (filter_input(INPUT_POST, 'playerID')) {
     $playerID = (int) $_POST['playerID'];
-    $result = $point->AddPoint($gameID, $playerID, 1, 2);
-    if (false === $result) {
+    $result['ans'] = $point->AddPoint($user['gameID'], $playerID, 1, 0);
+    $result['exp'] = $point->AddPoint($user['gameID'], $user['playerID'], 1, 1);
+    if (false === $result['ans'] || false === $result['exp']) {
         http_response_code(400);
     } else {
         http_response_code(200);
