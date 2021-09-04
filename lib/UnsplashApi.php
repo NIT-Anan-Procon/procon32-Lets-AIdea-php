@@ -35,4 +35,6 @@ function getPhotos($search)
     return $urls;
 }
 
-$photo = Unsplash\Photo::random($filters);
+function getPhoto($search) {
+    $photo = 
+}
