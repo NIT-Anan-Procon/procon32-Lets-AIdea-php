@@ -40,7 +40,7 @@ $playerID = $gameInfo['playerID'];
 $photo = InitialPhoto();
 $picture->AddGameInfo($gameID, $playerID, $photo, 1);
 
-$data = json_encode(array('url' => $photo));
+$data = json_encode(['url' => $photo]);
 $ch = curl_init('');    //''にpythonのAPIのurlを記述
 curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
@@ -51,4 +51,3 @@ curl_close();
 $val = json_decode($response);
 
 $NG = $val['NGword'];
-
