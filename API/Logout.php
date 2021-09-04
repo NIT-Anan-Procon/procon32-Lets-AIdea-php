@@ -1,15 +1,16 @@
 <?php
 
-require __DIR__.'/const.php';
+require_once '../Const.php';
 
-require __DIR__.'/vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
 
 if (!empty($_COOKIE['token'])) {
     setcookie('token', '', (time() + -3600), '/', false, true);
-    echo json_encode(['state' => 0]);
-} else {
-    echo json_encode(['state' => 1]);
-}
+    http_response_code(200);
 
-http_response_code(200);
+    exit;
+}
+    http_response_code(401);
+
+    exit;

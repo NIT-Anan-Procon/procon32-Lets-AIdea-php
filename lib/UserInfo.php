@@ -1,24 +1,21 @@
 <?php
 
-require_once '../../info.php';
+require_once '../Const.php';
 
-require_once '../JWT/const.php';
-
-require_once '../JWT/vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
 use Firebase\JWT\JWT;
 
 class UserInfo
 {
     protected $dbh;
-    protected $table;
+    protected $table = 'userinfo';
 
     public function __construct()
     {
         $dbname = db_name;
         $db_password = password;
         $user_name = db_user;
-        $this->table = userInfo_table;
         $dsn = "mysql:host=localhost;dbname={$dbname};charset=utf8";
 
         try {
@@ -181,14 +178,18 @@ class UserInfo
                 $result = $this->GetUserInfo($decode_array['userID']);
                 $decode_array['exp'] = time() + JWT_EXPIRES;
                 $jwt = JWT::encode($decode_array, JWT_KEY, JWT_ALG);
-                echo '成功';
                 if ($result) {
-                    setcookie('token', $jwt, (time() + 50), '/', false, true);
+                    $options = [
+                        'expires' => time() + 3600,
+                        'path' => '/',
+                        'secure' => false,
+                        'httponly' => true,
+                    ];
+                    setcookie('token', $jwt, $options);
                 } else {
                     $result = false;
                 }
             } catch (Exception $e) {
-                echo '失敗';
                 $result = false;
             }
         } else {
