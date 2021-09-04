@@ -39,7 +39,7 @@ $playerID = $gameInfo['playerID'];
 $photo = InitialPhoto();
 $picture->AddGameInfo($gameID, $playerID, $photo, 1);
 
-$data = json_encode(array('url' => $photo));
+$data = json_encode(['url' => $photo]);
 $ch = curl_init('');    //''にpythonのAPIのurlを記述
 curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
@@ -55,23 +55,23 @@ $num = count($NG);
 
 $word->AddWord($gameID, $playerID, $val['sentence'], 1);
 
-for($i = 0; $i < $num; $i++) {
+for ($i = 0; $i < $num; ++$i) {
     $word->AddWord($gameID, $playerID, $NG[$i], 2);
 }
 
 $num = count($synoyms);
 
-for($i = 0; $i < $num; $i++) {
+for ($i = 0; $i < $num; ++$i) {
     $word->AddWord($gameID, $playerID, $synoyms[$i], 3);
 }
 
-$result = array(
-    'synoyms'       => $synoyms,
-    'ng'            => $NG,
-    'AI'            => $val['sentence'],
-    'pictureURL'    => $photo,
-    'gamemode'      => $gameInfo['gamemode']
-);
+$result = [
+    'synoyms' => $synoyms,
+    'ng' => $NG,
+    'AI' => $val['sentence'],
+    'pictureURL' => $photo,
+    'gamemode' => $gameInfo['gamemode'],
+];
 
 echo json_encode($result);
 http_response_code(200);
