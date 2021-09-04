@@ -34,6 +34,7 @@ if (false !== $game) {
     }
     echo json_encode($result);
     http_response_code(200);
+
     exit;
 }
 

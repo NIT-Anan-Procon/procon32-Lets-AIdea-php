@@ -204,12 +204,14 @@ class Room
         }
     }
 
-    function updateGame($roomID) {
+    public function updateGame($roomID)
+    {
         $roomInfo = $this->RoomInfo($roomID);
         $num = count($roomInfo);
 
-        for($i = 0; $i < $num; $i++) {
+        for ($i = 0; $i < $num; ++$i) {
             $userID = $roomInfo[$i]['userID'];
+
             try {
                 $stmt = $this->dbh->prepare("UPDATE {$this->table} SET playerID = :playerID WHERE userID = :userID");
                 $stmt->bindValue(':playerID', $i + 1, PDO::PARAM_INT);
@@ -218,7 +220,7 @@ class Room
                 $this->dbh->commit();
             } catch (PDOException $e) {
                 header('Error: '.$e->getMessage());
-    
+
                 exit;
             }
         }

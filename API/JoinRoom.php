@@ -23,7 +23,7 @@ if (filter_input(INPUT_POST, 'roomID')) {
 
     $playerInfo = $room->JoinRoom($userID, $roomID);
 
-    if($playerInfo === null) {
+    if (null === $playerInfo) {
         http_response_code(403);
 
         exit;
