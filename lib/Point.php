@@ -5,7 +5,6 @@ require_once '../../info.php';
 class Point
 {
     protected $dbh;
-    protected $table = point_table;
 
     public function __construct()
     {
@@ -19,7 +18,7 @@ class Point
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header('Error:'.$e->getMessage());
 
             exit();
         }
@@ -27,7 +26,7 @@ class Point
 
     public function AddPoint($gameID, $playerID, $pointNum, $flag)
     {
-        $sql = "INSERT INTO {$this->table}(gameID, playerID, pointNum, flag)
+        $sql = "INSERT INTO point(gameID, playerID, pointNum, flag)
         VALUES
             (:gameID, :playerID, :pointNum, :flag)";
 
@@ -38,20 +37,25 @@ class Point
             $stmt->bindValue(':pointNum', $pointNum);
             $stmt->bindValue('flag', $flag);
             $stmt->execute();
+            return true;
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
-
-            exit();
+            header('Error:'.$e->getMessage());
+            return false;
         }
     }
 
-    public function GetPoint($playerID, $flag)
+    public function GetPoint($gameID, $playerID, $flag)
     {
-        $stmt = $this->dbh->prepare("SELECT SUM(pointNum) FROM {$this->table} WHERE playerID = :playerID AND flag = :flag");
+        $stmt = $this->dbh->prepare('SELECT SUM(pointNum) FROM point WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag');
+        $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->bindValue(':flag', $flag);
         $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_COLUMN);
+        if (false === $result) {
+            $result = 0;
+        }
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)$result;
     }
 }
