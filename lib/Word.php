@@ -19,7 +19,7 @@ class Word
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header('Error:'.$e->getMessage());
 
             exit();
         }
@@ -41,7 +41,7 @@ class Word
 
             return true;
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header('Error:'.$e->getMessage());
 
             return false;
         }
@@ -75,7 +75,7 @@ class Word
 
             return true;
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header('Error:'.$e->getMessage());
 
             return false;
         }
