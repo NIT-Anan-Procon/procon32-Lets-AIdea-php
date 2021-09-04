@@ -1,22 +1,18 @@
 <?php
 
-ini_set('display_errors', 1);
+header('Access-Control-Allow-Origin:*');
 
-require_once '../Const.php';
-
-require_once '../vendor/autoload.php';
-
-require_once '../lib/UserInfo.php';
+require_once '../../lib/UserInfo.php';
 
 use Firebase\JWT\JWT;
 
 $userInfo = new UserInfo();
 
-if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')) {
-    $username = $_POST['username'];
+if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
+    $name = $_POST['name'];
     $password = $_POST['password'];
 
-    $ok = $userInfo->userAuth($username, $password);
+    $ok = $userInfo->userAuth($name, $password);
     if ($ok) {
         $payload = [
             'iss' => JWT_ISSUER,
@@ -25,7 +21,6 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
         ];
         $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
 
-        header('Content-Type: application/json');
         header('Access-Control-Allow-Origin: *');
         $options = [
             'expires' => time() + 3600,
@@ -36,14 +31,10 @@ if (filter_input(INPUT_POST, 'username') && filter_input(INPUT_POST, 'password')
         setcookie('token', $jwt, $options);
         http_response_code(200);
     } else {
-        header('Error: The user name or password is incorrect.');
-        http_response_code(403);
-
-        exit;
+        header('Error:The user name or password is incorrect.');
+        http_response_code(401);
     }
 } else {
-    header('Error: The requested value is different from the specified format.');
+    header('Error:The requested value is different from the specified format.');
     http_response_code(401);
-
-    exit;
 }
