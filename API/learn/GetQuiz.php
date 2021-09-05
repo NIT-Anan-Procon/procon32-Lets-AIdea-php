@@ -43,12 +43,12 @@ $sentence = $word->GetWord($gameID, $playerID, 1);
 $NG = $word->GetWord($gameID, $playerID, 2);
 $synoyms = $word->GetWord($gameID, $playerID, 3);
 
-$result = array(
+$result = [
     'ng' => $NG,
     'AI' => $sentence,
     'pictureURL' => $photos,
-    'gamemode' => $gamemode
-);
+    'gamemode' => $gamemode,
+];
 
 echo json_encode($result);
 http_response_code(200);
