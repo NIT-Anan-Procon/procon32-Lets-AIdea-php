@@ -20,7 +20,6 @@ class Room
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
         } catch (PDOException $e) {
-            echo 'a';
             header('Error: '.$e->getMessage());
 
             exit();
