@@ -48,7 +48,7 @@ class Picture
         }
     }
 
-    public function GetPicture($gameID, $playerID)
+    public function GetPicture($gameID, $playerID, $answer)
     {
         $sql = 'SELECT pictureURL, answer FROM picture WHERE gameID = :gameID AND playerID ';
         if (null === $playerID) {
@@ -56,10 +56,16 @@ class Picture
         } else {
             $sql .= '= :playerID';
         }
+        if (1 === $answer) {
+            $sql .= ' AND answer = :answer';
+        }
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindValue(':gameID', $gameID);
         if (null !== $playerID) {
             $stmt->bindValue(':playerID', $playerID);
+        }
+        if (1 === $answer) {
+            $stmt->bindValue(':answer', $answer);
         }
         $stmt->execute();
 

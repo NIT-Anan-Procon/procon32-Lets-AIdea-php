@@ -19,13 +19,13 @@ class Word
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header('Error:'.$e->getMessage());
 
             exit();
         }
     }
 
-    public function AddWord($gameID, $playerID, $word, $flag)
+    public function addWord($gameID, $playerID, $word, $flag)
     {
         $sql = 'INSERT INTO word(gameID, playerID, word, flag)
         VALUES
@@ -41,13 +41,13 @@ class Word
 
             return true;
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header('Error:'.$e->getMessage());
 
             return false;
         }
     }
 
-    public function GetWord($gameID, $playerID, $flag)
+    public function getWord($gameID, $playerID, $flag)
     {
         $stmt = $this->dbh->prepare('SELECT word FROM word WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag');
         $stmt->bindValue(':gameID', $gameID);
@@ -66,7 +66,7 @@ class Word
         return $result;
     }
 
-    public function Delword($gameID)
+    public function delWord($gameID)
     {
         try {
             $stmt = $this->dbh->prepare('DELETE FROM word WHERE gameID = :gameID');
@@ -75,7 +75,7 @@ class Word
 
             return true;
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header('Error:'.$e->getMessage());
 
             return false;
         }
