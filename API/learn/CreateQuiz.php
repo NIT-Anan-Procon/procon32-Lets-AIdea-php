@@ -40,7 +40,7 @@ $photo = InitialPhoto();
 $picture->AddGameInfo($gameID, $playerID, $photo, 1);
 
 $data = json_encode(['url' => $photo]);
-$ch = curl_init('');    //''にpythonのAPIのurlを記述
+$ch = curl_init('');
 curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -65,13 +65,4 @@ for ($i = 0; $i < $num; ++$i) {
     $word->AddWord($gameID, $playerID, $synoyms[$i], 3);
 }
 
-$result = [
-    'synoyms' => $synoyms,
-    'ng' => $NG,
-    'AI' => $val['sentence'],
-    'pictureURL' => $photo,
-    'gamemode' => $gameInfo['gamemode'],
-];
-
-echo json_encode($result);
 http_response_code(200);
