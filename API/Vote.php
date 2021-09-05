@@ -1,9 +1,9 @@
 <?php
-
+ini_set( 'display_errors', 1 );
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
-require_once '../lib/point.php';
+require_once '../lib/Point.php';
 
 require_once '../lib/Room.php';
 
@@ -28,7 +28,7 @@ if (false === $room->getGameInfo($userID)) {
 $gameID = $room->getGameInfo($userID)['gameID'];
 if (filter_input(INPUT_POST, 'playerID')) {
     $playerID = (int) $_POST['playerID'];
-    $result = $point->AddPoint($gameID, $playerID, 1, 2);
+    $result = $point->addPoint($gameID, $playerID, 1, 2);
     if (false === $result) {
         http_response_code(400);
     } else {

@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../info.php';
+require_once '../Const.php';
 
 class Point
 {
@@ -24,7 +24,7 @@ class Point
         }
     }
 
-    public function AddPoint($gameID, $playerID, $pointNum, $flag)
+    public function addPoint($gameID, $playerID, $pointNum, $flag)
     {
         $sql = 'INSERT INTO point(gameID, playerID, pointNum, flag)
         VALUES
@@ -46,7 +46,7 @@ class Point
         }
     }
 
-    public function GetPoint($gameID, $playerID, $flag)
+    public function getPoint($gameID, $playerID, $flag)
     {
         $stmt = $this->dbh->prepare('SELECT SUM(pointNum) FROM point WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag');
         $stmt->bindValue(':gameID', $gameID);
