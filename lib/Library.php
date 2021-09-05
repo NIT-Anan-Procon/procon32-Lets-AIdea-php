@@ -1,5 +1,7 @@
 <?php
+
 ini_set('display_errors', 1);
+
 require_once '../Const.php';
 
 class Library
@@ -19,7 +21,7 @@ class Library
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header('Error:'.$e->getMessage());
 
             exit();
         }
@@ -41,23 +43,19 @@ class Library
             $stmt->bindValue(':flag', $flag);
             $stmt->execute();
 
-            return ['state' => true];
+            return true;
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header('Error:'.$e->getMessage());
 
-            return ['state' => 'データベースとの接続に失敗'];
-
-            exit();
+            return false;
         }
     }
 
     public function GetLibrary($search, $sort, $period, $page, $userID)
-    { //全ユーザーの作品を新着順で返す
-
+    {
         $limit = 20;
         $p = 0;
         $sql = 'SELECT * FROM library ';
-
         if ($search > 0) {
             $sql .= 'WHERE flag = :flag ';
             $flag = $search - 1;
@@ -65,8 +63,8 @@ class Library
         }
         if ($period > 0) {
             $date = new DateTime();
-            $time = $date->modify("-".$period." days")->format('Y/m/d H:i:s');
-            if ($p == 0) {
+            $time = $date->modify('-'.$period.' days')->format('Y/m/d H:i:s');
+            if (0 === $p) {
                 $sql .= 'WHERE ';
                 $p = 1;
             } else {
@@ -119,8 +117,12 @@ class Library
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', ($page - 1) * $limit, PDO::PARAM_INT);
         $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (false === $result) {
+            $result = null;
+        }
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 
     public function Good($libraryID)
@@ -130,20 +132,14 @@ class Library
             $stmt->bindValue(':libraryID', $libraryID);
             $stmt->execute();
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header('Error:'.$e->getMessage());
 
-            return ['state' => 'データベースとの接続に失敗'];
-
-            exit();
+            return false;
         }
         $stmt = $this->dbh->prepare('SELECT good FROM library WHERE libraryID = :libraryID');
         $stmt->bindValue(':libraryID', $libraryID);
         $stmt->execute();
-        $result = ['good' => (int) ($stmt->fetch(PDO::FETCH_COLUMN))];
-        if (false === $result) {
-            $result = ['status' => '指定したライブラリIDは存在しない'];
-        }
 
-        return $result;
+        return $stmt->fetch(PDO::FETCH_COLUMN);
     }
 }
