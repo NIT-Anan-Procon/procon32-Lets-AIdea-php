@@ -28,7 +28,7 @@ if (false === $room->getGameInfo($userID)) {
 $user = $room->getGameInfo($userID);
 if (filter_input(INPUT_POST, 'explanation')) {
     $explanation = $_POST['explanation'];
-    $result = $word->AddWord($user['gameID'], $user['playerID'], $explanation, 0);
+    $result = $word->addWord($user['gameID'], $user['playerID'], $explanation, 0);
     if (false === $result) {
         http_response_code(400);
     } else {

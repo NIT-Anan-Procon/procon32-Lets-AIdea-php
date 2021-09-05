@@ -25,7 +25,7 @@ class Word
         }
     }
 
-    public function AddWord($gameID, $playerID, $word, $flag)
+    public function addWord($gameID, $playerID, $word, $flag)
     {
         $sql = 'INSERT INTO word(gameID, playerID, word, flag)
         VALUES
@@ -47,7 +47,7 @@ class Word
         }
     }
 
-    public function GetWord($gameID, $playerID, $flag)
+    public function getWord($gameID, $playerID, $flag)
     {
         $stmt = $this->dbh->prepare('SELECT word FROM word WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag');
         $stmt->bindValue(':gameID', $gameID);
@@ -66,7 +66,7 @@ class Word
         return $result;
     }
 
-    public function Delword($gameID)
+    public function delWord($gameID)
     {
         try {
             $stmt = $this->dbh->prepare('DELETE FROM word WHERE gameID = :gameID');
