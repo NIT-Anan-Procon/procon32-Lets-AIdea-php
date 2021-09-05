@@ -48,7 +48,7 @@ class Picture
         }
     }
 
-    public function GetPicture($gameID, $playerID)
+    public function getPicture($gameID, $playerID)
     {
         $sql = 'SELECT pictureURL, answer FROM picture WHERE gameID = :gameID AND playerID ';
         if (null === $playerID) {
