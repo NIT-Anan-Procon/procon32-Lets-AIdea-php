@@ -35,7 +35,7 @@ if (isset($_POST['gamemode'])) {
     $roomID = $room->CreateRoomID();
     $gameID = $room->GetGameID() + 1;
     $playerID = 1;
-    $gamemode = (String)$_POST['gamemode'];
+    $gamemode = (string) $_POST['gamemode'];
     $room->AddRoom($gameID, $playerID, $userID, $roomID, 1, $gamemode);
     $playerInfo = $room->PlayerInfo($gameID, $playerID);
     $user = $userInfo->GetUserInfo($userID);

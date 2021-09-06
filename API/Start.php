@@ -68,7 +68,7 @@ foreach ($val['synonyms'] as $synonyms) {
 
 $mode = substr($gamemode, 0, 1);
 $val['subject'] = 'AI';
-if($mode == '1') {
+if ('1' === $mode) {
     $imgs = getPhotos($val['subject']);
     foreach ($imgs as $img) {
         $urls = $picture->GetPicture($gameID, $playerID);
@@ -79,10 +79,8 @@ if($mode == '1') {
         }
         $picture->AddPicture($gameID, $playerID, $img, 0);
     }
-    
-    $photo = $picture->GetPicture($gameID, $playerID);
-    
 
+    $photo = $picture->GetPicture($gameID, $playerID);
 }
 
 $result = [
