@@ -42,5 +42,6 @@ function getPhoto($search)
         'query' => "{$search}",
     ];
 
-    return Unsplash\Photo::random($filters);
+    $photo = Unsplash\Photo::random($filters);
+    return $photo->download();
 }
