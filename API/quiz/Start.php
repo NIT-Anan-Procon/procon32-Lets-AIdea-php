@@ -40,47 +40,51 @@ $gameID = $gameInfo['gameID'];
 $playerID = $gameInfo['playerID'];
 $gamemode = $gameInfo['gamemode'];
 $photo = InitialPhoto();
-$picture->AddGameInfo($gameID, $playerID, $photo, 1);
+$picture->AddPicture($gameID, $playerID, $photo, 1);
 
-$data = json_encode(['url' => $photo]);
-$ch = curl_init('');    //''にpythonのAPIのurlを記述
-curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
-curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$response = curl_exec($ch);
-curl_close();
-$val = json_decode($response);
+// $data = json_encode(['url' => $photo]);
+// $ch = curl_init('');    //''にpythonのAPIのurlを記述
+// curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
+// curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+// curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+// $response = curl_exec($ch);
+// curl_close();
+// $val = json_decode($response);
 
-$sentence = $val['sentence'];
+// $sentence = $val['sentence'];
+$sentence = '私はAIです。';
 $word->AddWord($gameID, $playerID, $sentence, 1);
 
+$val['NGword'] = ['私','AI'];
 foreach ($val['NGword'] as $ng) {
     $word->AddWord($gameID, $playerID, $ng, 2);
 }
 
+$val['synonyms'] = ['わたし','拙者', '自分'];
 foreach ($val['synonyms'] as $synonyms) {
     $word->AddWord($gameID, $playerID, $synonyms, 3);
 }
 
-$imgs = getPhotos($val['NGword']);
+$val['subject'] = 'AI';
+$imgs = getPhotos($val['subject']);
 foreach ($imgs as $img) {
     $urls = $picture->GetPicture($gameID, $playerID);
     for ($i = 0; $i < count($urls); ++$i) {
-        while ($img = $urls[$i]['pictureURL']) {
-            $img = $picture->getPhoto($val['NGword']);
+        while ($img === $urls[$i]['pictureURL']) {
+            $img = getPhoto($val['subject']);
         }
     }
     $picture->AddPicture($gameID, $playerID, $img, 0);
 }
 
-$urls = $picture->GetPicture($gameID, $playerID);
+$photos = $picture->GetPicture($gameID, $playerID);
 
 $result = array(
     'synonyms'      => $synonyms,
     'ng'            => $val['NGword'],
     'AI'            => $sentence,
-    'pictureURL'    => $urls,
+    'pictureURL'    => $photos,
     'gamemode'      => $gamemode
 );
 
