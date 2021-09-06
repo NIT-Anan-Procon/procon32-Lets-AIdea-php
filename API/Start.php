@@ -57,11 +57,21 @@ $sentence = '私はAIです。';
 $word->AddWord($gameID, $playerID, $sentence, 1);
 
 $val['NGword'] = ['私', 'AI'];
-foreach ($val['NGword'] as $ng) {
-    $word->AddWord($gameID, $playerID, $ng, 2);
+$val['synonyms'] = ['わたし', '拙者', '自分'];
+
+$mode = substr($gamemode, 1, 1);
+if ($mode == 1) {
+    foreach ($val['NGword'] as $ng) {
+        $word->AddWord($gameID, $playerID, $ng, 2);
+    }
+    $mode = substr($gamemode, 2, 1);
+    if ($mode == 1) {
+        foreach ($val['synonyms'] as $synonyms) {
+            $word->AddWord($gameID, $playerID, $synonyms, 2);
+        }
+    }
 }
 
-$val['synonyms'] = ['わたし', '拙者', '自分'];
 foreach ($val['synonyms'] as $synonyms) {
     $word->AddWord($gameID, $playerID, $synonyms, 3);
 }
@@ -83,12 +93,15 @@ if ('1' === $mode) {
     $photo = $picture->GetPicture($gameID, $playerID);
 }
 
+$ng = $word->getWord($gameID, $playerID, 2);
+$synonyms = $word->getWord($gameID, $playerID, 3);
+
 $result = [
-    'synonyms' => $synonyms,
-    'ng' => $val['NGword'],
-    'AI' => $sentence,
-    'pictureURL' => $photo,
-    'gamemode' => $gamemode,
+    'synonyms'      => $synonyms,
+    'ng'            => $ng,
+    'AI'            => $sentence,
+    'pictureURL'    => $photo,
+    'gamemode'      => $gamemode,
 ];
 
 echo json_encode($result);

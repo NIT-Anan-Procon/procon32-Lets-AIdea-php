@@ -54,7 +54,7 @@ class Word
         $stmt->bindValue(':playerID', $playerID);
         $stmt->bindValue(':flag', $flag);
         $stmt->execute();
-        if (2 === $flag) {
+        if (2 === $flag || 3 === $flag) {
             $result = $stmt->fetchAll(PDO::FETCH_COLUMN);
         } else {
             $result = $stmt->fetch(PDO::FETCH_COLUMN);
