@@ -4,15 +4,15 @@ ini_set('display_errors', 1);
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
-require_once '../../lib/Picture.php';
+require_once '../lib/Picture.php';
 
-require_once '../../lib/Room.php';
+require_once '../lib/Room.php';
 
-require_once '../../lib/UnsplashApi.php';
+require_once '../lib/UnsplashApi.php';
 
-require_once '../../lib/UserInfo.php';
+require_once '../lib/UserInfo.php';
 
-require_once '../../lib/Word.php';
+require_once '../lib/Word.php';
 
 $picture = new Picture();
 $room = new Room();
@@ -66,19 +66,24 @@ foreach ($val['synonyms'] as $synonyms) {
     $word->AddWord($gameID, $playerID, $synonyms, 3);
 }
 
+$mode = substr($gamemode, 0, 1);
 $val['subject'] = 'AI';
-$imgs = getPhotos($val['subject']);
-foreach ($imgs as $img) {
-    $urls = $picture->GetPicture($gameID, $playerID);
-    for ($i = 0; $i < count($urls); ++$i) {
-        while ($img === $urls[$i]['pictureURL']) {
-            $img = getPhoto($val['subject']);
+if($mode == '1') {
+    $imgs = getPhotos($val['subject']);
+    foreach ($imgs as $img) {
+        $urls = $picture->GetPicture($gameID, $playerID);
+        for ($i = 0; $i < count($urls); ++$i) {
+            while ($img === $urls[$i]['pictureURL']) {
+                $img = getPhoto($val['subject']);
+            }
         }
+        $picture->AddPicture($gameID, $playerID, $img, 0);
     }
-    $picture->AddPicture($gameID, $playerID, $img, 0);
-}
+    
+    $photo = $picture->GetPicture($gameID, $playerID);
+    
 
-$photos = $picture->GetPicture($gameID, $playerID);
+}
 
 $result = [
     'synonyms' => $synonyms,
