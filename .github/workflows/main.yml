@@ -33,3 +33,4 @@ jobs:
           proxy_password: ${{ secrets.PASSWORD }}
           source: "API/,lib/,composer.json"
           target: "/var/www/html/"
+          overwrite: true
