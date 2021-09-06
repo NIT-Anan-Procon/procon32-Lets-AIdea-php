@@ -28,9 +28,8 @@ if (false === $user['room']) {
 }
 if (filter_input(INPUT_POST, 'playerID')) {
     $playerID = (int) $_POST['playerID'];
-    $result['ans'] = $point->addPoint($user['room']['gameID'], $playerID, 10, 0);
-    $result['exp'] = $point->addPoint($user['room']['gameID'], $user['room']['playerID'], 10, 1);
-    if (false === $result['ans'] || false === $result['exp']) {
+    $result = $point->addPoint($user['room']['gameID'], $playerID, 1, 2);
+    if (false === $result) {
         http_response_code(400);
     } else {
         http_response_code(200);

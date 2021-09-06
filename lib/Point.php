@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../info.php';
+require_once __DIR__.'/../Const.php';
 
 class Point
 {
@@ -59,5 +59,12 @@ class Point
         }
 
         return (int) $result;
+    }
+
+    public function deleteGameInfo($gameID)
+    {
+        $stmt = $this->dbh->prepare('DELETE FROM point WHERE gameID = :gameID');
+        $stmt->bindValue(':gameID', $gameID);
+        $stmt->execute();
     }
 }

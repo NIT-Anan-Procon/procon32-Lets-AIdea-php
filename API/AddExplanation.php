@@ -1,36 +1,35 @@
 <?php
 
-ini_set('display_errors', 1);
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
-require_once '../lib/Point.php';
+require_once '../lib/Word.php';
 
 require_once '../lib/Room.php';
 
 require_once '../lib/UserInfo.php';
-
-$point = new Point();
+$word = new Word();
 $room = new Room();
 $userInfo = new UserInfo();
-$user['userInfo'] = $userInfo->CheckLogin();
-if (false === $user['userInfo']) {
+
+if (false === $userInfo->CheckLogin()) {
     header('Error:Login failed.');
     http_response_code(403);
 
     exit;
-}$user['room'] = $room->getGameInfo($user['userInfo']['userID']);
-if (false === $user['room']) {
+}
+$userID = $userInfo->CheckLogin()['userID'];
+if (false === $room->getGameInfo($userID)) {
     header('Error:The user is not in the room.');
     http_response_code(403);
 
     exit;
 }
-if (filter_input(INPUT_POST, 'playerID')) {
-    $playerID = (int) $_POST['playerID'];
-    $result['ans'] = $point->addPoint($user['room']['gameID'], $playerID, 10, 0);
-    $result['exp'] = $point->addPoint($user['room']['gameID'], $user['room']['playerID'], 10, 1);
-    if (false === $result['ans'] || false === $result['exp']) {
+$user = $room->getGameInfo($userID);
+if (filter_input(INPUT_POST, 'explanation')) {
+    $explanation = $_POST['explanation'];
+    $result = $word->addWord($user['gameID'], $user['playerID'], $explanation, 0);
+    if (false === $result) {
         http_response_code(400);
     } else {
         http_response_code(200);
