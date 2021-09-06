@@ -50,26 +50,26 @@ $response = curl_exec($ch);
 curl_close();
 $val = json_decode($response);
 
-$sentence =$val['sentence'];
+$sentence = $val['sentence'];
 $word->AddWord($gameID, $playerID, $sentence, 1);
 
-foreach($val['NGword'] as $ng) {
-    $word->AddWord($gameID, $playerID, $ng, 2);    
+foreach ($val['NGword'] as $ng) {
+    $word->AddWord($gameID, $playerID, $ng, 2);
 }
 
-foreach($val['synonyms'] as $synonyms) {
-    $word->AddWord($gameID, $playerID, $synonyms,3);
+foreach ($val['synonyms'] as $synonyms) {
+    $word->AddWord($gameID, $playerID, $synonyms, 3);
 }
 
 $imgs = getPhotos($val['NGword']);
-foreach($imgs as $img) {
+foreach ($imgs as $img) {
     $urls = $picture->GetPicture($gameID, $playerID);
-    for($i = 0; $i < count($urls); $i++) {
-        while($img = $urls[$i]['pictureURL']) {
+    for ($i = 0; $i < count($urls); ++$i) {
+        while ($img = $urls[$i]['pictureURL']) {
             $img = $picture->getPhoto($val['NGword']);
         }
     }
-    $picture->AddPicture($gameID, $playerID,$img, 0);
+    $picture->AddPicture($gameID, $playerID, $img, 0);
 }
 
 http_response_code(200);
