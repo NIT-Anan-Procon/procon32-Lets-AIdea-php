@@ -34,25 +34,25 @@ if (false === $gameInfo) {
 $gameID = $gameInfo['gameID'];
 $roomInfo = $room->GameInfo($gameID);
 $result = [];
-for($i = 0; $i < count($roomInfo); $i++) {
+for ($i = 0; $i < count($roomInfo); ++$i) {
     $playerID = $roomInfo[$i]['playerID'];
     $photos = $picture->GetPicture($gameID, $playerID);
     $user = $userInfo->getUserInfo($roomInfo[$i]['userID']);
     $explanation = $word->getWord($gameID, $playerID, 0);
     $array = [
         'name' => $user['name'],
-        'icon'  => $user['icon'],
+        'icon' => $user['icon'],
         'badge' => $user['badge'],
-        'explanation'   => $explanation,
+        'explanation' => $explanation,
     ];
-    for($j = 0; $j < count($photos); $j++) {
+    for ($j = 0; $j < count($photos); ++$j) {
         $img_array = [
-            'pictureURL'    => $photos[$j]['pictureURL'],
-            'answer'        => $photos[$j]['answer']
+            'pictureURL' => $photos[$j]['pictureURL'],
+            'answer' => $photos[$j]['answer'],
         ];
-        array_push($array, $img_array);
+        $array[] = $img_array;
     }
-    array_push($result, $array);
+    $result[] = $array;
 }
 
 echo json_encode($result);
