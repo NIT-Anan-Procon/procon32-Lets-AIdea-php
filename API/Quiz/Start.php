@@ -84,7 +84,7 @@ $result = [
     'synonyms' => $synonyms,
     'ng' => $val['NGword'],
     'AI' => $sentence,
-    'pictureURL' => $photos,
+    'pictureURL' => $photo,
     'gamemode' => $gamemode,
 ];
 
