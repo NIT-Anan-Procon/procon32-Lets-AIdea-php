@@ -56,12 +56,12 @@ $picture->AddPicture($gameID, $playerID, $photo, 1);
 $sentence = '私はAIです。';
 $word->AddWord($gameID, $playerID, $sentence, 1);
 
-$val['NGword'] = ['私','AI'];
+$val['NGword'] = ['私', 'AI'];
 foreach ($val['NGword'] as $ng) {
     $word->AddWord($gameID, $playerID, $ng, 2);
 }
 
-$val['synonyms'] = ['わたし','拙者', '自分'];
+$val['synonyms'] = ['わたし', '拙者', '自分'];
 foreach ($val['synonyms'] as $synonyms) {
     $word->AddWord($gameID, $playerID, $synonyms, 3);
 }
@@ -80,13 +80,13 @@ foreach ($imgs as $img) {
 
 $photos = $picture->GetPicture($gameID, $playerID);
 
-$result = array(
-    'synonyms'      => $synonyms,
-    'ng'            => $val['NGword'],
-    'AI'            => $sentence,
-    'pictureURL'    => $photos,
-    'gamemode'      => $gamemode
-);
+$result = [
+    'synonyms' => $synonyms,
+    'ng' => $val['NGword'],
+    'AI' => $sentence,
+    'pictureURL' => $photos,
+    'gamemode' => $gamemode,
+];
 
 echo json_encode($result);
 http_response_code(200);
