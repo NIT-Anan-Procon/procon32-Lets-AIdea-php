@@ -27,17 +27,17 @@ class Library
         }
     }
 
-    public function UploadLibrary($userID, $explanation, $NGword, $pictureURL, $flag)
+    public function UploadLibrary($userID, $explanation, $ng, $pictureURL, $flag)
     {
-        $sql = 'INSERT INTO library(userID, explanation, NGword, pictureURL, time, flag)
+        $sql = "INSERT INTO library(userID, explanation, ng, pictureURL, time, flag, likedUser)
         VALUES
-            (:userID, :explanation, :NGword, :pictureURL, :time, :flag)';
+            (:userID, :explanation, :ng, :pictureURL, :time, :flag, '|')";
 
         try {
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':userID', $userID);
             $stmt->bindValue(':explanation', $explanation);
-            $stmt->bindValue(':NGword', $NGword);
+            $stmt->bindValue(':ng', $ng);
             $stmt->bindValue(':pictureURL', $pictureURL);
             $stmt->bindValue(':time', date('Y/m/d H:i:s'));
             $stmt->bindValue(':flag', $flag);
@@ -55,7 +55,7 @@ class Library
     {
         $limit = 20;
         $p = 0;
-        $sql = 'SELECT * FROM library ';
+        $sql = 'SELECT libraryID, userID, explanation, pictureURL, ng, time, good, flag FROM library ';
         if ($search > 0) {
             $sql .= 'WHERE flag = :flag ';
             $flag = $search - 1;
@@ -125,11 +125,23 @@ class Library
         return $result;
     }
 
-    public function Good($libraryID)
+    public function Good($libraryID, $userID)
     {
+        $check = $this->check($libraryID, $userID);
+        $sql = "UPDATE library SET good = good ";
+        if (false === $check) {
+            $result['check'] = 1;
+            $sql .= "+ 1, likedUser = CONCAT(likedUser, :userID) ";
+        } else {
+            $result['check'] = 0;
+            $userID = "|" . $userID;
+            $sql .= "- 1, likedUser = replace(likedUser, :userID, '|') ";
+        }
+        $sql .= "WHERE libraryID = :libraryID";
         try {
-            $stmt = $this->dbh->prepare('UPDATE library SET good = good + 1 WHERE libraryID = :libraryID');
+            $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':libraryID', $libraryID);
+            $stmt->bindValue(':userID', $userID."|");
             $stmt->execute();
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
@@ -139,7 +151,16 @@ class Library
         $stmt = $this->dbh->prepare('SELECT good FROM library WHERE libraryID = :libraryID');
         $stmt->bindValue(':libraryID', $libraryID);
         $stmt->execute();
+        $result['good'] = (int)$stmt->fetch(PDO::FETCH_COLUMN);
 
+        return $result;
+    }
+
+    public function check($libraryID, $userID){
+        $stmt = $this->dbh->prepare('SELECT good FROM library WHERE libraryID = :libraryID AND likedUser like :userID');
+        $stmt->bindValue(':libraryID', $libraryID);
+        $stmt->bindValue(':userID', "%|".$userID."|%");
+        $stmt->execute();
         return $stmt->fetch(PDO::FETCH_COLUMN);
     }
 }
