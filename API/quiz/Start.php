@@ -76,13 +76,13 @@ foreach ($imgs as $img) {
 
 $urls = $picture->GetPicture($gameID, $playerID);
 
-$result = array(
-    'synonyms'      => $synonyms,
-    'ng'            => $val['NGword'],
-    'AI'            => $sentence,
-    'pictureURL'    => $urls,
-    'gamemode'      => $gamemode
-);
+$result = [
+    'synonyms' => $synonyms,
+    'ng' => $val['NGword'],
+    'AI' => $sentence,
+    'pictureURL' => $urls,
+    'gamemode' => $gamemode,
+];
 
 echo json_encode($result);
 http_response_code(200);
