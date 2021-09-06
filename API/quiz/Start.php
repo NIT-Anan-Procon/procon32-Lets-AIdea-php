@@ -1,5 +1,6 @@
 <?php
 
+ini_set('display_errors', 1);
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
@@ -7,7 +8,7 @@ require_once '../../lib/Picture.php';
 
 require_once '../../lib/Room.php';
 
-require_once '../../lib/Unsplash_API.php';
+require_once '../../lib/UnsplashApi.php';
 
 require_once '../../lib/UserInfo.php';
 
@@ -27,7 +28,7 @@ if (false === $userInfo->CheckLogin()) {
 
 $userID = $userInfo->CheckLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
-if (false === $response) {
+if (false === $gameInfo) {
     header('Error: The user is not in the room.');
     http_response_code(403);
 
@@ -37,6 +38,7 @@ if (false === $response) {
 $gameID = $gameInfo['gameID'];
 $gameID = $gameInfo['gameID'];
 $playerID = $gameInfo['playerID'];
+$gamemode = $gameInfo['gamemode'];
 $photo = InitialPhoto();
 $picture->AddGameInfo($gameID, $playerID, $photo, 1);
 
@@ -72,4 +74,15 @@ foreach ($imgs as $img) {
     $picture->AddPicture($gameID, $playerID, $img, 0);
 }
 
+$urls = $picture->GetPicture($gameID, $playerID);
+
+$result = array(
+    'synonyms'      => $synonyms,
+    'ng'            => $val['NGword'],
+    'AI'            => $sentence,
+    'pictureURL'    => $urls,
+    'gamemode'      => $gamemode
+);
+
+echo json_encode($result);
 http_response_code(200);

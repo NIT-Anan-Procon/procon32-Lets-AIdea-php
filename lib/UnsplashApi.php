@@ -1,8 +1,8 @@
 <?php
 
-require_once '../Const.php';
+require_once __DIR__.'/../Const.php';
 
-require '../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 $access = access;
 $secret = secret;
@@ -19,6 +19,7 @@ Unsplash\HttpClient::init([
 
 function InitialPhoto()
 {
+    $filters = [];
     $photo = Unsplash\Photo::random($filters);
 
     return $photo->download();
@@ -36,5 +37,10 @@ function getPhotos($search)
 }
 
 function getPhoto($search) {
-    $photo = 
+    $filters = [
+        'query' => "$search"
+    ];
+    $photo = Unsplash\Photo::random($filters);
+
+    return $photo;
 }
