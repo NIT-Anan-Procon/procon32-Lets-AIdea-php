@@ -22,7 +22,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       # Deploy development server
-      - name: copy file via ssh password
+      - name: copy file via ssh password 1
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -31,6 +31,31 @@ jobs:
           proxy_host: ${{ secrets.PROXY_HOST }}
           proxy_username: ${{ secrets.USERNAME }}
           proxy_password: ${{ secrets.PASSWORD }}
-          source: "API/,lib/,composer.json"
+          source: "lib/"
+          target: "/var/www/html/lib/"
+          rm: true
+          
+      - name: copy file via ssh password 2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          proxy_host: ${{ secrets.PROXY_HOST }}
+          proxy_username: ${{ secrets.USERNAME }}
+          proxy_password: ${{ secrets.PASSWORD }}
+          source: "API/"
+          target: "/var/www/html/API/"
+          rm: true
+          
+      - name: copy file via ssh password 3
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          proxy_host: ${{ secrets.PROXY_HOST }}
+          proxy_username: ${{ secrets.USERNAME }}
+          proxy_password: ${{ secrets.PASSWORD }}
+          source: "composer.json"
           target: "/var/www/html/"
-          overwrite: true
