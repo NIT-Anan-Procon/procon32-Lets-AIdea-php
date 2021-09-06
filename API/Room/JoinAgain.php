@@ -43,7 +43,7 @@ $gameID = $player['gameID'];
 $playerID = $player['playerID'];
 $gameInfo = $room->GameInfo($gameID);
 
-if(count($gameInfo) === 1) {
+if (1 === count($gameInfo)) {
     $picture->deleteGameInfo($gameID);
     $point->deleteGameInfo($gameID);
     $explanation->DelWord($gameID);
