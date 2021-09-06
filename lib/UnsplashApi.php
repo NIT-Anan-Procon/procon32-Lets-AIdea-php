@@ -36,11 +36,11 @@ function getPhotos($search)
     return $urls;
 }
 
-function getPhoto($search) {
+function getPhoto($search)
+{
     $filters = [
-        'query' => "$search"
+        'query' => "{$search}",
     ];
-    $photo = Unsplash\Photo::random($filters);
 
-    return $photo;
+    return Unsplash\Photo::random($filters);
 }
