@@ -1,6 +1,6 @@
 <?php
 
-require_once '../Const.php';
+require_once __DIR__.'/../Const.php';
 
 class Room
 {
