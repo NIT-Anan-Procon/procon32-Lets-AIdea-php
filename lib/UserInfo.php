@@ -201,8 +201,9 @@ class UserInfo
                     $result = false;
                 }
             } catch (Exception $e) {
-                header('Error:'.$e->getMessage());
-                $result = false;
+                header('Error: '.$e->getMessage());
+
+                exit;
             }
         } else {
             $result = false;

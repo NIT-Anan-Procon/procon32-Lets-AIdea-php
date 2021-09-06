@@ -1,18 +1,17 @@
 <?php
 
-ini_set('display_errors', 1);
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
-require_once '../lib/Point.php';
+require_once '../lib/Word.php';
 
 require_once '../lib/Room.php';
 
 require_once '../lib/UserInfo.php';
-
-$point = new Point();
+$word = new Word();
 $room = new Room();
 $userInfo = new UserInfo();
+
 if (false === $userInfo->CheckLogin()) {
     header('Error:Login failed.');
     http_response_code(403);
@@ -26,10 +25,10 @@ if (false === $room->getGameInfo($userID)) {
 
     exit;
 }
-$gameID = $room->getGameInfo($userID)['gameID'];
-if (filter_input(INPUT_POST, 'playerID')) {
-    $playerID = (int) $_POST['playerID'];
-    $result = $point->addPoint($gameID, $playerID, 1, 2);
+$user = $room->getGameInfo($userID);
+if (filter_input(INPUT_POST, 'explanation')) {
+    $explanation = $_POST['explanation'];
+    $result = $word->addWord($user['gameID'], $user['playerID'], $explanation, 0);
     if (false === $result) {
         http_response_code(400);
     } else {
