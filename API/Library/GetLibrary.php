@@ -27,11 +27,11 @@ if (isset($_GET['search'], $_GET['sort'], $_GET['period']) && filter_input(INPUT
         $userID = 0;
     }
     $result = $library->GetLibrary($search, $sort, $period, $page, $userID);
-    for ($i = 0; $i < count($result); ++$i) {/*
+    for ($i = 0; $i < count($result); ++$i) {
         $user = $userInfo->getUserInfo($result[$i]['userID']);
         unset($user['password']);
         $result[$i] += $user;
-*/
+
         $check = $library->check($result[$i]['libraryID'], $loginUser['userID']);
         if (false === $check) {
             $result[$i]['check'] = 0;
