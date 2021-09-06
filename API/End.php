@@ -39,15 +39,15 @@ if (false === $user['room']) {
 $game = $room->GameInfo($user['room']['gameID']);
 $playerNum = count($game);
 $max = -1;
-for($i = 1; $i <= $playerNum; $i++){
+for ($i = 1; $i <= $playerNum; ++$i) {
     $vote[$i] = $point->getPoint($user['room']['gameID'], $i, 2);
-    if($max < $vote[$i]){
+    if ($max < $vote[$i]) {
         $max = $vote;
         $winner = $i;
     }
 }
-for($i = 1; $i <= $playerNum; $i++){
-    if($vote[$i] == $max && $i != $winner){
+for ($i = 1; $i <= $playerNum; ++$i) {
+    if ($vote[$i] === $max && $i !== $winner) {
         //引き分け！！
     }
 }
