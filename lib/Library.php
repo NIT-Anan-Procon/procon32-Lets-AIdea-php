@@ -128,20 +128,21 @@ class Library
     public function Good($libraryID, $userID)
     {
         $check = $this->check($libraryID, $userID);
-        $sql = "UPDATE library SET good = good ";
+        $sql = 'UPDATE library SET good = good ';
         if (false === $check) {
             $result['check'] = 1;
-            $sql .= "+ 1, likedUser = CONCAT(likedUser, :userID) ";
+            $sql .= '+ 1, likedUser = CONCAT(likedUser, :userID) ';
         } else {
             $result['check'] = 0;
-            $userID = "|" . $userID;
+            $userID = '|'.$userID;
             $sql .= "- 1, likedUser = replace(likedUser, :userID, '|') ";
         }
-        $sql .= "WHERE libraryID = :libraryID";
+        $sql .= 'WHERE libraryID = :libraryID';
+
         try {
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':libraryID', $libraryID);
-            $stmt->bindValue(':userID', $userID."|");
+            $stmt->bindValue(':userID', $userID.'|');
             $stmt->execute();
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
@@ -151,16 +152,18 @@ class Library
         $stmt = $this->dbh->prepare('SELECT good FROM library WHERE libraryID = :libraryID');
         $stmt->bindValue(':libraryID', $libraryID);
         $stmt->execute();
-        $result['good'] = (int)$stmt->fetch(PDO::FETCH_COLUMN);
+        $result['good'] = (int) $stmt->fetch(PDO::FETCH_COLUMN);
 
         return $result;
     }
 
-    public function check($libraryID, $userID){
+    public function check($libraryID, $userID)
+    {
         $stmt = $this->dbh->prepare('SELECT good FROM library WHERE libraryID = :libraryID AND likedUser like :userID');
         $stmt->bindValue(':libraryID', $libraryID);
-        $stmt->bindValue(':userID', "%|".$userID."|%");
+        $stmt->bindValue(':userID', '%|'.$userID.'|%');
         $stmt->execute();
+
         return $stmt->fetch(PDO::FETCH_COLUMN);
     }
 }

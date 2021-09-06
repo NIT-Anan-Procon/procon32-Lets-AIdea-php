@@ -13,6 +13,7 @@ $userInfo = new UserInfo();
 $loginUser = $userInfo->CheckLogin();
 if (false === $loginUser) {
     header('Error:Login failed.');
+
     exit;
 }
 if (isset($_GET['search'], $_GET['sort'], $_GET['period']) && filter_input(INPUT_GET, 'page')) {
@@ -20,7 +21,7 @@ if (isset($_GET['search'], $_GET['sort'], $_GET['period']) && filter_input(INPUT
     $sort = (int) $_GET['sort'];
     $period = (int) $_GET['period'];
     $page = (int) $_GET['page'];
-    if(filter_input(INPUT_GET, 'userID')){
+    if (filter_input(INPUT_GET, 'userID')) {
         $userID = (int) $_GET['userID'];
     } else {
         $userID = 0;
@@ -32,7 +33,7 @@ if (isset($_GET['search'], $_GET['sort'], $_GET['period']) && filter_input(INPUT
         $result[$i] += $user;
 */
         $check = $library->check($result[$i]['libraryID'], $loginUser['userID']);
-        if(false == $check){
+        if (false === $check) {
             $result[$i]['check'] = 0;
         } else {
             $result[$i]['check'] = 1;

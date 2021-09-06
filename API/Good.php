@@ -19,8 +19,9 @@ if (false === $user) {
 if (filter_input(INPUT_POST, 'libraryID')) {
     $libraryID = (int) $_POST['libraryID'];
     $result = $library->Good($libraryID, $user['userID']);
-    if(false == $result){
+    if (false === $result) {
         http_response_code(400);
+
         exit;
     }
     echo json_encode($result);
