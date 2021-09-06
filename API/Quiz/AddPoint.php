@@ -4,11 +4,11 @@ ini_set('display_errors', 1);
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
-require_once '../lib/Point.php';
+require_once '../../lib/Point.php';
 
-require_once '../lib/Room.php';
+require_once '../../lib/Room.php';
 
-require_once '../lib/UserInfo.php';
+require_once '../../lib/UserInfo.php';
 
 $point = new Point();
 $room = new Room();
@@ -19,7 +19,8 @@ if (false === $user['userInfo']) {
     http_response_code(403);
 
     exit;
-}$user['room'] = $room->getGameInfo($user['userInfo']['userID']);
+}
+$user['room'] = $room->getGameInfo($user['userInfo']['userID']);
 if (false === $user['room']) {
     header('Error:The user is not in the room.');
     http_response_code(403);
@@ -28,8 +29,8 @@ if (false === $user['room']) {
 }
 if (filter_input(INPUT_POST, 'playerID')) {
     $playerID = (int) $_POST['playerID'];
-    $result['ans'] = $point->addPoint($user['room']['gameID'], $playerID, 10, 0);
-    $result['exp'] = $point->addPoint($user['room']['gameID'], $user['room']['playerID'], 10, 1);
+    $result['exp'] = $point->addPoint($user['room']['gameID'], $playerID, 10, 1);
+    $result['ans'] = $point->addPoint($user['room']['gameID'], $user['room']['playerID'], 10, 0);
     if (false === $result['ans'] || false === $result['exp']) {
         http_response_code(400);
     } else {
