@@ -41,10 +41,13 @@ if (false === $player) {
 
 $gameID = $player['gameID'];
 $playerID = $player['playerID'];
+$gameInfo = $room->GameInfo($gameID);
 
-$picture->deleteGameInfo($gameID);
-$point->deleteGameInfo($gameID);
-$explanation->DelWord($gameID);
+if(count($gameInfo) === 1) {
+    $picture->deleteGameInfo($gameID);
+    $point->deleteGameInfo($gameID);
+    $explanation->DelWord($gameID);
+}
 
 // roomIDで部屋の情報を取得
 $roomID = $player['roomID'];
