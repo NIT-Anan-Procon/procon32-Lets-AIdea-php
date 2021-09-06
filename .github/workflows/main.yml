@@ -31,6 +31,7 @@ jobs:
           proxy_host: ${{ secrets.PROXY_HOST }}
           proxy_username: ${{ secrets.USERNAME }}
           proxy_password: ${{ secrets.PASSWORD }}
+          strip_components: 1
           source: "lib/"
           target: "/var/www/html/lib/"
           rm: true
@@ -44,6 +45,7 @@ jobs:
           proxy_host: ${{ secrets.PROXY_HOST }}
           proxy_username: ${{ secrets.USERNAME }}
           proxy_password: ${{ secrets.PASSWORD }}
+          strip_components: 1
           source: "API/"
           target: "/var/www/html/API/"
           rm: true
