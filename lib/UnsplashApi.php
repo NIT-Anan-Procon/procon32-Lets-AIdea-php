@@ -1,8 +1,10 @@
 <?php
 
-require_once '../Const.php';
+ini_set('display_errors', 1);
 
-require '../vendor/autoload.php';
+require_once __DIR__.'/../Const.php';
+
+require_once __DIR__.'/../vendor/autoload.php';
 
 $access = access;
 $secret = secret;
@@ -19,6 +21,7 @@ Unsplash\HttpClient::init([
 
 function InitialPhoto()
 {
+    $filters = [];
     $photo = Unsplash\Photo::random($filters);
 
     return $photo->download();
@@ -35,4 +38,16 @@ function getPhotos($search)
     return $urls;
 }
 
-$photo = Unsplash\Photo::random($filters);
+function getPhoto($search)
+{
+    $filters = [
+        'query' => "{$search}",
+    ];
+
+    $photo = Unsplash\Photo::random($filters);
+
+    return $photo->download();
+}
+
+$photo = getPhotos('bird');
+var_dump($photo);
