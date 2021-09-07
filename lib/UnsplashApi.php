@@ -1,5 +1,7 @@
 <?php
 
+ini_set('display_errors', 1);
+
 require_once __DIR__.'/../Const.php';
 
 require_once __DIR__.'/../vendor/autoload.php';
@@ -46,3 +48,6 @@ function getPhoto($search)
 
     return $photo->download();
 }
+
+$photo = getPhotos("bird");
+var_dump($photo);

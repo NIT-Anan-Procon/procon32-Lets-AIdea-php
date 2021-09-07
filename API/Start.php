@@ -42,7 +42,13 @@ $gamemode = $gameInfo['gamemode'];
 $photo = InitialPhoto();
 $picture->AddPicture($gameID, $playerID, $photo, 1);
 
-// $data = json_encode(['url' => $photo]);
+if($mode == 1) {
+    $value = 0;
+} else if($mode == 0) {
+    $value = 1;
+}
+
+// $data = json_encode(['url' => $photo, 'mode' => $value]);
 // $ch = curl_init('');    //''にpythonのAPIのurlを記述
 // curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
 // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
@@ -72,10 +78,6 @@ if ($mode == 1) {
     }
 }
 
-foreach ($val['synonyms'] as $synonyms) {
-    $word->AddWord($gameID, $playerID, $synonyms, 3);
-}
-
 $mode = substr($gamemode, 0, 1);
 $val['subject'] = 'AI';
 if ('1' === $mode) {
@@ -89,8 +91,10 @@ if ('1' === $mode) {
         }
         $picture->AddPicture($gameID, $playerID, $img, 0);
     }
-
-    $photo = $picture->GetPicture($gameID, $playerID);
+} else {   
+    foreach ($val['synonyms'] as $synonyms) {
+        $word->AddWord($gameID, $playerID, $synonyms, 3);
+    }
 }
 
 $ng = $word->getWord($gameID, $playerID, 2);
