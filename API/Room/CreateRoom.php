@@ -23,7 +23,7 @@ $userID = $userInfo->CheckLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 
 if (false !== $gameInfo) {
-    header('Error: The user is not in the room.');
+    header('Error: The user is already in the other room.');
     http_response_code(403);
 
     exit;
