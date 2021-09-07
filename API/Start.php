@@ -42,9 +42,9 @@ $gamemode = $gameInfo['gamemode'];
 $photo = InitialPhoto();
 $picture->AddPicture($gameID, $playerID, $photo, 1);
 
-if($mode == 1) {
+if (1 === $mode) {
     $value = 0;
-} else if($mode == 0) {
+} elseif (0 === $mode) {
     $value = 1;
 }
 
@@ -91,7 +91,7 @@ if ('1' === $mode) {
         }
         $picture->AddPicture($gameID, $playerID, $img, 0);
     }
-} else {   
+} else {
     foreach ($val['synonyms'] as $synonyms) {
         $word->AddWord($gameID, $playerID, $synonyms, 3);
     }
