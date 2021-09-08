@@ -15,7 +15,6 @@
 git clone https://github.com/NIT-Anan-Procon/procon32_Lets_AIdea_php.git
 cd procon32_Lets_AIdea_php.git
 composer install
-npm install
 ```
 
 ## PHP CS Fixer について
