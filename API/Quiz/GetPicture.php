@@ -54,8 +54,9 @@ for ($i = 0; $i < count($roomInfo); ++$i) {
         $img[] = $img_array;
     }
     $array['picture'] = $img;
-    $result[$playerID] = $array;
+    $val[$playerID] = $array;
 }
+$result['playerID'] = $val;
 
 echo json_encode($result);
 http_response_code(200);
