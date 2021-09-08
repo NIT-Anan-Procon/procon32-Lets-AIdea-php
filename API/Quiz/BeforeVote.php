@@ -42,9 +42,9 @@ for ($i = 0; $i < count($roomInfo); ++$i) {
     $playerID = $roomInfo[$i]['playerID'];
     $userID = $roomInfo[$i]['userID'];
     $urls = $picture->GetPicture($gameID, $playerID);
-    $answer = "";
+    $answer = '';
     foreach ($urls as $url) {
-        if (1 == $url['answer']) {
+        if (1 === $url['answer']) {
             $answer = $url['pictureURL'];
         }
     }
