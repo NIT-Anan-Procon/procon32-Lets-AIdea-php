@@ -5,7 +5,6 @@ require_once __DIR__.'/../Const.php';
 class Point
 {
     protected $dbh;
-    protected $table = 'point';
 
     public function __construct()
     {
@@ -19,17 +18,17 @@ class Point
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header('Error:'.$e->getMessage());
 
             exit();
         }
     }
 
-    public function AddPoint($gameID, $playerID, $pointNum, $flag)
+    public function addPoint($gameID, $playerID, $pointNum, $flag)
     {
-        $sql = "INSERT INTO {$this->table}(gameID, playerID, pointNum, flag)
+        $sql = 'INSERT INTO point(gameID, playerID, pointNum, flag)
         VALUES
-            (:gameID, :playerID, :pointNum, :flag)";
+            (:gameID, :playerID, :pointNum, :flag)';
 
         try {
             $stmt = $this->dbh->prepare($sql);
@@ -38,26 +37,33 @@ class Point
             $stmt->bindValue(':pointNum', $pointNum);
             $stmt->bindValue('flag', $flag);
             $stmt->execute();
-        } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
 
-            exit();
+            return true;
+        } catch (PDOException $e) {
+            header('Error:'.$e->getMessage());
+
+            return false;
         }
     }
 
-    public function GetPoint($playerID, $flag)
+    public function getPoint($gameID, $playerID, $flag)
     {
-        $stmt = $this->dbh->prepare("SELECT SUM(pointNum) FROM {$this->table} WHERE playerID = :playerID AND flag = :flag");
+        $stmt = $this->dbh->prepare('SELECT SUM(pointNum) FROM point WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag');
+        $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->bindValue(':flag', $flag);
         $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_COLUMN);
+        if (false === $result) {
+            $result = 0;
+        }
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int) $result;
     }
 
     public function deleteGameInfo($gameID)
     {
-        $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE gameID = :gameID");
+        $stmt = $this->dbh->prepare('DELETE FROM point WHERE gameID = :gameID');
         $stmt->bindValue(':gameID', $gameID);
         $stmt->execute();
     }
