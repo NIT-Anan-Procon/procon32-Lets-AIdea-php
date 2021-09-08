@@ -14,6 +14,8 @@ require_once '../lib/UserInfo.php';
 
 require_once '../lib/Word.php';
 
+require_once '../Develop.php';
+
 $picture = new Picture();
 $room = new Room();
 $userInfo = new UserInfo();
@@ -41,24 +43,28 @@ $playerID = $gameInfo['playerID'];
 $gamemode = $gameInfo['gamemode'];
 $photo = InitialPhoto();
 $picture->AddPicture($gameID, $playerID, $photo, 1);
+$mode = substr($gamemode,1,1);
 
-// if (1 == $mode) {
-//     $value = 0;
-// } elseif (0 == $mode) {
-//     $value = 1;
-// }
+if (ReleaseMode) {
+    if (1 == $mode) {
+        $value = 0;
+    } elseif (0 == $mode) {
+        $value = 1;
+    }
 
-// $data = json_encode(['url' => $photo, 'mode' => $value]);
-// $ch = curl_init('');    //''にpythonのAPIのurlを記述
-// curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
-// curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-// curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-// $response = curl_exec($ch);
-// curl_close();
-// $val = json_decode($response);
+    $data = json_encode(['url' => $photo, 'mode' => $value]);
+    $ch = curl_init('');    //''にpythonのAPIのurlを記述
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close();
+    $val = json_decode($response);
 
-// $sentence = $val['sentence'];
+    $sentence = $val['sentence'];
+}
+
 $sentence = '私はAIです。';
 $word->AddWord($gameID, $playerID, $sentence, 1);
 

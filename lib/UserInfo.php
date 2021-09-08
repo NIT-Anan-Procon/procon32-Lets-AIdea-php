@@ -4,6 +4,8 @@ require_once __DIR__.'/../Const.php';
 
 require_once __DIR__.'/../vendor/autoload.php';
 
+require_once __DIR__.'/../Develop.php';
+
 use Firebase\JWT\JWT;
 
 class UserInfo
@@ -205,6 +207,9 @@ class UserInfo
 
                 exit;
             }
+        } else if (ReleaseMode === false) {
+            $result = $this->GetUserInfo(2);
+            return $result;
         } else {
             $result = false;
         }
