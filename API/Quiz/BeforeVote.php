@@ -42,9 +42,10 @@ for ($i = 0; $i < count($roomInfo); ++$i) {
     $playerID = $roomInfo[$i]['playerID'];
     $userID = $roomInfo[$i]['userID'];
     $urls = $picture->GetPicture($gameID, $playerID);
+    $answer = "";
     foreach ($urls as $url) {
-        if (1 === $url['answer']) {
-            $answer = $url;
+        if (1 == $url['answer']) {
+            $answer = $url['pictureURL'];
         }
     }
     $user = $userInfo->GetUserInfo($userID);
@@ -57,7 +58,7 @@ for ($i = 0; $i < count($roomInfo); ++$i) {
         'pictureURL' => $answer,
     ];
 }
-$result['playerID'] = $array;
+$result = $array;
 
 echo json_encode($result);
 http_response_code(200);
