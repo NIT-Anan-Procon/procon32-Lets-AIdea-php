@@ -24,7 +24,7 @@ if (false === $userInfo->CheckLogin()) {
     exit;
 }
 
-// ユーザーが他の部屋に入っていないかチェック
+// ユーザーが部屋に入っているかチェック
 $userID = $userInfo->CheckLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 
