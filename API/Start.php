@@ -43,12 +43,12 @@ $playerID = $gameInfo['playerID'];
 $gamemode = $gameInfo['gamemode'];
 $photo = InitialPhoto();
 $picture->AddPicture($gameID, $playerID, $photo, 1);
-$mode = substr($gamemode,1,1);
+$mode = substr($gamemode, 1, 1);
 
 if (ReleaseMode) {
-    if (1 == $mode) {
+    if (1 === $mode) {
         $value = 0;
-    } elseif (0 == $mode) {
+    } elseif (0 === $mode) {
         $value = 1;
     }
 

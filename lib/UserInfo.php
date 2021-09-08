@@ -207,8 +207,9 @@ class UserInfo
 
                 exit;
             }
-        } else if (ReleaseMode === false) {
+        } elseif (ReleaseMode === false) {
             $result = $this->GetUserInfo(2);
+
             return $result;
         } else {
             $result = false;
