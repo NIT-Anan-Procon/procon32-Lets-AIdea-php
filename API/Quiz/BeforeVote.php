@@ -58,7 +58,7 @@ for ($i = 0; $i < count($roomInfo); ++$i) {
         'pictureURL' => $answer,
     ];
 }
-$result = $array;
+$result['playerID'] = $array;
 
 echo json_encode($result);
 http_response_code(200);
