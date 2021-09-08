@@ -14,7 +14,7 @@ require_once '../../lib/Word.php';
 
 $picture = new Picture();
 $room = new Room();
-$userInfo = new userInfo();
+$userInfo = new UserInfo();
 $word = new Word();
 
 if (false === $userInfo->CheckLogin()) {
