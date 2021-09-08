@@ -38,23 +38,23 @@ if (false === $gameInfo) {
 $gameID = $gameInfo['gameID'];
 $roomInfo = $room->RoomInfo($gameInfo['roomID']);
 $result = [];
-for ($i =0; $i < count($roomInfo); $i++) {
+for ($i = 0; $i < count($roomInfo); ++$i) {
     $playerID = $roomInfo[$i]['playerID'];
     $userID = $roomInfo[$i]['userID'];
     $urls = $picture->GetPicture($gameID, $playerID);
-    foreach($urls as $url) {
-        if($url["answer"] == 1) {
+    foreach ($urls as $url) {
+        if (1 === $url['answer']) {
             $answer = $url;
         }
     }
     $user = $userInfo->GetUserInfo($userID);
     $explanation = $word->getWord($gameID, $playerID, 0);
     $array[$playerID] = [
-        'name'  => $user['name'],
-        'icon'  => $user['icon'],
+        'name' => $user['name'],
+        'icon' => $user['icon'],
         'badge' => $user['badge'],
-        'explanation'   => $explanation,
-        'pictureURL'    => $answer
+        'explanation' => $explanation,
+        'pictureURL' => $answer,
     ];
 }
 $result['playerID'] = $array;
