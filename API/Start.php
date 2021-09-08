@@ -72,12 +72,12 @@ $val['NGword'] = ['私', 'AI'];
 $val['synonyms'] = ['わたし', '拙者', '自分'];
 
 $mode = substr($gamemode, 1, 1);
-if (1 == $mode) {
+if (1 === $mode) {
     foreach ($val['NGword'] as $ng) {
         $word->AddWord($gameID, $playerID, $ng, 2);
     }
     $mode = substr($gamemode, 2, 1);
-    if (1 == $mode) {
+    if (1 === $mode) {
         foreach ($val['synonyms'] as $synonyms) {
             $word->AddWord($gameID, $playerID, $synonyms, 2);
         }
