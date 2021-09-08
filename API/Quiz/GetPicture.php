@@ -44,13 +44,14 @@ for ($i = 0; $i < count($roomInfo); ++$i) {
         'icon' => $user['icon'],
         'badge' => $user['badge'],
         'explanation' => $explanation,
+        'picture' => []
     ];
     for ($j = 0; $j < count($photos); ++$j) {
         $img_array = [
             'pictureURL' => $photos[$j]['pictureURL'],
             'answer' => $photos[$j]['answer'],
         ];
-        $array['picture'] = $img_array;
+        $array['picture'][$i] = $img_array;
     }
     $result[] = $array;
 }
