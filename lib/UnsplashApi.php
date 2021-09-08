@@ -49,5 +49,5 @@ function getPhoto($search)
     return $photo->download();
 }
 
-$photo = getPhotos('bird');
-var_dump($photo);
+// $photo = getPhotos('bird');
+// var_dump($photo);

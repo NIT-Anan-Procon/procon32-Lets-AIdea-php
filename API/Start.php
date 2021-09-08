@@ -1,6 +1,6 @@
 <?php
 
-ini_set('display_errors', 1);
+// ini_set('display_errors', 1);
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
@@ -42,11 +42,11 @@ $gamemode = $gameInfo['gamemode'];
 $photo = InitialPhoto();
 $picture->AddPicture($gameID, $playerID, $photo, 1);
 
-if (1 === $mode) {
-    $value = 0;
-} elseif (0 === $mode) {
-    $value = 1;
-}
+// if (1 == $mode) {
+//     $value = 0;
+// } elseif (0 == $mode) {
+//     $value = 1;
+// }
 
 // $data = json_encode(['url' => $photo, 'mode' => $value]);
 // $ch = curl_init('');    //''にpythonのAPIのurlを記述
