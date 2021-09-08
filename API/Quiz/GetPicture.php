@@ -50,7 +50,7 @@ for ($i = 0; $i < count($roomInfo); ++$i) {
             'pictureURL' => $photos[$j]['pictureURL'],
             'answer' => $photos[$j]['answer'],
         ];
-        $array[] = $img_array;
+        $array['picture'] = $img_array;
     }
     $result[] = $array;
 }
