@@ -42,13 +42,7 @@ $result = [];
 for ($i = 0; $i < count($roomInfo); ++$i) {
     $playerID = $roomInfo[$i]['playerID'];
     $userID = $roomInfo[$i]['userID'];
-    $urls = $picture->GetPicture($gameID, $playerID);
-    $answer = '';
-    foreach ($urls as $url) {
-        if (1 === $url['answer']) {
-            $answer = $url['pictureURL'];
-        }
-    }
+    $url = $picture->GetPicture($gameID, $playerID, 1)[0]['pictureURL'];
     $user = $userInfo->GetUserInfo($userID);
     $explanation = $word->getWord($gameID, $playerID, 0);
     $array[$playerID] = [
@@ -56,7 +50,7 @@ for ($i = 0; $i < count($roomInfo); ++$i) {
         'icon' => $user['icon'],
         'badge' => $user['badge'],
         'explanation' => $explanation,
-        'pictureURL' => $answer,
+        'pictureURL' => $url,
     ];
 }
 $result['player'] = $array;
