@@ -46,7 +46,6 @@ for ($i = 0; $i <= $playerNum; ++$i) {
         $winner = $i;
     }
 }
-var_dump($winner);
 for ($i = 0; $i <= $playerNum; ++$i) {
     if ($vote[$i] === $max && $i !== $winner) {
         //引き分け！！
