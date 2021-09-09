@@ -41,8 +41,12 @@ $gameID = $gameInfo['gameID'];
 $gameID = $gameInfo['gameID'];
 $playerID = $gameInfo['playerID'];
 $gamemode = $gameInfo['gamemode'];
-$photo = InitialPhoto();
-$picture->AddPicture($gameID, $playerID, $photo, 1);
+// $photo = InitialPhoto();
+// $photos[] = [
+//     'url' => $photo,
+//     'answer' => 1
+// ];
+$photo = "https://images.unsplash.com/photo-1566487097168-e91a4f38bee2?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb";
 $mode = substr($gamemode, 1, 1);
 
 if (ReleaseMode) {
@@ -65,21 +69,21 @@ if (ReleaseMode) {
     $sentence = $val['sentence'];
 }
 
-$sentence = '私はAIです。';
-$word->AddWord($gameID, $playerID, $sentence, 1);
+$sentence = '動物園の囲いの中を歩くパンダの熊。';
+// $word->AddWord($gameID, $playerID, $sentence, 1);
 
-$val['NGword'] = ['私', 'AI'];
+$val['NGword'] = ['動物園', '囲い', '中', 'パンダ', '熊'];
 $val['synonyms'] = ['わたし', '拙者', '自分'];
 
 $mode = substr($gamemode, 1, 1);
 if ('1' === $mode) {
     foreach ($val['NGword'] as $ng) {
-        $word->AddWord($gameID, $playerID, $ng, 2);
+        // $word->AddWord($gameID, $playerID, $ng, 2);
     }
     $mode = substr($gamemode, 2, 1);
     if ('1' === $mode) {
         foreach ($val['synonyms'] as $synonyms) {
-            $word->AddWord($gameID, $playerID, $synonyms, 2);
+            // $word->AddWord($gameID, $playerID, $synonyms, 2);
         }
     }
 }
@@ -87,19 +91,32 @@ if ('1' === $mode) {
 $mode = substr($gamemode, 0, 1);
 $val['subject'] = 'AI';
 if ('1' === $mode) {
-    $imgs = getPhotos($val['subject']);
-    foreach ($imgs as $img) {
-        $urls = $picture->GetPicture($gameID, $playerID);
-        for ($i = 0; $i < count($urls); ++$i) {
-            while ($img === $urls[$i]['pictureURL']) {
-                $img = getPhoto($val['subject']);
-            }
-        }
-        $picture->AddPicture($gameID, $playerID, $img, 0);
-    }
+    // $imgs = getPhotos($val['subject']);
+    $imgs = [
+        "https://unsplash.com/photos/JVPtzP6lQtU/download",
+        "https://unsplash.com/photos/0afuId7VUjw/download",
+        "https://unsplash.com/photos/SBnxlHHrEwk/download"
+    ];
+    // foreach ($imgs as $img) {
+    //     $urls = $picture->GetPicture($gameID, $playerID);
+    //     for ($i = 0; $i < count($urls); ++$i) {
+    //         while ($img === $urls[$i]['pictureURL']) {
+    //             $img = getPhoto($val['subject']);
+    //         }
+    //     }
+    //     $photos[] = [
+                // 'url' => $img,
+                // 'answer' => 0
+            // ];
+            // shuffle($photos);
+    // }
+    // foreach ($images as $image) {
+    //      $picture->AddPicture($gameID, $playerID, $image['url'], $image['answer']);
+    // }
+
 } else {
     foreach ($val['synonyms'] as $synonyms) {
-        $word->AddWord($gameID, $playerID, $synonyms, 3);
+        // $word->AddWord($gameID, $playerID, $synonyms, 3);
     }
 }
 

@@ -14,49 +14,49 @@ $application = application;
 Unsplash\HttpClient::init([
     'applicationId' => "{$access}",
     'secret' => "{$secret}",
-
     'callbackUrl' => "{$callback}",
     'utmSource' => "{$application}",
 ]);
 
 function InitialPhoto()
 {
-    $filters = [];
-    $photo = (array) (Unsplash\Photo::random($filters));
-    $array = array_combine([0, 1], $photo);
-    var_dump($array[1]['user']['name']);
-    var_dump($array[1]['links']['html']);
-    var_dump($array[1]['links']['download']);
-    var_dump($array[1]['user']['links']['html']);
+    $key_word = array_rand(["animal","scenery","people"],1);
+    $filters = [
+        'query' => "$key_word"
+    ];
+    $photo = Unsplash\Photo::random($filters);
+    // $photo = (array) (Unsplash\Photo::random($filters));
+    // $array = array_combine([0, 1], $photo);
+    // var_dump($array[1]['user']['name']);
+    // var_dump($array[1]['links']['html']);
+    // var_dump($array[1]['links']['download']);
+    // var_dump($array[1]['user']['links']['html']);
 
-    // return $photo->download();
-}
-
-function getPhotos($search)
-{
-    $photos = Unsplash\Search::photos($search, 1, 4);
-    // $urls = [];
-    // for ($i = 0; $i < 3; ++$i) {
-    //     $urls += [$i => $photos[$i]['urls']['raw']];
-    // }
-
-    // var_dump($urls);
-    // return $urls;
+    return $photo->download();
 }
 
 function getPhoto($search)
 {
     $filters = [
         'query' => "{$search}",
+        'count' => 3
     ];
 
-    $photo = Unsplash\Photo::random($filters);
+    $photo = (array)Unsplash\Photo::random($filters);
+    $array = array_combine([0, 1], $photo);
 
-    return $photo->download();
+    for($i = 0; $i < 3; $i++) {
+        $urls[$i] = $array[1][$i]["links"]["download"];
+    }
+
+    return $urls;
 }
 
-InitialPhoto();
+// var_dump(InitialPhoto());
 // getPhotos("sea");
 
-// $photo = getPhotos('bird');
+// $photo = 
+// getPhoto('bird');
 // var_dump($photo);
+
+// var_dump(getPhoto("Landscape"));
