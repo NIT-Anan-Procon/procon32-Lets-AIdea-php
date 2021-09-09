@@ -19,14 +19,15 @@ if (false === $user['userInfo']) {
     http_response_code(403);
 
     exit;
-}$user['room'] = $room->getGameInfo($user['userInfo']['userID']);
+}
+$user['room'] = $room->getGameInfo($user['userInfo']['userID']);
 if (false === $user['room']) {
     header('Error:The user is not in the room.');
     http_response_code(403);
 
     exit;
 }
-if (filter_input(INPUT_POST, 'playerID')) {
+if (isset($_POST['playerID'])) {
     $playerID = (int) $_POST['playerID'];
     $result = $point->addPoint($user['room']['gameID'], $playerID, 1, 2);
     if (false === $result) {
