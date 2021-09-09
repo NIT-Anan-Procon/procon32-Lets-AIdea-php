@@ -50,9 +50,9 @@ $photo = 'https://images.unsplash.com/photo-1566487097168-e91a4f38bee2?ixlib=rb-
 $mode = substr($gamemode, 1, 1);
 
 if (ReleaseMode) {
-    if ("1" === $mode) {
+    if ('1' === $mode) {
         $value = 0;
-    } elseif ("0" === $mode) {
+    } elseif ('0' === $mode) {
         $value = 1;
     }
 
