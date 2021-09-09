@@ -20,10 +20,10 @@ Unsplash\HttpClient::init([
 
 function InitialPhoto()
 {
-    $key_word = ["animal","scenery","people"];
+    $key_word = ['animal', 'scenery', 'people'];
     $key = array_rand($key_word, 1);
     $filters = [
-        'query' => $key_word[$key]
+        'query' => $key_word[$key],
     ];
     $photo = Unsplash\Photo::random($filters);
     // $photo = (array) (Unsplash\Photo::random($filters));
