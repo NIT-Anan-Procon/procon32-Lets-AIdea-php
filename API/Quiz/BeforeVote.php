@@ -1,7 +1,7 @@
 <?php
 
 ini_set('display_errors', 1);
-header('Access-Control-Allow-Origin:http://localhost');
+header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
 require_once '../../lib/Room.php';
@@ -36,6 +36,7 @@ if (false === $gameInfo) {
 }
 
 $gameID = $gameInfo['gameID'];
+$player = $gameInfo['playerID'];
 $roomInfo = $room->RoomInfo($gameInfo['roomID']);
 $result = [];
 for ($i = 0; $i < count($roomInfo); ++$i) {
@@ -58,7 +59,8 @@ for ($i = 0; $i < count($roomInfo); ++$i) {
         'pictureURL' => $answer,
     ];
 }
-$result['playerID'] = $array;
+$result['player'] = $array;
+$result['playerID'] = $player;
 
 echo json_encode($result);
 http_response_code(200);
