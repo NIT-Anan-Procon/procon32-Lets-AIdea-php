@@ -20,9 +20,9 @@ Unsplash\HttpClient::init([
 
 function InitialPhoto()
 {
-    $key_word = array_rand(["animal","scenery","people"],1);
+    $key_word = array_rand(['animal', 'scenery', 'people'], 1);
     $filters = [
-        'query' => "$key_word"
+        'query' => "{$key_word}",
     ];
     $photo = Unsplash\Photo::random($filters);
     // $photo = (array) (Unsplash\Photo::random($filters));
@@ -39,14 +39,14 @@ function getPhoto($search)
 {
     $filters = [
         'query' => "{$search}",
-        'count' => 3
+        'count' => 3,
     ];
 
-    $photo = (array)Unsplash\Photo::random($filters);
+    $photo = (array) Unsplash\Photo::random($filters);
     $array = array_combine([0, 1], $photo);
 
-    for($i = 0; $i < 3; $i++) {
-        $urls[$i] = $array[1][$i]["links"]["download"];
+    for ($i = 0; $i < 3; ++$i) {
+        $urls[$i] = $array[1][$i]['links']['download'];
     }
 
     return $urls;
@@ -55,7 +55,7 @@ function getPhoto($search)
 // var_dump(InitialPhoto());
 // getPhotos("sea");
 
-// $photo = 
+// $photo =
 // getPhoto('bird');
 // var_dump($photo);
 
