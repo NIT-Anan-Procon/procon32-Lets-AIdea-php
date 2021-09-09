@@ -46,7 +46,7 @@ $gamemode = $gameInfo['gamemode'];
 //     'url' => $photo,
 //     'answer' => 1
 // ];
-$photo = "https://images.unsplash.com/photo-1566487097168-e91a4f38bee2?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb";
+$photo = 'https://images.unsplash.com/photo-1566487097168-e91a4f38bee2?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb';
 $mode = substr($gamemode, 1, 1);
 
 if (ReleaseMode) {
@@ -93,11 +93,11 @@ $val['subject'] = 'AI';
 if ('1' === $mode) {
     // $imgs = getPhotos($val['subject']);
     $imgs = [
-        "https://unsplash.com/photos/JVPtzP6lQtU/download",
-        "https://unsplash.com/photos/0afuId7VUjw/download",
-        "https://unsplash.com/photos/SBnxlHHrEwk/download"
+        'https://unsplash.com/photos/JVPtzP6lQtU/download',
+        'https://unsplash.com/photos/0afuId7VUjw/download',
+        'https://unsplash.com/photos/SBnxlHHrEwk/download',
     ];
-    // foreach ($imgs as $img) {
+// foreach ($imgs as $img) {
     //     $urls = $picture->GetPicture($gameID, $playerID);
     //     for ($i = 0; $i < count($urls); ++$i) {
     //         while ($img === $urls[$i]['pictureURL']) {
@@ -113,7 +113,6 @@ if ('1' === $mode) {
     // foreach ($images as $image) {
     //      $picture->AddPicture($gameID, $playerID, $image['url'], $image['answer']);
     // }
-
 } else {
     foreach ($val['synonyms'] as $synonyms) {
         // $word->AddWord($gameID, $playerID, $synonyms, 3);
