@@ -33,7 +33,7 @@ if (false === $user['game']) {
 }
 
 $result['playerID'] = $user['game']['playerID'];
-$result['AI'] = $word->getWord($user['game']['gameID'],$user['game']['playerID'], 1);
+$result['AI'] = $word->getWord($user['game']['gameID'], $user['game']['playerID'], 1);
 $gameInfo = $room->GameInfo($user['game']['gameID']);
 $url = $picture->getPicture($user['game']['gameID'], null, 2);
 if (isset($url)) {
