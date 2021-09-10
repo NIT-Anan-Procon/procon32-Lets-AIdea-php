@@ -4,9 +4,9 @@ ini_set('display_errors', 1);
 header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
-require_once '../lib/Library.php';
+require_once '../../lib/Library.php';
 
-require_once '../lib/UserInfo.php';
+require_once '../../lib/UserInfo.php';
 
 $library = new Library();
 $userInfo = new UserInfo();

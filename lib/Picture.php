@@ -57,7 +57,7 @@ class Picture
         } else {
             $sql .= '= :playerID';
         }
-        if (1 === $answer) {
+        if (0 < $answer) {
             $sql .= ' AND answer = :answer';
         }
         $stmt = $this->dbh->prepare($sql);
@@ -65,11 +65,10 @@ class Picture
         if (null !== $playerID) {
             $stmt->bindValue(':playerID', $playerID);
         }
-        if (1 === $answer) {
+        if (0 < $answer) {
             $stmt->bindValue(':answer', $answer);
         }
         $stmt->execute();
-
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
