@@ -32,11 +32,12 @@ if (false === $gameInfo) {
     exit;
 }
 $gameID = $gameInfo['gameID'];
+$playerID = $gameInfo['playerID'];
 $roomInfo = $room->GameInfo($gameID);
-$result = [];
+$result['playerID'] = $playerID;
 for ($i = 0; $i < count($roomInfo); ++$i) {
     $playerID = $roomInfo[$i]['playerID'];
-    $photos = $picture->GetPicture($gameID, $playerID);
+    $photos = $picture->GetPicture($gameID, $playerID, 0);
     $user = $userInfo->getUserInfo($roomInfo[$i]['userID']);
     $explanation = $word->getWord($gameID, $playerID, 0);
     $array = [
@@ -56,7 +57,7 @@ for ($i = 0; $i < count($roomInfo); ++$i) {
     $array['picture'] = $img;
     $val[$playerID] = $array;
 }
-$result['playerID'] = $val;
+$result['player'] = $val;
 
 echo json_encode($result);
 http_response_code(200);

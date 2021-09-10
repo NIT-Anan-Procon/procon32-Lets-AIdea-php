@@ -8,8 +8,17 @@ require_once '../../lib/Room.php';
 
 require_once '../../lib/UserInfo.php';
 
+require_once '../../lib/Picture.php';
+
+require_once '../../lib/Point.php';
+
+require_once '../../lib/Word.php';
+
 $room = new Room();
 $userInfo = new UserInfo();
+$picture = new Picture();
+$point = new Point();
+$explanation = new Word();
 
 if (false === $userInfo->CheckLogin()) {
     header('Error: Login failed.');
@@ -32,6 +41,13 @@ if (false === $player) {
 
 $gameID = $player['gameID'];
 $playerID = $player['playerID'];
+$gameInfo = $room->GameInfo($gameID);
+
+if (1 === count($gameInfo)) {
+    $picture->deleteGameInfo($gameID);
+    $point->deleteGameInfo($gameID);
+    $explanation->DelWord($gameID);
+}
 
 // roomIDで部屋の情報を取得
 $roomID = $player['roomID'];

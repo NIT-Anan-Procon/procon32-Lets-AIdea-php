@@ -1,7 +1,7 @@
 <?php
 
 ini_set('display_errors', 1);
-header('Access-Control-Allow-Origin:http://localhost');
+header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
 require_once '../../lib/Room.php';
@@ -51,17 +51,17 @@ $roomInfo = $room->RoomInfo($gameInfo['roomID']);
 $result = [];
 for ($i = 0; $i < count($roomInfo); ++$i) {
     $explanation = $word->getWord($gameID, $roomInfo[$i]['playerID'], 0);
-    $exp = $point->GetPoint($roomInfo[$i]['playerID'], 0);
-    $ans = $point->GetPoint($roomInfo[$i]['playerID'], 1);
+    $exp = $point->GetPoint($gameID, $roomInfo[$i]['playerID'], 0);
+    $ans = $point->GetPoint($gameID, $roomInfo[$i]['playerID'], 1);
     $user = $userInfo->GetUserInfo($roomInfo[$i]['userID']);
     $array = [
         'name' => $user['name'],
         'icon' => $user['icon'],
         'badge' => $user['badge'],
         'explanation' => $explanation,
-        'exp' => (int) ($exp['SUM(pointNum)']),
-        'ans' => (int) ($ans['SUM(pointNum)']),
-        'sum' => (int) ($exp['SUM(pointNum)']) + (int) ($ans['SUM(pointNum)']),
+        'exp' => $exp,
+        'ans' => $ans,
+        'sum' => $exp + $ans,
     ];
     $result[] = $array;
 }

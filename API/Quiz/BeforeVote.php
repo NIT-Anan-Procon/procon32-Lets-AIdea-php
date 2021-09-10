@@ -1,7 +1,7 @@
 <?php
 
 ini_set('display_errors', 1);
-header('Access-Control-Allow-Origin:http://localhost');
+header('Access-Control-Allow-Origin:*');
 header('Content-Type: application/json; charset=utf-8');
 
 require_once '../../lib/Room.php';
@@ -36,18 +36,13 @@ if (false === $gameInfo) {
 }
 
 $gameID = $gameInfo['gameID'];
+$player = $gameInfo['playerID'];
 $roomInfo = $room->RoomInfo($gameInfo['roomID']);
 $result = [];
 for ($i = 0; $i < count($roomInfo); ++$i) {
     $playerID = $roomInfo[$i]['playerID'];
     $userID = $roomInfo[$i]['userID'];
-    $urls = $picture->GetPicture($gameID, $playerID);
-    $answer = '';
-    foreach ($urls as $url) {
-        if (1 === $url['answer']) {
-            $answer = $url['pictureURL'];
-        }
-    }
+    $url = $picture->GetPicture($gameID, $playerID, 1)[0]['pictureURL'];
     $user = $userInfo->GetUserInfo($userID);
     $explanation = $word->getWord($gameID, $playerID, 0);
     $array[$playerID] = [
@@ -55,10 +50,11 @@ for ($i = 0; $i < count($roomInfo); ++$i) {
         'icon' => $user['icon'],
         'badge' => $user['badge'],
         'explanation' => $explanation,
-        'pictureURL' => $answer,
+        'pictureURL' => $url,
     ];
 }
-$result['playerID'] = $array;
+$result['player'] = $array;
+$result['playerID'] = $player;
 
 echo json_encode($result);
 http_response_code(200);
