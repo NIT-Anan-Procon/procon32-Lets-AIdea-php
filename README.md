@@ -6,8 +6,6 @@
 - PHP 7.4.x
 - Apache 2.4.x
 - MariaDB 10.3.x
-- Node.js 14.7.3
-- npm 7.21.0
 
 ## 初期設定
 
