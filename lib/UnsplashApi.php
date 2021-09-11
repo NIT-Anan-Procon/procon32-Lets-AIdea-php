@@ -36,7 +36,15 @@ function InitialPhoto()
     return $photo->download();
 }
 
-function getPhoto($search)
+function getPhoto($word)
+{
+    $filters = [
+        'query' => $word
+    ];
+    $photo = Unsplash\Photo::random($filters);
+}
+
+function getPhotos($search)
 {
     $filters = [
         'query' => "{$search}",
