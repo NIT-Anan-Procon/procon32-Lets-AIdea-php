@@ -80,13 +80,14 @@ class Picture
         $stmt->execute();
     }
 
-    public function getPictures($gameID,$playerID)
+    public function getPictures($gameID, $playerID)
     {
         $sql = "SELECT * FROM {$this->table} WHERE gameID = :gameID AND playerID = :playerID";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->execute();
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

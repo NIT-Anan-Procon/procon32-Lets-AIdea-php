@@ -49,7 +49,7 @@ class Point
 
     public function getPoint($gameID, $playerID, $flag)
     {
-        $stmt = $this->dbh->prepare("SELECT SUM(pointNum) FROM $this->table WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag");
+        $stmt = $this->dbh->prepare("SELECT SUM(pointNum) FROM {$this->table} WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag");
         $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->bindValue(':flag', $flag);

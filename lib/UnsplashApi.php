@@ -39,7 +39,7 @@ function InitialPhoto()
 function getPhoto($word)
 {
     $filters = [
-        'query' => $word
+        'query' => $word,
     ];
     $photo = Unsplash\Photo::random($filters);
 }

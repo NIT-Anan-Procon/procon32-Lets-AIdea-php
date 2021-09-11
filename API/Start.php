@@ -43,13 +43,14 @@ $gamemode = $gameInfo['gamemode'];
 $photo = InitialPhoto();
 $photos[] = [
     'url' => $photo,
-    'answer' => 1
+    'answer' => 1,
 ];
 $mode = substr($gamemode, 0, 1);
 $ngWord = substr($gamemode, 1, 1);
 $wordNum = substr($gamemode, 2, 1);
 
-function connect($photo,$subject,$ng,$synonyms) {
+function connect($photo, $subject, $ng, $synonyms)
+{
     $data = json_encode(['url' => $photo, 'subject' => $subject, 'ng' => $ng, 'synonyms' => $synonyms]);
     $ch = curl_init('');    //''にpythonのAPIのurlを記述
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
@@ -58,29 +59,30 @@ function connect($photo,$subject,$ng,$synonyms) {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
     curl_close();
+
     return json_decode($response);
 }
 
 $val = [
     'subject' => 'Lamb',
-    'ng' => ['角','雄羊','岩','上','熊'],
+    'ng' => ['角', '雄羊', '岩', '上', '熊'],
     'synonyms' => [
-        ['街角','曲がり角'],['石ころ','ストーン'],['上面','天面']
+        ['街角', '曲がり角'], ['石ころ', 'ストーン'], ['上面', '天面'],
     ],
     'sentence' => '角のある雄羊が岩の上に座っている。',
 ];
-if ($mode === "1") {
-    if ($wordNum === "1") {
+if ('1' === $mode) {
+    if ('1' === $wordNum) {
         // $val = connect($photo,1,1,1);
-        foreach($val['ng'] as $ng) {
+        foreach ($val['ng'] as $ng) {
             $word->addWord($gameID, $playerID, $ng, 2);
         }
         foreach ($val['synonyms'] as $synonyms) {
             $word->addWord($gameID, $playerID, $synonyms[0], 2);
         }
-    } else if ($wordNum === "0") {
+    } elseif ('0' === $wordNum) {
         // $val = connect($photo,1,1,0);
-        foreach($val['ng'] as $ng) {
+        foreach ($val['ng'] as $ng) {
             $word->addWord($gameID, $playerID, $ng, 2);
         }
     }
@@ -93,45 +95,45 @@ if ($mode === "1") {
             }
         }
         $photos[] = [
-                'url' => $img,
-                'answer' => 0
-            ];
+            'url' => $img,
+            'answer' => 0,
+        ];
     }
     shuffle($photos);
     foreach ($photos as $image) {
         $picture->AddPicture($gameID, $playerID, $image['url'], $image['answer']);
     }
-} else if($mode === "0") {
+} elseif ('0' === $mode) {
     // $val = connect($photo,0,1,1);
-    if ($ngWord === "1") {
-        if ($wordNum === "1") {
-            foreach($val['ng'] as $ng) {
+    if ('1' === $ngWord) {
+        if ('1' === $wordNum) {
+            foreach ($val['ng'] as $ng) {
                 $word->addWord($gameID, $playerID, $ng, 2);
             }
-            for ($i = 0; $i < count($val['synonyms']); $i++) {
-                $word->addWord($gameID,$playerID,$val['synonyms'][$i][0],2);
+            for ($i = 0; $i < count($val['synonyms']); ++$i) {
+                $word->addWord($gameID, $playerID, $val['synonyms'][$i][0], 2);
             }
-            for ($i = 0; $i < count($val['synonyms']); $i++) {
-                for($j = 1; $j < count($val['synonyms'][$i]); $j++) {
-                    $word->addWord($gameID,$playerID,$val['synonyms'][$i][$j],3);
+            for ($i = 0; $i < count($val['synonyms']); ++$i) {
+                for ($j = 1; $j < count($val['synonyms'][$i]); ++$j) {
+                    $word->addWord($gameID, $playerID, $val['synonyms'][$i][$j], 3);
                 }
             }
-        } else if ($wordNum === "0") {
-            foreach($val['ng'] as $ng) {
+        } elseif ('0' === $wordNum) {
+            foreach ($val['ng'] as $ng) {
                 $word->addWord($gameID, $playerID, $ng, 2);
             }
             foreach ($val['synonyms'] as $synonyms) {
-                foreach($synonyms as $synonym) {
+                foreach ($synonyms as $synonym) {
                     $word->addWord($gameID, $playerID, $synonym, 3);
                 }
             }
         }
-    } else if ($ngWord === "0") {
-        foreach($val['ng'] as $ng) {
+    } elseif ('0' === $ngWord) {
+        foreach ($val['ng'] as $ng) {
             $word->addWord($gameID, $playerID, $ng, 3);
         }
         foreach ($val['synonyms'] as $synonyms) {
-            foreach($synonyms as $synonym) {
+            foreach ($synonyms as $synonym) {
                 $word->addWord($gameID, $playerID, $synonym, 3);
             }
         }
