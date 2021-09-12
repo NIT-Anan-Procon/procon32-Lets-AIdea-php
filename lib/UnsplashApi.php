@@ -6,110 +6,92 @@ require_once __DIR__.'/../Const.php';
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-$access = access;
-$secret = secret;
-$callback = callback;
-$application = application;
-
-Unsplash\HttpClient::init([
-    'applicationId' => "{$access}",
-    'secret' => "{$secret}",
-    'callbackUrl' => "{$callback}",
-    'utmSource' => "{$application}",
-]);
-
-
-function InitialPhoto()
+class Unsplash
 {
-    $key_word = ['animal', 'scenery', 'people'];
-    $key = array_rand($key_word, 1);
-    $filters = [
-        'query' => $key_word[$key],
-    ];
-    try {
-        $photo = Unsplash\Photo::random($filters);
-        $photo = (array) (Unsplash\Photo::random($filters));
-        $array = array_combine([0, 1], $photo);
+    private $access = access;
+    private $secret = secret;
+    private $callback = callback;
+    private $application = application;
+    private $access_key = access_key;
+    private $secret_key = secret_key;
     
-        return $array[1]['urls']['raw'];
-    } catch (Unsplash\Exception $e) {
-        $access_key = access_key;
-        $secret_key = secret_key;
-        $callback = callback;
-        $application = application;
+    public function init($access, $secret) {
         Unsplash\HttpClient::init([
-            'applicationId' => "{$access_key}",
-            'secret' => "{$secret_key}",
-            'callbackUrl' => "{$callback}",
-            'utmSource' => "{$application}",
+            'applicationId' => "{$access}",
+            'secret' => "{$secret}",
+            'callbackUrl' => "{$this->callback}",
+            'utmSource' => "{$this->application}",
         ]);
-        $photo = Unsplash\Photo::random($filters);
-        $photo = (array) (Unsplash\Photo::random($filters));
-        $array = array_combine([0, 1], $photo);
-    
-        return $array[1]['urls']['raw'];
     }
     
-}
-
-function getPhoto($word)
-{
-    $filters = [
-        'query' => $word,
-    ];
-    try {
-        $photo = Unsplash\Photo::random($filters);
-        $photo = (array) (Unsplash\Photo::random($filters));
-        $array = array_combine([0, 1], $photo);
+    public function InitialPhoto()
+    {
+        $this->init($this->access,$this->secret);
+        $key_word = ['animal', 'scenery', 'people'];
+        $key = array_rand($key_word, 1);
+        $filters = [
+            'query' => $key_word[$key],
+        ];
+        try {
+            $photo = Unsplash\Photo::random($filters);
+            $photo = (array) (Unsplash\Photo::random($filters));
+            $array = array_combine([0, 1], $photo);
+        
+            return $array[1]['urls']['raw'];
+        } catch (Unsplash\Exception $e) {
+            $this->init($this->access_key,$this->secret_key);
+            $photo = Unsplash\Photo::random($filters);
+            $photo = (array) (Unsplash\Photo::random($filters));
+            $array = array_combine([0, 1], $photo);
+        
+            return $array[1]['urls']['raw'];
+        }
+    }
     
-        return $array[1]['urls']['raw'];
-    } catch (Unsplash\Exception $e) {
-        $access_key = access_key;
-        $secret_key = secret_key;
-        $callback = callback;
-        $application = application;
-        Unsplash\HttpClient::init([
-            'applicationId' => "{$access_key}",
-            'secret' => "{$secret_key}",
-            'callbackUrl' => "{$callback}",
-            'utmSource' => "{$application}",
-        ]);
-        $photo = Unsplash\Photo::random($filters);
-        $photo = (array) (Unsplash\Photo::random($filters));
-        $array = array_combine([0, 1], $photo);
+    public function getPhoto($word)
+    {
+        $this->init($this->access,$this->secret);
+        $filters = [
+            'query' => $word,
+        ];
+        try {
+            $photo = Unsplash\Photo::random($filters);
+            $photo = (array) (Unsplash\Photo::random($filters));
+            $array = array_combine([0, 1], $photo);
+        
+            return $array[1]['urls']['raw'];
+        } catch (Unsplash\Exception $e) {
+            $this->init($this->access_key,$this->secret_key);
+            $photo = Unsplash\Photo::random($filters);
+            $photo = (array) (Unsplash\Photo::random($filters));
+            $array = array_combine([0, 1], $photo);
+        
+            return $array[1]['urls']['raw'];
+        }
+    }
     
-        return $array[1]['urls']['raw'];
+    public function getPhotos($search)
+    {
+        $this->init($this->access,$this->secret);
+        $filters = [
+            'query' => "{$search}",
+            'count' => 3,
+        ];
+    
+        try {
+            $photo = (array) Unsplash\Photo::random($filters);
+            $array = array_combine([0, 1], $photo);
+        } catch (Unsplash\Exception $e) {
+            $this->init($this->access_key,$this->secret_key);
+            $photo = (array) Unsplash\Photo::random($filters);
+            $array = array_combine([0, 1], $photo);
+        }
+    
+        for ($i = 0; $i < 3; ++$i) {
+            $urls[$i] = $array[1][$i]['urls']['raw'];
+        }
+    
+        return $urls;
     }
-}
-
-function getPhotos($search)
-{
-    $filters = [
-        'query' => "{$search}",
-        'count' => 3,
-    ];
-
-    try {
-        $photo = (array) Unsplash\Photo::random($filters);
-        $array = array_combine([0, 1], $photo);
-    } catch (Unsplash\Exception $e) {
-        $access_key = access_key;
-        $secret_key = secret_key;
-        $callback = callback;
-        $application = application;
-        Unsplash\HttpClient::init([
-            'applicationId' => "{$access_key}",
-            'secret' => "{$secret_key}",
-            'callbackUrl' => "{$callback}",
-            'utmSource' => "{$application}",
-        ]);
-        $photo = (array) Unsplash\Photo::random($filters);
-        $array = array_combine([0, 1], $photo);
-    }
-
-    for ($i = 0; $i < 3; ++$i) {
-        $urls[$i] = $array[1][$i]['urls']['raw'];
-    }
-
-    return $urls;
+    
 }

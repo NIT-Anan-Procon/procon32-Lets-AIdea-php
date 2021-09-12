@@ -20,6 +20,7 @@ $picture = new Picture();
 $room = new Room();
 $userInfo = new UserInfo();
 $word = new Word();
+$unsplash = new Unsplash();
 
 // ログインしているかチェック
 if (false === $userInfo->CheckLogin()) {
@@ -52,7 +53,7 @@ $playerID = $gameInfo['playerID'];
 $gamemode = $gameInfo['gamemode'];
 
 // 画像を取得し保存
-$photo = InitialPhoto();
+$photo = $unsplash->InitialPhoto();
 $picture->AddPicture($gameID, $playerID, $photo, 1);
 
 // 部屋の設定情報を取得

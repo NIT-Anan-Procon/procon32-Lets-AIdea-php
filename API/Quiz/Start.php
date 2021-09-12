@@ -20,7 +20,7 @@ $picture = new Picture();
 $room = new Room();
 $userInfo = new UserInfo();
 $word = new Word();
-
+$unsplash = new Unsplash();
 
 //ユーザーがログインしているかチェック
 if (false === $userInfo->CheckLogin()) {
@@ -29,7 +29,6 @@ if (false === $userInfo->CheckLogin()) {
 
     exit;
 }
-
 
 // ユーザーが部屋に入っているかチェック
 $userID = $userInfo->CheckLogin()['userID'];
@@ -47,7 +46,7 @@ $playerID = $gameInfo['playerID'];
 $gamemode = $gameInfo['gamemode'];
 
 // 正解画像の取得
-$photo = InitialPhoto();
+$photo = $unsplash->InitialPhoto();
 $photos[] = [
     'url' => $photo,
     'answer' => 1,
@@ -108,12 +107,12 @@ if ('1' === $wordNum) {     // ワード数が多いと設定された場合
 }
 
 // 同じ写真が含まれないように類似画像を取得
-$imgs = getPhotos($val['subject']);
+$imgs = $unsplash->getPhotos($val['subject']);
 foreach ($imgs as $img) {
     $urls = $picture->getPictures($gameID, $playerID);
     foreach ($urls as $url) {
         while ($img === $url['pictureURL']) {
-            $img = getPhoto($val['subject']);
+            $img = $unsplash->getPhoto($val['subject']);
         }
     }
     $photos[] = [
