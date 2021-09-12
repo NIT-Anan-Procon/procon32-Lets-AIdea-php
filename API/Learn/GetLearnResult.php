@@ -53,7 +53,7 @@ for ($i = 0; $i < count($gameInfo); ++$i) {
         'icon' => $playerInfo['icon'],
         'badge' => $playerInfo['badge'],
         'explanation' => $explanation,
-        'ng' => $ng
+        'ng' => $ng,
     ];
 }
 
