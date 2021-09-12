@@ -33,10 +33,10 @@ if (false === $user['game']) {
 }
 
 $result['playerID'] = $user['game']['playerID'];
-$result['AI'] = $word->getWord($user['game']['gameID'],$user['game']['playerID'], 1);
+$result['AI'] = $word->getWord($user['game']['gameID'], 0, 1);
 $gameInfo = $room->GameInfo($user['game']['gameID']);
 $url = $picture->getPicture($user['game']['gameID'], null, 2);
-if (isset($url)) {
+if (!isset($url[0])) {
     header('Error: The requested picture does not exist.');
     http_response_code(403);
 
@@ -47,14 +47,15 @@ for ($i = 0; $i < count($gameInfo); ++$i) {
     $playerID = $gameInfo[$i]['playerID'];
     $playerInfo = $userInfo->GetUserInfo($gameInfo[$i]['userID']);
     $explanation = $word->getWord($user['game']['gameID'], $playerID, 0);
-    $array[$playerID] = [
+    $ng = $word->getWord($user['game']['gameID'], $playerID, 2);
+    $result['player'][$playerID] = [
         'name' => $playerInfo['name'],
         'icon' => $playerInfo['icon'],
         'badge' => $playerInfo['badge'],
         'explanation' => $explanation,
+        'ng' => $ng
     ];
 }
-$result['player'] = $array;
 
 echo json_encode($result);
 http_response_code(200);
