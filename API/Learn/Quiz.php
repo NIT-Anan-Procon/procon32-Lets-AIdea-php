@@ -39,7 +39,7 @@ if (false === $gameInfo) {
     exit;
 }
 
-if ((int)($gameInfo['flag']) != 1) {
+if (1 !== (int) ($gameInfo['flag'])) {
     header('You do not have the authority.');
     http_response_code(403);
 
@@ -123,6 +123,6 @@ if ('1' === $ngWord) {      //NGワードありと設定された場合
 }
 
 // AIの文章を保存
-$word->addWord($gameID,$playerID,$val['AI'],1);
+$word->addWord($gameID, $playerID, $val['AI'], 1);
 
 http_response_code(200);

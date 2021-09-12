@@ -86,7 +86,7 @@ $val = [
 ];
 
 // NGワード・類義語をDBに保存
-if ("1" === $wordNum) {     // ワード数が多いと設定された場合
+if ('1' === $wordNum) {     // ワード数が多いと設定された場合
     // Pythonと通信
     // $val = connect($photo,1,1);
 
@@ -97,7 +97,7 @@ if ("1" === $wordNum) {     // ワード数が多いと設定された場合
     foreach ($val['synonym'] as $synonyms) {
         $word->addWord($gameID, $playerID, $synonyms[0], 2);
     }
-} elseif ($wordNum === "0") {   //ワード数が普通と設定された場合
+} elseif ('0' === $wordNum) {   //ワード数が普通と設定された場合
     // Pythonと通信
     // $val = connect($photo,1,0);
 
@@ -131,7 +131,7 @@ foreach ($photos as $image) {
 }
 
 // AIの文章を保存
-$word->addWord($gameID,$playerID,$val['AI'],1);
+$word->addWord($gameID, $playerID, $val['AI'], 1);
 
 // 値を返す
 $sentence = $word->getWord($gameID, $playerID, 1);
