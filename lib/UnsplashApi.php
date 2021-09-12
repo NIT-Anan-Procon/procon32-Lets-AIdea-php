@@ -26,11 +26,12 @@ function InitialPhoto()
     $filters = [
         'query' => $key_word[$key],
     ];
+
     try {
         $photo = Unsplash\Photo::random($filters);
         $photo = (array) (Unsplash\Photo::random($filters));
         $array = array_combine([0, 1], $photo);
-    
+
         return $array[1]['urls']['raw'];
     } catch (Unsplash\Exception $e) {
         $access_key = access_key;
@@ -46,10 +47,9 @@ function InitialPhoto()
         $photo = Unsplash\Photo::random($filters);
         $photo = (array) (Unsplash\Photo::random($filters));
         $array = array_combine([0, 1], $photo);
-    
+
         return $array[1]['urls']['raw'];
     }
-    
 }
 
 function getPhoto($word)
@@ -57,11 +57,12 @@ function getPhoto($word)
     $filters = [
         'query' => $word,
     ];
+
     try {
         $photo = Unsplash\Photo::random($filters);
         $photo = (array) (Unsplash\Photo::random($filters));
         $array = array_combine([0, 1], $photo);
-    
+
         return $array[1]['urls']['raw'];
     } catch (Unsplash\Exception $e) {
         $access_key = access_key;
@@ -77,7 +78,7 @@ function getPhoto($word)
         $photo = Unsplash\Photo::random($filters);
         $photo = (array) (Unsplash\Photo::random($filters));
         $array = array_combine([0, 1], $photo);
-    
+
         return $array[1]['urls']['raw'];
     }
 }
