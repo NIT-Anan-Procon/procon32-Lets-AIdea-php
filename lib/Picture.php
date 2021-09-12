@@ -90,4 +90,15 @@ class Picture
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getLearnPhoto($gameID, $answer)
+    {
+        $sql = "SELECT pictureURL FROM {$this->table} WHERE gameID = :gameID AND answer = :answer";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindValue(':gameID', $gameID);
+        $stmt->bindValue(':answer', $answer);
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
+    }
 }
