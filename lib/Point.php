@@ -63,7 +63,7 @@ class Point
 
     public function deleteGameInfo($gameID)
     {
-        $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE gameID = :gameID");
+        $stmt = $this->dbh->prepare('DELETE FROM point WHERE gameID = :gameID');
         $stmt->bindValue(':gameID', $gameID);
         $stmt->execute();
     }
