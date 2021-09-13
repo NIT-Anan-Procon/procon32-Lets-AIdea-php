@@ -19,7 +19,7 @@ class Picture
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]);
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
+            header('Error:'.$e->getMessage());
 
             exit();
         }
@@ -41,9 +41,7 @@ class Picture
 
             return ['state' => true];
         } catch (PDOException $e) {
-            echo '接続失敗'.$e->getMessage();
-
-            return ['state' => 'DBとの接続エラー'];
+            header('Error:'.$e->getMessage());
 
             exit();
         }
@@ -70,7 +68,32 @@ class Picture
         }
         $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (0 < $answer) {
+            if (!isset($result[0])) {
+                $result[0]['pictureURL'] = null;
+                $result[0]['answer'] = $answer;
+            }
+        } else {
+            $result = $this->CheckPicture($result);
+        }
+
+        return $result;
+    }
+
+    public function CheckPicture($result)
+    {
+        if (!isset($result[0])) {
+            $count = 0;
+        } else {
+            $count = count($result);
+        }
+        for ($i = $count; $i < 4; ++$i) {
+            $result[$i]['pictureURL'] = null;
+            $result[$i]['answer'] = 0;
+        }
+
+        return $result;
     }
 
     public function deleteGameInfo($gameID)
