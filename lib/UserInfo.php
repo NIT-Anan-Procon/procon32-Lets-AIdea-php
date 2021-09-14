@@ -32,6 +32,12 @@ class UserInfo
 
     public function AddUserInfo($name, $password, $icon)
     {
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $name) || !preg_match('/^[a-zA-Z0-9]+$/', $password)) {
+            $result['character'] = false;
+
+            return $result;
+        }
+        $result['character'] = true;
         if ($this->CheckName($name)) {
             $result['name'] = false;
 
@@ -90,6 +96,12 @@ class UserInfo
 
     public function ChangeUserName($userID, $name)
     {
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $name)) {
+            $result['character'] = false;
+
+            return $result;
+        }
+        $result['character'] = true;
         if ($this->CheckName($name)) {
             $result['name'] = false;
 
@@ -114,21 +126,29 @@ class UserInfo
         }
     }
 
-    public function ChangePassword($userID, $Password)
+    public function ChangePassword($userID, $password)
     {
-        $sql = 'UPDATE userinfo SET password = :Password WHERE userID = :userID';
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $password)) {
+            $result['character'] = false;
+
+            return $result;
+        }
+        $result['character'] = true;
+        $sql = 'UPDATE userinfo SET password = :password WHERE userID = :userID';
 
         try {
             $stmt = $this->dbh->prepare($sql);
-            $stmt->bindValue(':Password', password_hash($Password, PASSWORD_DEFAULT));
+            $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
+            $result['state'] = true;
 
-            return true;
+            return $result;
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
+            $result['state'] = false;
 
-            return false;
+            return $result;
         }
     }
 
@@ -172,11 +192,11 @@ class UserInfo
         $stmt->bindValue(':name', $name);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_COLUMN);
-        if ($result === $name) {
-            return true;
+        if (false === $result) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     public function CheckLogin()
