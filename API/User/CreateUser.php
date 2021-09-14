@@ -1,5 +1,6 @@
 <?php
 
+ini_set('display_errors', 1);
 header('Access-Control-Allow-Origin:*');
 
 require_once '../../lib/UserInfo.php';
@@ -11,7 +12,10 @@ if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
     $password = (string) $_POST['password'];
     $icon = $_POST['icon'];
     $result = $userInfo->AddUserInfo($name, $password, $icon);
-    if (false === $result['name']) {
+    if (false === $result['character']) {
+        header('Error:Your name and password must be alphanumeric.');
+        http_response_code(401);
+    } elseif (false === $result['name']) {
         header('Error:This name is already in use and cannot be used. You need to register with a different name.');
         http_response_code(401);
     } elseif (false === $result['state']) {

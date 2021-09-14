@@ -18,6 +18,12 @@ $password = $_POST['password'];
 $icon = $_POST['icon'];
 if (isset($name)) {
     $result = $userInfo->ChangeUserName($userID, $name);
+    if (false === $result['character']) {
+        header('Error:Your name and password must be alphanumeric.');
+        http_response_code(401);
+
+        exit;
+    }
     if (false === $result['name']) {
         header('Error:This name is already in use and cannot be used. You need to register with a different name.');
         http_response_code(401);
@@ -32,7 +38,13 @@ if (isset($name)) {
 }
 if (isset($password)) {
     $result = $userInfo->ChangePassword($userID, $password);
-    if (false === $result) {
+    if (false === $result['character']) {
+        header('Error:Your name and password must be alphanumeric.');
+        http_response_code(401);
+
+        exit;
+    }
+    if (false === $result['state']) {
         http_response_code(400);
 
         exit;
