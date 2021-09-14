@@ -50,7 +50,7 @@ class UserInfo
         try {
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':name', $name, PDO::PARAM_STR);
-            $stmt->bindValue(':password', password_hash($password, pASSWORD_DEFAULT), PDO::PARAM_STR);
+            $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT), PDO::PARAM_STR);
             $stmt->bindValue(':icon', $icon);
             $stmt->execute();
             $result['state'] = true;
@@ -187,11 +187,11 @@ class UserInfo
         $stmt->bindValue(':name', $name);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_COLUMN);
-        if ($result === $name) {
-            return true;
+        if (false === $result) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     public function CheckLogin()
