@@ -21,7 +21,7 @@ if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
         ];
         $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
 
-        header('Access-Control-Allow-Origin:http://localhost:3030/');
+        header('Access-Control-Allow-Origin:http://localhost:3000/');
         header('Access-Control-Allow-Credentials:true');
         $options = [
             'expires' => time() + 3600,
