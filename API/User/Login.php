@@ -21,8 +21,8 @@ if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
         ];
         $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
         $host = getallheaders()['Host'];
-        if(isset($host)){
-            header('Access-Control-Allow-Origin:http://' . $host);
+        if (isset($host)) {
+            header('Access-Control-Allow-Origin:http://'.$host);
         } else {
             header('Access-Control-Allow-Origin:*');
         }
