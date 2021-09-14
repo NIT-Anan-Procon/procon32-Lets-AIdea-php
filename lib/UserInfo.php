@@ -32,8 +32,9 @@ class UserInfo
 
     public function AddUserInfo($name, $password, $icon)
     {
-        if (!preg_match("/^[a-zA-Z0-9]+$/", $name) || !preg_match("/^[a-zA-Z0-9]+$/", $password)) {
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $name) || !preg_match('/^[a-zA-Z0-9]+$/', $password)) {
             $result['character'] = false;
+
             return $result;
         }
         $result['character'] = true;
@@ -95,8 +96,9 @@ class UserInfo
 
     public function ChangeUserName($userID, $name)
     {
-        if (!preg_match("/^[a-zA-Z0-9]+$/", $name)) {
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $name)) {
             $result['character'] = false;
+
             return $result;
         }
         $result['character'] = true;
@@ -126,8 +128,9 @@ class UserInfo
 
     public function ChangePassword($userID, $password)
     {
-        if (!preg_match("/^[a-zA-Z0-9]+$/", $password)) {
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $password)) {
             $result['character'] = false;
+
             return $result;
         }
         $result['character'] = true;
@@ -139,10 +142,12 @@ class UserInfo
             $stmt->bindValue(':userID', $userID);
             $stmt->execute();
             $result['state'] = true;
+
             return $result;
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
             $result['state'] = false;
+
             return $result;
         }
     }
