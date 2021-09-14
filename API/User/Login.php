@@ -20,8 +20,12 @@ if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
             'userID' => $ok['userID'],
         ];
         $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
-
-        header('Access-Control-Allow-Origin:http://localhost:3000/');
+        $host = getallheaders()['Host'];
+        if(isset($host)){
+            header('Access-Control-Allow-Origin:http://' . $host);
+        } else {
+            header('Access-Control-Allow-Origin:*');
+        }
         header('Access-Control-Allow-Credentials:true');
         $options = [
             'expires' => time() + 3600,
