@@ -82,7 +82,7 @@ if ('1' === $ngWord) {      //NGワードありと設定された場合
             $word->addWord($gameID, 0, $ng, 2);
         }
         for ($i = 0; $i < count($val['synonym']); ++$i) {
-            if (null !== $val['synonym'][$i] && 0 != count($val['synonym'][$i])) {
+            if (null !== $val['synonym'][$i] && 0 !== count($val['synonym'][$i])) {
                 $word->addWord($gameID, 0, $val['synonym'][$i][0], 2);
             }
         }

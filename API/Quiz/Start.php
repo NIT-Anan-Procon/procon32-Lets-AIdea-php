@@ -83,7 +83,7 @@ if ('1' === $wordNum) {     // ワード数が多いと設定された場合
         $word->addWord($gameID, $playerID, $ng, 2);
     }
     foreach ($val['synonym'] as $synonyms) {
-        if (null !== $synonyms && count($synonyms) !== 0) {
+        if (null !== $synonyms && 0 !== count($synonyms)) {
             $word->addWord($gameID, $playerID, $synonyms[0], 2);
         }
     }
