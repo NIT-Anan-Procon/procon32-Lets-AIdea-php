@@ -20,7 +20,7 @@ $picture = new Picture();
 $room = new Room();
 $userInfo = new UserInfo();
 $word = new Word();
-$unsplash = new Unsplash();
+$unsplash = new UnsplashApi();
 
 //ユーザーがログインしているかチェック
 if (false === $userInfo->CheckLogin()) {
