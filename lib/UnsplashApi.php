@@ -28,7 +28,7 @@ class UnsplashApi
     public function InitialPhoto()
     {
         $this->init($this->access, $this->secret);
-        $key_word = ['animal', 'scenery', 'people'];
+        $key_word = ['animal'];
         $key = array_rand($key_word, 1);
         $filters = [
             'query' => $key_word[$key],
