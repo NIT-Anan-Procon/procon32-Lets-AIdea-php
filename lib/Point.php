@@ -5,6 +5,7 @@ require_once __DIR__.'/../Const.php';
 class Point
 {
     protected $dbh;
+    protected $table = 'point';
 
     public function __construct()
     {
@@ -26,9 +27,9 @@ class Point
 
     public function addPoint($gameID, $playerID, $pointNum, $flag)
     {
-        $sql = 'INSERT INTO point(gameID, playerID, pointNum, flag)
+        $sql = "INSERT INTO {$this->table}(gameID, playerID, pointNum, flag)
         VALUES
-            (:gameID, :playerID, :pointNum, :flag)';
+            (:gameID, :playerID, :pointNum, :flag)";
 
         try {
             $stmt = $this->dbh->prepare($sql);
@@ -48,7 +49,7 @@ class Point
 
     public function getPoint($gameID, $playerID, $flag)
     {
-        $stmt = $this->dbh->prepare('SELECT SUM(pointNum) FROM point WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag');
+        $stmt = $this->dbh->prepare("SELECT SUM(pointNum) FROM {$this->table} WHERE gameID = :gameID AND playerID = :playerID AND flag = :flag");
         $stmt->bindValue(':gameID', $gameID);
         $stmt->bindValue(':playerID', $playerID);
         $stmt->bindValue(':flag', $flag);
