@@ -1,12 +1,11 @@
 <?php
 
-header('Access-Control-Allow-Origin:*');
+require_once '../../lib/UserInfo.php';
+header('Access-Control-Allow-Origin:'.URL);
+header('Access-Control-Allow-Credentials:true');
 header('Content-Type: application/json; charset=utf-8');
 
-require_once '../../lib/UserInfo.php';
-
 $userInfo = new UserInfo();
-
 if (false === $userInfo->CheckLogin()) {
     header('Error:Login failed.');
     http_response_code(403);

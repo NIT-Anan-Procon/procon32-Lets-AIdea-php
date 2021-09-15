@@ -1,9 +1,9 @@
 <?php
 
 ini_set('display_errors', 1);
-header('Access-Control-Allow-Origin:*');
-
 require_once '../../lib/UserInfo.php';
+header('Access-Control-Allow-Origin:'.URL);
+header('Access-Control-Allow-Credentials:true');
 
 $userInfo = new userInfo();
 
