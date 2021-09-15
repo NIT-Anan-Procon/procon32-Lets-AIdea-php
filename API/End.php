@@ -61,7 +61,7 @@ $result['ng'] = $word->getWord($user['room']['gameID'], $winner, 2);
 if ((int) $user['room']['gamemode'] >= 1000) {
     $result['pictureURL'] = $picture->getPicture($user['room']['gameID'], $winner, 1)[0]['pictureURL'];
 } else {
-    $result['pictureURL'] = $picture->getPicture($user['room']['gameID'], null, 0)[0]['pictureURL'];
+    $result['pictureURL'] = $picture->getPicture($user['room']['gameID'], null, 2)[0]['pictureURL'];
 }
 if (1 === (int) $user['room']['flag']) {
     $ng = $result['ng'][0];

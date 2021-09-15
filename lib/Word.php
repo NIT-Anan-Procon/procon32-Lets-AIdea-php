@@ -56,11 +56,14 @@ class Word
         $stmt->execute();
         if (2 === $flag || 3 === $flag) {
             $result = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            if (!isset($result[0])) {
+                $result[0] = null;
+            }
         } else {
             $result = $stmt->fetch(PDO::FETCH_COLUMN);
-        }
-        if (false === $result) {
-            return null;
+            if (false === $result) {
+                $result = null;
+            }
         }
 
         return $result;
