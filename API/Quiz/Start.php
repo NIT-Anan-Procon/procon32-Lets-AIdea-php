@@ -63,34 +63,33 @@ function connect($photo, $subject, $synonyms)
     $data = json_encode(['url' => $photo, 'subject' => $subject, 'synonym' => $synonyms]);
     $url = 'http://localhost:5000/test';
     $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
     curl_close($ch);
-    $val = (array)(json_decode($response));
 
-    return $val;
+    return (array) (json_decode($response));
 }
 
 // NGワード・類義語をDBに保存
 if ('1' === $wordNum) {     // ワード数が多いと設定された場合
     // Pythonと通信
-    $val = connect($photo,1,1);
+    $val = connect($photo, 1, 1);
 
     // NGワードの設定
     foreach ($val['NGword'] as $ng) {
         $word->addWord($gameID, $playerID, $ng, 2);
     }
     foreach ($val['synonym'] as $synonyms) {
-        if ($synonyms != null) {
+        if (null !== $synonyms) {
             $word->addWord($gameID, $playerID, $synonyms[0], 2);
         }
     }
 } elseif ('0' === $wordNum) {   //ワード数が普通と設定された場合
     // Pythonと通信
-    $val = connect($photo,1,0);
+    $val = connect($photo, 1, 0);
 
     // NGワードの設定
     foreach ($val['NGword'] as $ng) {

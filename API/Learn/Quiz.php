@@ -66,13 +66,13 @@ $wordNum = substr($gamemode, 2, 1);
 $data = json_encode(['url' => $photo, 'subject' => 0, 'synonym' => 1]);
 $url = 'http://localhost:5000/test';
 $ch = curl_init($url);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
 curl_close($ch);
-$val = (array)(json_decode($response));
+$val = (array) (json_decode($response));
 
 // // NGワード・類義語をDBに保存
 if ('1' === $ngWord) {      //NGワードありと設定された場合
@@ -81,12 +81,12 @@ if ('1' === $ngWord) {      //NGワードありと設定された場合
             $word->addWord($gameID, 0, $ng, 2);
         }
         for ($i = 0; $i < count($val['synonym']); ++$i) {
-            if ($val['synonym'][$i] != null) {
+            if (null !== $val['synonym'][$i]) {
                 $word->addWord($gameID, 0, $val['synonym'][$i][0], 2);
             }
         }
         for ($i = 0; $i < count($val['synonym']); ++$i) {
-            if ($val['synonym'][$i] != null) {
+            if (null !== $val['synonym'][$i]) {
                 for ($j = 1; $j < count($val['synonym'][$i]); ++$j) {
                     $word->addWord($gameID, 0, $val['synonym'][$i][$j], 3);
                 }
@@ -97,7 +97,7 @@ if ('1' === $ngWord) {      //NGワードありと設定された場合
             $word->addWord($gameID, 0, $ng, 2);
         }
         for ($i = 0; $i < count($val['synonym']); ++$i) {
-            if ($val['synonym'][$i] != null) {
+            if (null !== $val['synonym'][$i]) {
                 for ($j = 1; $j < count($val['synonym'][$i]); ++$j) {
                     $word->addWord($gameID, 0, $val['synonym'][$i][$j], 3);
                 }
@@ -110,7 +110,7 @@ if ('1' === $ngWord) {      //NGワードありと設定された場合
         $word->addWord($gameID, 0, $ng, 3);
     }
     for ($i = 0; $i < count($val['synonym']); ++$i) {
-        if ($val['synonym'][$i] != null) {
+        if (null !== $val['synonym'][$i]) {
             for ($j = 1; $j < count($val['synonym'][$i]); ++$j) {
                 $word->addWord($gameID, 0, $val['synonym'][$i][$j], 3);
             }
