@@ -54,7 +54,7 @@ $gamemode = $gameInfo['gamemode'];
 
 // 画像を取得し保存
 // $photo = $unsplash->InitialPhoto();
-$photo = "https://images.unsplash.com/46/bsrOzgDkQhGRKOVC7Era_9X6A3584.jpg?ixid=MnwyNDQ0MjR8MHwxfHJhbmRvbXx8fHx8fHx8fDE2MzE1OTY3MjI&ixlib=rb-1.2.1";
+$photo = 'https://images.unsplash.com/46/bsrOzgDkQhGRKOVC7Era_9X6A3584.jpg?ixid=MnwyNDQ0MjR8MHwxfHJhbmRvbXx8fHx8fHx8fDE2MzE1OTY3MjI&ixlib=rb-1.2.1';
 $picture->AddPicture($gameID, $playerID, $photo, 1);
 
 // 部屋の設定情報を取得
@@ -76,19 +76,19 @@ $wordNum = substr($gamemode, 2, 1);
 // デモ用に値を代入
 $val = [
     'subject' => 'male',
-    'NGword' => ['サーフボード','波止場','男性'],
+    'NGword' => ['サーフボード', '波止場', '男性'],
     'synonym' => [
         [],
         [
-            "波戸",
-            "埠頭",
-            "波戸場",
-            "突堤",
-            "波止",
-            "桟橋",
-            "岸壁"
+            '波戸',
+            '埠頭',
+            '波戸場',
+            '突堤',
+            '波止',
+            '桟橋',
+            '岸壁',
         ],
-        ["マスキュリン"]
+        ['マスキュリン'],
     ],
     'AI' => 'サーフボードを持って波止場に立つ男性。',
 ];
@@ -100,7 +100,7 @@ if ('1' === $ngWord) {      //NGワードありと設定された場合
             $word->addWord($gameID, $playerID, $ng, 2);
         }
         for ($i = 0; $i < count($val['synonym']); ++$i) {
-            if (count($val['synonym'][$i]) != 0) {
+            if (0 !== count($val['synonym'][$i])) {
                 $word->addWord($gameID, $playerID, $val['synonym'][$i][0], 2);
             }
         }
