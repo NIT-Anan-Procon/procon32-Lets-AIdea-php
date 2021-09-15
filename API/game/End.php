@@ -2,15 +2,15 @@
 
 ini_set('display_errors', 1);
 
-require_once '../lib/Point.php';
+require_once '../../lib/Point.php';
 
-require_once '../lib/Word.php';
+require_once '../../lib/Word.php';
 
-require_once '../lib/Picture.php';
+require_once '../../lib/Picture.php';
 
-require_once '../lib/Library.php';
+require_once '../../lib/Library.php';
 
-require_once '../lib/Room.php';
+require_once '../../lib/Room.php';
 
 require_once '../lib/UserInfo.php';
 header('Access-Control-Allow-Origin:'.URL);
