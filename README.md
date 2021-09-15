@@ -64,6 +64,9 @@ composer install
 
             ゲーム終了時にもう一度遊ぶを選択された時に実行するAPI。
     - Learn
+        - GetLearnResult.php
+
+            リザルト画面、投票画面で必要な情報を返すAPI。
         - Quiz.php
 
             画像、NGワード、類義語を取得しDBに保存するAPI。
@@ -71,9 +74,9 @@ composer install
 
             学習モードの説明画面に必要な画像、NGワード、類義語をDBから取得し返すAPI。
     - Quiz
-        - Start.php
-
-            クイズモードの説明画面に必要な画像、NGワードを取得し返すAPI.
+        - AddPoint.php
+        
+            指定したプレイヤーの獲得ポイントを保存するAPI。
         - GetPicture.php
 
             クイズに必要な画像や説明文を返すAPI。
@@ -83,6 +86,9 @@ composer install
         -GetVoteInfo.php
 
             投票画面に必要な情報を返すAPI。
+        - Start.php
+
+            クイズモードの説明画面に必要な画像、NGワードを取得し返すAPI.
     - Library
         - GetLibrary.php
 
@@ -90,18 +96,16 @@ composer install
         - Good.php
 
             DBにいいねを加える、取り消すAPI。
-    - AddPoint.php
-        
-        指定したプレイヤーの獲得ポイントを保存するAPI。
-    - GetPoint.php
-        
-        指定したプレイヤーの獲得したポイントを返すAPI。
-    - AddWord.php
-        
-        指定したユーザーの説明文をDBに保存する。
-    - End.php
+    - Game
+        - End.php
 
-        結果発表画面に必要な情報を返すAPI。
+            結果発表画面に必要な情報を返すAPI。
+        - Vote.php
+
+            指定したプレイヤーに投票するAPI。
+        - AddExplanation.php
+        
+            呼び出したユーザーの説明文を追加する。
 - composer
 - lib
     - APIで使用されるライブラリ群
