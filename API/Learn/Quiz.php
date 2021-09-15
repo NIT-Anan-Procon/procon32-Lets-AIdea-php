@@ -53,7 +53,8 @@ $playerID = $gameInfo['playerID'];
 $gamemode = $gameInfo['gamemode'];
 
 // 画像を取得し保存
-$photo = $unsplash->InitialPhoto();
+// $photo = $unsplash->InitialPhoto();
+$photo = "https://images.unsplash.com/46/bsrOzgDkQhGRKOVC7Era_9X6A3584.jpg?ixid=MnwyNDQ0MjR8MHwxfHJhbmRvbXx8fHx8fHx8fDE2MzE1OTY3MjI&ixlib=rb-1.2.1";
 $picture->AddPicture($gameID, $playerID, $photo, 1);
 
 // 部屋の設定情報を取得
@@ -61,31 +62,35 @@ $mode = substr($gamemode, 0, 1);
 $ngWord = substr($gamemode, 1, 1);
 $wordNum = substr($gamemode, 2, 1);
 
-// PythonのAPIをたたく関数
-function connect($photo, $subject, $synonyms)
-{
-    $data = json_encode(['url' => $photo, 'subject' => $subject, 'synonyms' => $synonyms]);
-    $ch = curl_init('');    //''にpythonのAPIのurlを記述
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($ch);
-    curl_close();
-
-    return json_decode($response);
-}
+// PythonのAPIをたたく
+// $data = json_encode(['url' => $photo, 'subject' => 0, 'synonyms' => 1]);
+// $ch = curl_init('');    //''にpythonのAPIのurlを記述
+// curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
+// curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+// curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+// $response = curl_exec($ch);
+// curl_close();
+// $val = json_decode($response);
 
 // デモ用に値を代入
 $val = [
-    'subject' => 'Lamb',
-    'NGword' => ['角', '雄羊', '岩', '上', '熊'],
+    'subject' => 'male',
+    'NGword' => ['サーフボード','波止場','男性'],
     'synonym' => [
-        ['街角', '曲がり角'],
-        ['石ころ', 'ストーン'],
-        ['上面', '天面'],
+        [],
+        [
+            "波戸",
+            "埠頭",
+            "波戸場",
+            "突堤",
+            "波止",
+            "桟橋",
+            "岸壁"
+        ],
+        ["マスキュリン"]
     ],
-    'AI' => '角のある雄羊が岩の上に座っている。',
+    'AI' => 'サーフボードを持って波止場に立つ男性。',
 ];
 
 // NGワード・類義語をDBに保存
@@ -95,7 +100,9 @@ if ('1' === $ngWord) {      //NGワードありと設定された場合
             $word->addWord($gameID, $playerID, $ng, 2);
         }
         for ($i = 0; $i < count($val['synonym']); ++$i) {
-            $word->addWord($gameID, $playerID, $val['synonym'][$i][0], 2);
+            if (count($val['synonym'][$i]) != 0) {
+                $word->addWord($gameID, $playerID, $val['synonym'][$i][0], 2);
+            }
         }
         for ($i = 0; $i < count($val['synonym']); ++$i) {
             for ($j = 1; $j < count($val['synonym'][$i]); ++$j) {
@@ -113,6 +120,7 @@ if ('1' === $ngWord) {      //NGワードありと設定された場合
         }
     }
 } elseif ('0' === $ngWord) {        // NGワードなしと設定された場合
+
     foreach ($val['NGword'] as $ng) {
         $word->addWord($gameID, $playerID, $ng, 3);
     }

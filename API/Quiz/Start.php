@@ -72,7 +72,7 @@ function connect($photo, $subject, $synonyms)
     return json_decode($response);
 }
 
-// デモ用に値を代入
+// デバッグ用に値を代入
 $val = [
     'subject' => 'Lamb',
     'NGword' => ['角', '雄羊', '岩', '上', '熊'],
