@@ -38,8 +38,6 @@ class Picture
             $stmt->bindValue(':pictureURL', $PictureUrl);
             $stmt->bindValue(':answer', $answer);
             $stmt->execute();
-
-            return ['state' => true];
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
 
