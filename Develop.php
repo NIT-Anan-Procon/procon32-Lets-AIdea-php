@@ -1,4 +1,4 @@
 <?php
 
 define('ReleaseMode', false);
-define('URL', 'http://localhost:3000');
+define('URL', $_SERVER['HTTP_ORIGIN']);

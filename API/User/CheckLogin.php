@@ -3,7 +3,6 @@
 require_once '../../lib/UserInfo.php';
 header('Access-Control-Allow-Origin:'.URL);
 header('Access-Control-Allow-Credentials:true');
-
 $userInfo = new UserInfo();
 
 if (false === $userInfo->CheckLogin()) {
