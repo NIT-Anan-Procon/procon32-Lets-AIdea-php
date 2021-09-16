@@ -46,9 +46,9 @@ $gamemode = $gameInfo['gamemode'];
 
 // 値を返す
 $photo = $picture->getLearnPhoto($gameID, 2);
-$sentence = $word->getWord($gameID, 1, 1);
-$ngWords = $word->getWord($gameID, 1, 2);
-$synonyms = $word->getWord($gameID, 1, 3);
+$sentence = $word->getWord($gameID, 0, 1);
+$ngWords = $word->getWord($gameID, 0, 2);
+$synonyms = $word->getWord($gameID, 0, 3);
 
 $result = [
     'synonyms' => $synonyms,
