@@ -21,7 +21,7 @@ if (false === $userInfo->CheckLogin()) {
 }
 
 if (filter_input(INPUT_POST, 'roomID')) {
-    $runtime->run(function() {
+    $runtime->run(function () {
         $url = 'http://localhost/~kinoshita/procon32_Lets_AIdea_php/API/CreateQuiz.php';
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);

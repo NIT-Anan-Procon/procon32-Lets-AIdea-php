@@ -34,7 +34,7 @@ if (false !== $gameInfo) {
 // 部屋を追加
 
 if (isset($_POST['gamemode'])) {
-    $runtime->run(function() {
+    $runtime->run(function () {
         $url = 'http://localhost/~kinoshita/procon32_Lets_AIdea_php/API/CreateQuiz.php';
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: application/json']);

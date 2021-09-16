@@ -27,14 +27,14 @@ $response = curl_exec($ch);
 curl_close($ch);
 $val = (array) (json_decode($response));
 
-$ng = implode(',',$val['NGword']);
+$ng = implode(',', $val['NGword']);
 
 foreach ($val['synonym'] as $word) {
-    if ($word != null && count($word) != 0) {
-        $synonym[] = implode(',',$word);
+    if (null !== $word && 0 !== count($word)) {
+        $synonym[] = implode(',', $word);
     }
 }
-$synonyms = implode(':',$synonym);
+$synonyms = implode(':', $synonym);
 
 // 同じ写真が含まれないように類似画像を取得
 $imgs = $unsplash->getPhotos($val['subject']);
@@ -47,6 +47,6 @@ foreach ($imgs as $img) {
     }
     $photos[] = $img;
 }
-$pictureURL = implode(',',$photos);
+$pictureURL = implode(',', $photos);
 
 $stock->addStock($val['AI'], $ng, $synonyms, $pictureURL);
