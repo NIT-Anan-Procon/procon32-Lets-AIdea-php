@@ -1,8 +1,8 @@
 <?php
 
-header('Access-Control-Allow-Origin:*');
-
 require_once '../../lib/UserInfo.php';
+header('Access-Control-Allow-Origin:'.URL);
+header('Access-Control-Allow-Credentials:true');
 
 use Firebase\JWT\JWT;
 
@@ -20,9 +20,6 @@ if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
             'userID' => $ok['userID'],
         ];
         $jwt = JWT::encode($payload, JWT_KEY, JWT_ALG);
-
-        header('Access-Control-Allow-Origin:http://localhost:3000/');
-        header('Access-Control-Allow-Credentials:true');
         $options = [
             'expires' => time() + 3600,
             'path' => '/',
