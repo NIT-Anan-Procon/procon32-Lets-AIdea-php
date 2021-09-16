@@ -25,7 +25,8 @@ class Stock
         }
     }
 
-    public function addStock($explanation,$ng,$synonyms,$pictureURL) {
+    public function addStock($explanation, $ng, $synonyms, $pictureURL)
+    {
         $sql = "INSERT INTO {$this->table}(explanation, ng, synonyms, pictureURL)
         VALUES
             (:explanation, :ng, :synonyms, :pictureURL)";
@@ -44,11 +45,13 @@ class Stock
         }
     }
 
-    public function getStock($stockID) {
+    public function getStock($stockID)
+    {
         try {
             $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE stockID = :stockID");
-            $stmt->bindValue(':stockID',$stockID);
+            $stmt->bindValue(':stockID', $stockID);
             $stmt->execute();
+
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
@@ -57,10 +60,12 @@ class Stock
         }
     }
 
-    public function getCount() {
+    public function getCount()
+    {
         try {
             $stmt = $this->dbh->prepare("SELECT * FROM {$this->table}");
             $stmt->execute();
+
             return count($stmt->fetchall(PDO::FETCH_ASSOC));
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
@@ -69,7 +74,8 @@ class Stock
         }
     }
 
-    public function deleteStock($stockID) {
+    public function deleteStock($stockID)
+    {
         try {
             $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE stockID = :stockID");
             $stmt->bindValue(':stockID', $stockID);
