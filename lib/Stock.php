@@ -1,5 +1,7 @@
 <?php
+
 ini_set('display_errors', 1);
+
 require_once __DIR__.'/../Const.php';
 
 class Stock
@@ -65,6 +67,7 @@ class Stock
         try {
             $stmt = $this->dbh->prepare("SELECT count(stockID) FROM {$this->table}");
             $stmt->execute();
+
             return $stmt->fetch(PDO::FETCH_COLUMN);
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());

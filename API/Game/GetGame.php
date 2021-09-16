@@ -41,7 +41,7 @@ $word->addWord($user['room']['gameID'], $user['room']['playerID'], $stockInfo['e
 
 $stockInfo['ng'] = explode(',', $stockInfo['ng']);
 $stockInfo['synonym'] = explode(':', $stockInfo['synonym']);
-for($i = 0; $i < count($stockInfo['synonym']); $i++) {
+for ($i = 0; $i < count($stockInfo['synonym']); ++$i) {
     $stockInfo['synonym'][$i] = explode(',', $stockInfo['synonym'][$i]);
 }
 $stockInfo['pictureURL'] = explode(',', $stockInfo['pictureURL']);
@@ -64,7 +64,7 @@ if (1 === $ngWord) {
     unset($value);
 }
 if (0 === $mode) {
-    if($ngWord == 0){
+    if (0 === $ngWord) {
         array_unshift($stockInfo['synonym'], $stockInfo['ng']);
     }
     foreach ($stockInfo['synonym'] as $key) {
