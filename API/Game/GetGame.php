@@ -51,7 +51,6 @@ if($mode == 0){
 $gameInfo = $room->GameInfo($gameID);
 do {
     $stockID = random_int(1, $stock->GetCount());
-    $stockID = 8;
     $stockInfo = $stock->getStock($stockID);
     $stock->deleteStock($stockID);
     $stockInfo['pictureURL'] = explode(',', $stockInfo['pictureURL']);
