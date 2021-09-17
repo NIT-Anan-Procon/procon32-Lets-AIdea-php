@@ -125,6 +125,5 @@ class Picture
 
     public function checkPlayerPicture($picture)
     {
-        
     }
 }

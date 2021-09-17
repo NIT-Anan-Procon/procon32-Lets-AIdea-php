@@ -37,7 +37,7 @@ if (false === $user['room']) {
     exit;
 }
 $game = $room->GameInfo($user['room']['gameID']);
-$mode = (int)((int) $user['room']['gamemode'] / 1000);
+$mode = (int) ((int) $user['room']['gamemode'] / 1000);
 $playerNum = count($game);
 $max = -1;
 for ($i = 0; $i <= $playerNum; ++$i) {
@@ -63,7 +63,7 @@ if (1 === $mode) {
 } else {
     $result['ng'] = $word->getWord($user['room']['gameID'], 0, 2);
 }
-if ($mode == 1) {
+if (1 === $mode) {
     $result['pictureURL'] = $picture->getPicture($user['room']['gameID'], $winner, 1)[0]['pictureURL'];
 } else {
     $result['pictureURL'] = $picture->getPicture($user['room']['gameID'], null, 2)[0]['pictureURL'];
