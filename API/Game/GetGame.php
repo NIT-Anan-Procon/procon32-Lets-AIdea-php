@@ -43,7 +43,7 @@ if (0 === $user['room']['flag'] && 0 === $mode) {
     exit;
 }
 $gameID = $user['room']['gameID'];
-if($mode == 0){
+if (0 === $mode) {
     $playerID = 0;
 } else {
     $playerID = $user['room']['playerID'];
