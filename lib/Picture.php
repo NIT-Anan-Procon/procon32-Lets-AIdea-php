@@ -122,4 +122,9 @@ class Picture
 
         return $stmt->fetchColumn();
     }
+
+    public function checkPlayerPicture($picture)
+    {
+        
+    }
 }

@@ -34,21 +34,45 @@ if (false === $user['room']) {
 
     exit;
 }
-$gameInfo = $room->GameInfo($user['room']['gameID']);
-$stockID = random_int(1, $stock->GetCount());
-$stockInfo = $stock->getStock($stockID);
-$word->addWord($user['room']['gameID'], $user['room']['playerID'], $stockInfo['explanation'], 1);
+$mode = (int) substr($user['room']['gamemode'], 0, 1);
+$ngWord = (int) substr($user['room']['gamemode'], 1, 1);
+$wordNum = (int) substr($user['room']['gamemode'], 2, 1);
+if (0 === $user['room']['flag'] && 0 === $mode) {
+    http_response_code(200);
 
+    exit;
+}
+$gameID = $user['room']['gameID'];
+if($mode == 0){
+    $playerID = 0;
+} else {
+    $playerID = $user['room']['playerID'];
+}
+$gameInfo = $room->GameInfo($gameID);
+do {
+    $stockID = random_int(1, $stock->GetCount());
+    $stockID = 8;
+    $stockInfo = $stock->getStock($stockID);
+    $stock->deleteStock($stockID);
+    $stockInfo['pictureURL'] = explode(',', $stockInfo['pictureURL']);
+    if (0 === $mode) {
+        break;
+    }
+} while ($picture->checkPlayerPicture($gameID, $stockInfo['pictureURL'][0]));
+if (0 === $mode) {
+    $picture->addPicture($gameID, null, $stockInfo['pictureURL'][0], 2);
+} else {
+    $picture->addPicture($gameID, $playerID, $stockInfo['pictureURL'][0], 1);
+    for ($i = 1; $i < count($stockInfo['pictureURL']); ++$i) {
+        $picture->addPicture($gameID, $playerID, $stockInfo['pictureURL'][$i], 0);
+    }
+}
 $stockInfo['ng'] = explode(',', $stockInfo['ng']);
 $stockInfo['synonym'] = explode(':', $stockInfo['synonym']);
 for ($i = 0; $i < count($stockInfo['synonym']); ++$i) {
     $stockInfo['synonym'][$i] = explode(',', $stockInfo['synonym'][$i]);
 }
-$stockInfo['pictureURL'] = explode(',', $stockInfo['pictureURL']);
-unset($value);
-$mode = (int) substr($user['room']['gamemode'], 0, 1);
-$ngWord = (int) substr($user['room']['gamemode'], 1, 1);
-$wordNum = (int) substr($user['room']['gamemode'], 2, 1);
+$word->addWord($gameID, 0, $stockInfo['explanation'], 1);
 if (1 === $ngWord) {
     if (1 === $wordNum) {
         for ($i = 0; $i < count($stockInfo['synonym']); ++$i) {
@@ -59,7 +83,7 @@ if (1 === $ngWord) {
         }
     }
     foreach ($stockInfo['ng'] as $value) {
-        $word->addWord($user['room']['gameID'], $user['room']['playerID'], $value, 2);
+        $word->addWord($gameID, $playerID, $value, 2);
     }
     unset($value);
 }
@@ -70,17 +94,11 @@ if (0 === $mode) {
     foreach ($stockInfo['synonym'] as $key) {
         foreach ($key as $value) {
             if (isset($value)) {
-                $word->addWord($user['room']['gameID'], $user['room']['playerID'], $value, 3);
+                $word->addWord($gameID, $playerID, $value, 3);
             }
         }
         unset($value);
     }
     unset($key);
-    $picture->addPicture($user['room']['gameID'], $user['room']['playerID'], $stockInfo['pictureURL'][0], 2);
-} else {
-    $picture->addPicture($user['room']['gameID'], $user['room']['playerID'], $stockInfo['pictureURL'][0], 1);
-    for ($i = 1; $i < count($stockInfo['pictureURL']); ++$i) {
-        $picture->addPicture($user['room']['gameID'], $user['room']['playerID'], $stockInfo['pictureURL'][$i], 0);
-    }
 }
 http_response_code(200);

@@ -37,6 +37,7 @@ if (false === $user['room']) {
     exit;
 }
 $game = $room->GameInfo($user['room']['gameID']);
+$mode = (int)((int) $user['room']['gamemode'] / 1000);
 $playerNum = count($game);
 $max = -1;
 for ($i = 0; $i <= $playerNum; ++$i) {
@@ -57,8 +58,12 @@ if (0 === $winner) {
     $result = $userInfo->getUserInfo($game[$winner - 1]['userID']);
 }
 $result['explanation'] = $word->getWord($user['room']['gameID'], $winner, 0);
-$result['ng'] = $word->getWord($user['room']['gameID'], $winner, 2);
-if ((int) $user['room']['gamemode'] >= 1000) {
+if (1 === $mode) {
+    $result['ng'] = $word->getWord($user['room']['gameID'], $winner, 2);
+} else {
+    $result['ng'] = $word->getWord($user['room']['gameID'], 0, 2);
+}
+if ($mode == 1) {
     $result['pictureURL'] = $picture->getPicture($user['room']['gameID'], $winner, 1)[0]['pictureURL'];
 } else {
     $result['pictureURL'] = $picture->getPicture($user['room']['gameID'], null, 2)[0]['pictureURL'];
@@ -68,8 +73,7 @@ if (1 === (int) $user['room']['flag']) {
     for ($i = 1; $i < count($result['ng']); ++$i) {
         $ng .= ','.$result['ng'][$i];
     }
-    $flag = (int) ((int) $user['room']['gamemode'] / 1000);
-    $lib = $library->UploadLibrary($result['userID'], $result['explanation'], $ng, $result['pictureURL'], $flag);
+    $lib = $library->UploadLibrary($result['userID'], $result['explanation'], $ng, $result['pictureURL'], $mode);
     if (false === $lib) {
         http_response_code(400);
 
