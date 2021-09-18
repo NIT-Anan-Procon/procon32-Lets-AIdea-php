@@ -14,8 +14,8 @@ $unsplash = new UnsplashApi();
 if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
     $name = (string) $_POST['name'];
     $password = (string) $_POST['password'];
-    $word = ['animal','art','scenery','people'];
-    $key_word = array_rand($word,1);
+    $word = ['animal', 'art', 'scenery', 'people'];
+    $key_word = array_rand($word, 1);
     $icon = $unsplash->getPhoto($key_word);
     $result = $userInfo->AddUserInfo($name, $password, $icon);
     if (false === $result['character']) {
