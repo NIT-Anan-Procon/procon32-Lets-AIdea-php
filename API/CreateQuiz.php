@@ -50,3 +50,5 @@ foreach ($imgs as $img) {
 $pictureURL = implode(',', $photos);
 
 $stock->addStock($val['AI'], $ng, $synonyms, $pictureURL);
+
+http_response_code(200);
