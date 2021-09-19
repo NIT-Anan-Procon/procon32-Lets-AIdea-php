@@ -31,7 +31,7 @@ class Room
         var_dump($mode);
         $roomID = random_int(100000, 999999);
         $code = (sprintf('%04d', $roomID));
-        $roomID = (String)$mode.(String)$code;
+        $roomID = (string) $mode.(string) $code;
         var_dump($roomID);
         $result = $this->RoomInfo($mode.$code);
 
