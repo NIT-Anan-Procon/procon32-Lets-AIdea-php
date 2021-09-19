@@ -26,11 +26,14 @@ class Room
         }
     }
 
-    public function CreateRoomID()
+    public function CreateRoomID($mode)
     {
+        var_dump($mode);
         $roomID = random_int(100000, 999999);
-        $code = (int) (sprintf('%04d', $roomID));
-        $result = $this->RoomInfo($code);
+        $code = (sprintf('%04d', $roomID));
+        $roomID = (String)$mode.(String)$code;
+        var_dump($roomID);
+        $result = $this->RoomInfo($mode.$code);
 
         if (0 === count($result)) {
             return $code;

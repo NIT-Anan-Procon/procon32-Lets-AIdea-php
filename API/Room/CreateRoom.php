@@ -30,12 +30,16 @@ if (false !== $gameInfo) {
 }
 
 // 部屋を追加
-
 if (isset($_POST['gamemode'])) {
-    $roomID = $room->CreateRoomID();
     $gameID = $room->GetGameID() + 1;
     $playerID = 1;
     $gamemode = (string) $_POST['gamemode'];
+    if ((int)$gamemode > 1000) {
+        $mode = "Q";
+    } else {
+        $mode = "L";
+    }
+    $roomID = $mode.$room->CreateRoomID($mode);
     $room->AddRoom($gameID, $playerID, $userID, $roomID, 1, $gamemode);
     $playerInfo = $room->PlayerInfo($gameID, $playerID);
     $user = $userInfo->GetUserInfo($userID);
