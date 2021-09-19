@@ -31,10 +31,10 @@ if (false !== $game) {
     $playerNum = count($gameInfo);
     $gamemode = $gameInfo[0]['gamemode'];
     $result = [
-        'playerID'  => $playerID,
-        'gamemode'  => $gamemode,
-        'roomID'    => $roomID,
-        'status'    => $status
+        'playerID' => $playerID,
+        'gamemode' => $gamemode,
+        'roomID' => $roomID,
+        'status' => $status,
     ];
     for ($i = 1; $i <= $playerNum; ++$i) {
         $userID = $gameInfo[$i - 1]['userID'];
@@ -46,8 +46,8 @@ if (false !== $game) {
                 'name' => $user['name'],
                 'icon' => $user['icon'],
                 'badge' => $user['badge'],
-                'flag' => $flag
-            ]
+                'flag' => $flag,
+            ],
         ];
     }
     $result['player'] = $array;

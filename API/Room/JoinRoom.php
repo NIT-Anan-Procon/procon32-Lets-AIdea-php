@@ -31,7 +31,7 @@ if (filter_input(INPUT_POST, 'roomID')) {
         'icon' => $user['icon'],
         'badge' => $user['badge'],
         'gamemode' => $playerInfo['gamemode'],
-        'roomID' => $roomID
+        'roomID' => $roomID,
     ];
     echo json_encode($result);
     http_response_code(200);

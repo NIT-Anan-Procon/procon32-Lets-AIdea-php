@@ -78,7 +78,7 @@ $result = [
     'icon' => $user['icon'],
     'badge' => $user['badge'],
     'gamemode' => $playerInfo['gamemode'],
-    'roomID' => $roomID
+    'roomID' => $roomID,
 ];
 
 echo json_encode($result);
