@@ -53,7 +53,7 @@ class Stock
             $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE flag = 0 LIMIT 1");
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            if($result == false){
+            if (false === $result) {
                 return false;
             }
 
