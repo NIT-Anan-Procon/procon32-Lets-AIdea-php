@@ -34,10 +34,10 @@ if (isset($_POST['gamemode'])) {
     $gameID = $room->GetGameID() + 1;
     $playerID = 1;
     $gamemode = (string) $_POST['gamemode'];
-    if ((int)$gamemode > 1000) {
-        $mode = "Q";
+    if ((int) $gamemode > 1000) {
+        $mode = 'Q';
     } else {
-        $mode = "L";
+        $mode = 'L';
     }
     $roomID = $mode.$room->CreateRoomID($mode);
     $room->AddRoom($gameID, $playerID, $userID, $roomID, 1, $gamemode);
