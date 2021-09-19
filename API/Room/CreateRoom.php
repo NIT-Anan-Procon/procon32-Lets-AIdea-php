@@ -44,8 +44,8 @@ if (isset($_POST['gamemode'])) {
         'name' => $user['name'],
         'icon' => $user['icon'],
         'badge' => $user['badge'],
-        'flag' => $playerInfo['flag'],
         'gamemode' => $gamemode,
+        'roomID' => $roomID
     ];
     echo json_encode($result);
     http_response_code(200);

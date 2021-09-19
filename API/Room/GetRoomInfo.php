@@ -20,19 +20,37 @@ if (false === $userInfo->CheckLogin()) {
 
 $userID = $userInfo->CheckLogin()['userID'];
 $game = $room->getGameInfo($userID);
+$playerID = $game['playerID'];
+$gamemode = $game['gamemode'];
+$roomID = $game['roomID'];
+$status = $game['status'];
+
 if (false !== $game) {
     $gameID = $game['gameID'];
     $gameInfo = $room->GameInfo($gameID);
     $playerNum = count($gameInfo);
     $gamemode = $gameInfo[0]['gamemode'];
-    $result = ['gamemode' => $gamemode];
+    $result = [
+        'playerID'  => $playerID,
+        'gamemode'  => $gamemode,
+        'roomID'    => $roomID,
+        'status'    => $status
+    ];
     for ($i = 1; $i <= $playerNum; ++$i) {
         $userID = $gameInfo[$i - 1]['userID'];
         $flag = $gameInfo[$i - 1]['flag'];
         $user = $userInfo->GetUserInfo($userID);
         $playerID = $gameInfo[$i - 1]['playerID'];
-        $result += [$playerID => ['flag' => $flag, 'name' => $user['name'], 'icon' => $user['icon'], 'badge' => $user['badge']]];
+        $array[] = [
+            $playerID => [
+                'name' => $user['name'],
+                'icon' => $user['icon'],
+                'badge' => $user['badge'],
+                'flag' => $flag
+            ]
+        ];
     }
+    $result['player'] = $array;
     echo json_encode($result);
     http_response_code(200);
 
