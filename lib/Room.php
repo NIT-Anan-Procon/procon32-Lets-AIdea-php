@@ -253,5 +253,4 @@ class Room
             exit;
         }
     }
-
 }
