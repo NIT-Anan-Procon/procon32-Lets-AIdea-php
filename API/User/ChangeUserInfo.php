@@ -18,7 +18,7 @@ if (false === $userInfo->CheckLogin()) {
 $userID = $userInfo->CheckLogin()['userID'];
 $name = $_POST['name'];
 $password = $_POST['password'];
-$icon = $unsplash->getPhoto("");
+$icon = $unsplash->getPhoto('');
 if (isset($name)) {
     $result = $userInfo->ChangeUserName($userID, $name);
     if (false === $result['character']) {
