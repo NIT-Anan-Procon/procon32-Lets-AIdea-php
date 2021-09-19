@@ -37,7 +37,7 @@ if (false === $user['room']) {
 $mode = (int) substr($user['room']['gamemode'], 0, 1);
 $ngWord = (int) substr($user['room']['gamemode'], 1, 1);
 $wordNum = (int) substr($user['room']['gamemode'], 2, 1);
-if (0 === (int)$user['room']['flag'] && 0 === $mode) {
+if (0 === (int) $user['room']['flag'] && 0 === $mode) {
     http_response_code(200);
 
     exit;

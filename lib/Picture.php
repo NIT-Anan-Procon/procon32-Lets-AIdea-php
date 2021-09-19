@@ -131,9 +131,10 @@ class Picture
             $stmt->bindValue(':pictureURL', $pictureURL);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_COLUMN);
-            if($result != false){
+            if (false !== $result) {
                 return true;
             }
+
             return false;
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
