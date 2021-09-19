@@ -1,5 +1,7 @@
 <?php
 
+ini_set('display_errors', 1);
+
 require_once __DIR__.'/../Const.php';
 
 class Stock
@@ -25,17 +27,17 @@ class Stock
         }
     }
 
-    public function addStock($explanation, $ng, $synonym, $pictureURL)
+    public function addStock($explanation, $ng, $synonyms, $pictureURL)
     {
-        $sql = "INSERT INTO {$this->table}(explanation, ng, synonym, pictureURL)
+        $sql = "INSERT INTO {$this->table}(explanation, ng, synonyms, pictureURL)
         VALUES
-            (:explanation, :ng, :synonym, :pictureURL)";
+            (:explanation, :ng, :synonyms, :pictureURL)";
 
         try {
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':explanation', $explanation);
             $stmt->bindValue(':ng', $ng);
-            $stmt->bindValue(':synonym', $synonym);
+            $stmt->bindValue(':synonyms', $synonyms);
             $stmt->bindValue(':pictureURL', $pictureURL);
             $stmt->execute();
         } catch (PDOException $e) {
@@ -45,28 +47,21 @@ class Stock
         }
     }
 
-    public function getStock($stockID)
+    public function getStock()
     {
         try {
-            $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE stockID = :stockID");
-            $stmt->bindValue(':stockID', $stockID);
+            $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE flag = 0 LIMIT 1");
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (false === $result) {
+                return false;
+            }
+
+            $stmt = $this->dbh->prepare("UPDATE {$this->table} SET flag = 1 WHERE stockID = :stockID");
+            $stmt->bindValue(':stockID', $result['stockID']);
             $stmt->execute();
 
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            header('Error:'.$e->getMessage());
-
-            exit;
-        }
-    }
-
-    public function getCount()
-    {
-        try {
-            $stmt = $this->dbh->prepare("SELECT * FROM {$this->table}");
-            $stmt->execute();
-
-            return count($stmt->fetchall(PDO::FETCH_ASSOC));
+            return $result;
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
 
