@@ -14,7 +14,7 @@ $unsplash = new UnsplashApi();
 if (filter_input(INPUT_POST, 'name') && filter_input(INPUT_POST, 'password')) {
     $name = (string) $_POST['name'];
     $password = (string) $_POST['password'];
-    $icon = $unsplash->getPhoto("");
+    $icon = $unsplash->getPhoto('');
     $result = $userInfo->AddUserInfo($name, $password, $icon);
     if (false === $result['character']) {
         header('Error:Your name and password must be alphanumeric.');
