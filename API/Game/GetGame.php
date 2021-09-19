@@ -37,7 +37,7 @@ if (false === $user['room']) {
 $mode = (int) substr($user['room']['gamemode'], 0, 1);
 $ngWord = (int) substr($user['room']['gamemode'], 1, 1);
 $wordNum = (int) substr($user['room']['gamemode'], 2, 1);
-if (0 === $user['room']['flag'] && 0 === $mode) {
+if (0 === (int)$user['room']['flag'] && 0 === $mode) {
     http_response_code(200);
 
     exit;
@@ -50,9 +50,13 @@ if (0 === $mode) {
 }
 $gameInfo = $room->GameInfo($gameID);
 do {
-    $stockID = random_int(1, $stock->GetCount());
-    $stockInfo = $stock->getStock($stockID);
-    $stock->deleteStock($stockID);
+    $stockInfo = $stock->getStock();
+    if (false === $stockInfo) {
+        header('Error:We have run out of stock. Please create an quiz.');
+        http_response_code(403);
+
+        exit;
+    }
     $stockInfo['pictureURL'] = explode(',', $stockInfo['pictureURL']);
     if (0 === $mode) {
         break;

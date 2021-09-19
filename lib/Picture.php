@@ -123,7 +123,22 @@ class Picture
         return $stmt->fetchColumn();
     }
 
-    public function checkPlayerPicture($picture)
+    public function checkPlayerPicture($gameID, $pictureURL)
     {
+        try {
+            $stmt = $this->dbh->prepare("SELECT pictureID FROM {$this->table} WHERE gameID = :gameID AND pictureURL = :pictureURL");
+            $stmt->bindValue(':gameID', $gameID);
+            $stmt->bindValue(':pictureURL', $pictureURL);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_COLUMN);
+            if($result != false){
+                return true;
+            }
+            return false;
+        } catch (PDOException $e) {
+            header('Error:'.$e->getMessage());
+
+            exit;
+        }
     }
 }

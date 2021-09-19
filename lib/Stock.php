@@ -47,28 +47,21 @@ class Stock
         }
     }
 
-    public function getStock($stockID)
+    public function getStock()
     {
         try {
-            $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE stockID = :stockID");
-            $stmt->bindValue(':stockID', $stockID);
+            $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE flag = 0 LIMIT 1");
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($result == false){
+                return false;
+            }
+
+            $stmt = $this->dbh->prepare("UPDATE {$this->table} SET flag = 1 WHERE stockID = :stockID");
+            $stmt->bindValue(':stockID', $result['stockID']);
             $stmt->execute();
 
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            header('Error:'.$e->getMessage());
-
-            exit;
-        }
-    }
-
-    public function getCount()
-    {
-        try {
-            $stmt = $this->dbh->prepare("SELECT count(stockID) FROM {$this->table}");
-            $stmt->execute();
-
-            return $stmt->fetch(PDO::FETCH_COLUMN);
+            return $result;
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
 
