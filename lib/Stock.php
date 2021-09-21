@@ -50,6 +50,7 @@ class Stock
     public function getStock()
     {
         $this->dbh->beginTransaction();
+
         try {
             $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE flag = 0 LIMIT 1");
             $stmt->execute();
