@@ -51,6 +51,7 @@ composer install
         - CreateRoom.php
 
             部屋を作成し、作成者のゲーム情報を返すAPI。
+
         - JoinRoom.php
 
             部屋に参加し、参加者のゲーム情報を返すAPI。
@@ -63,14 +64,16 @@ composer install
         - JoinAgain.php
 
             ゲーム終了時にもう一度遊ぶを選択された時に実行するAPI。
+
+        - StartGame.php
+
+            ゲーム開始時にデータベースにゲームスタートのフラグを立てる
     - Learn
         - GetLearnResult.php
 
             リザルト画面、投票画面で必要な情報を返すAPI。
-        - Quiz.php
 
-            画像、NGワード、類義語を取得しDBに保存するAPI。
-        - Start.php
+        - StartLearn.php
 
             学習モードの説明画面に必要な画像、NGワード、類義語をDBから取得し返すAPI。
     - Quiz
@@ -86,7 +89,7 @@ composer install
         -GetVoteInfo.php
 
             投票画面に必要な情報を返すAPI。
-        - Start.php
+        - StartQuiz.php
 
             クイズモードの説明画面に必要な画像、NGワードを取得し返すAPI.
     - Library
