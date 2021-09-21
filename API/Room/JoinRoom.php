@@ -30,8 +30,8 @@ if (filter_input(INPUT_POST, 'roomID')) {
         'name' => $user['name'],
         'icon' => $user['icon'],
         'badge' => $user['badge'],
-        'flag' => $playerInfo['flag'],
         'gamemode' => $playerInfo['gamemode'],
+        'roomID' => $roomID,
     ];
     echo json_encode($result);
     http_response_code(200);
