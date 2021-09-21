@@ -61,6 +61,7 @@ class Stock
             $stmt = $this->dbh->prepare("UPDATE {$this->table} SET flag = 1 WHERE stockID = :stockID");
             $stmt->bindValue(':stockID', $result['stockID']);
             $stmt->execute();
+            $this->dbh->commit();
 
             return $result;
         } catch (PDOException $e) {
