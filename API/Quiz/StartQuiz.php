@@ -46,7 +46,7 @@ $playerID = $gameInfo['playerID'];
 $gamemode = $gameInfo['gamemode'];
 
 // 値を返す
-$photo = $picture->GetPicture($gameID,$playerID,1);
+$photo = $picture->GetPicture($gameID, $playerID, 1);
 $sentence = $word->getWord($gameID, $playerID, 1);
 $ngWords = $word->getWord($gameID, $playerID, 2);
 $synonyms = $word->getWord($gameID, $playerID, 3);
@@ -55,7 +55,7 @@ $result = [
     'synonyms' => $synonyms,
     'ng' => $ngWords,
     'AI' => $sentence,
-    'pictureURL' => $photo[0]["pictureURL"],
+    'pictureURL' => $photo[0]['pictureURL'],
     'gamemode' => $gamemode,
 ];
 
