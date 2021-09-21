@@ -36,21 +36,18 @@ if (false !== $game) {
         'roomID' => $roomID,
         'status' => $status,
     ];
-    for ($i = 1; $i <= $playerNum; ++$i) {
-        $userID = $gameInfo[$i - 1]['userID'];
-        $flag = $gameInfo[$i - 1]['flag'];
+    for ($i = 0; $i < $playerNum; ++$i) {
+        $userID = $gameInfo[$i]['userID'];
+        $flag = $gameInfo[$i]['flag'];
         $user = $userInfo->GetUserInfo($userID);
-        $playerID = $gameInfo[$i - 1]['playerID'];
-        $array[] = [
-            $playerID => [
-                'name' => $user['name'],
-                'icon' => $user['icon'],
-                'badge' => $user['badge'],
-                'flag' => $flag,
-            ],
+        $playerID = $gameInfo[$i]['playerID'];
+        $result['player'][$i] = [
+            'name' => $user['name'],
+            'icon' => $user['icon'],
+            'badge' => $user['badge'],
+            'flag' => $flag,
         ];
     }
-    $result['player'] = $array;
     echo json_encode($result);
     http_response_code(200);
 
