@@ -1,10 +1,13 @@
 <?php
 
 require_once '../../lib/UserInfo.php';
+
+require_once '../../lib/UnsplashApi.php';
 header('Access-Control-Allow-Origin:'.URL);
 header('Access-Control-Allow-Credentials:true');
 
 $userInfo = new UserInfo();
+$unsplash = new UnsplashApi();
 
 if (false === $userInfo->CheckLogin()) {
     header('Error:Login failed.');
@@ -15,7 +18,7 @@ if (false === $userInfo->CheckLogin()) {
 $userID = $userInfo->CheckLogin()['userID'];
 $name = $_POST['name'];
 $password = $_POST['password'];
-$icon = $_POST['icon'];
+$icon = $unsplash->getPhoto('');
 if (isset($name)) {
     $result = $userInfo->ChangeUserName($userID, $name);
     if (false === $result['character']) {
