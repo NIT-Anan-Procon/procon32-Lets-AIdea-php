@@ -62,6 +62,19 @@ class Point
         return (int) $result;
     }
 
+    public function getVoter($gameID)
+    {
+        $stmt = $this->dbh->prepare("SELECT count(pointID) FROM {$this->table} WHERE gameID = :gameID AND flag = 2");
+        $stmt->bindValue(':gameID', $gameID);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_COLUMN);
+        if (false === $result) {
+            $result = 0;
+        }
+
+        return (int) $result;
+    }
+
     public function deleteGameInfo($gameID)
     {
         $stmt = $this->dbh->prepare('DELETE FROM point WHERE gameID = :gameID');
