@@ -49,18 +49,12 @@ class Stock
 
     public function getStock()
     {
+        $sql = "SELECT * FROM {$this->table} WHERE flag = 0 LIMIT 1 FOR UPDATE;
+                UPDATE {$this->table} SET flag = 1 LIMIT 1";
         try {
-            $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE flag = 0 LIMIT 1");
+            $stmt = $this->dbh->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            if (false === $result) {
-                return false;
-            }
-
-            $stmt = $this->dbh->prepare("UPDATE {$this->table} SET flag = 1 WHERE stockID = :stockID");
-            $stmt->bindValue(':stockID', $result['stockID']);
-            $stmt->execute();
-
             return $result;
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
