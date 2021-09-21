@@ -26,11 +26,12 @@ class Room
         }
     }
 
-    public function CreateRoomID()
+    public function CreateRoomID($mode)
     {
         $roomID = random_int(100000, 999999);
-        $code = (int) (sprintf('%04d', $roomID));
-        $result = $this->RoomInfo($code);
+        $code = (sprintf('%04d', $roomID));
+        $roomID = (string) $mode.(string) $code;
+        $result = $this->RoomInfo($mode.$code);
 
         if (0 === count($result)) {
             return $code;
@@ -237,6 +238,20 @@ class Room
 
                 exit;
             }
+        }
+    }
+
+    public function updateStatus($gameID)
+    {
+        try {
+            $stmt = $this->dbh->prepare("UPDATE {$this->table} SET status = :status WHERE gameID = :gameID");
+            $stmt->bindValue(':status', 1, PDO::PARAM_INT);
+            $stmt->bindValue(':gameID', $gameID, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            header('Error: '.$e->getMessage());
+
+            exit;
         }
     }
 }
