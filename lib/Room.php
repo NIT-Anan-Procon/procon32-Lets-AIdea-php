@@ -30,7 +30,7 @@ class Room
     {
         $roomID = random_int(100000, 999999);
         $code = (sprintf('%04d', $roomID));
-        $roomID = (String)$mode.(String)$code;
+        $roomID = (string) $mode.(string) $code;
         $result = $this->RoomInfo($mode.$code);
 
         if (0 === count($result)) {
