@@ -67,6 +67,7 @@ class Stock
             return $result;
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
+            $this->dbh->rollBack();
 
             exit;
         }
