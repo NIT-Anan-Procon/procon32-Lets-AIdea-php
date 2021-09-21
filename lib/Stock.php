@@ -51,11 +51,12 @@ class Stock
     {
         $sql = "SELECT * FROM {$this->table} WHERE flag = 0 LIMIT 1 FOR UPDATE;
                 UPDATE {$this->table} SET flag = 1 LIMIT 1";
+
         try {
             $stmt = $this->dbh->prepare($sql);
             $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result;
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
 
