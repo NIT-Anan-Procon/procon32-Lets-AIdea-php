@@ -80,7 +80,7 @@ class Word
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
 
-            return false;
+            exit;
         }
     }
 }

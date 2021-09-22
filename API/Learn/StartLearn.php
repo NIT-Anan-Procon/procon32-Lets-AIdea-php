@@ -1,9 +1,5 @@
 <?php
 
-ini_set('display_errors', 1);
-header('Access-Control-Allow-Origin:*');
-header('Content-Type: application/json; charset=utf-8');
-
 require_once '../../lib/Picture.php';
 
 require_once '../../lib/Room.php';
@@ -15,6 +11,11 @@ require_once '../../lib/UserInfo.php';
 require_once '../../lib/Word.php';
 
 require_once '../../Develop.php';
+
+ini_set('display_errors', 1);
+header('Access-Control-Allow-Origin:'.URL);
+header('Access-Control-Allow-Credentials:true');
+header('Content-Type: application/json; charset=utf-8');
 
 $picture = new Picture();
 $room = new Room();
@@ -46,9 +47,9 @@ $gamemode = $gameInfo['gamemode'];
 
 // 値を返す
 $photo = $picture->getLearnPhoto($gameID, 2);
-$sentence = $word->getWord($gameID, 1, 1);
-$ngWords = $word->getWord($gameID, 1, 2);
-$synonyms = $word->getWord($gameID, 1, 3);
+$sentence = $word->getWord($gameID, 0, 1);
+$ngWords = $word->getWord($gameID, 0, 2);
+$synonyms = $word->getWord($gameID, 0, 3);
 
 $result = [
     'synonyms' => $synonyms,
