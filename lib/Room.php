@@ -87,8 +87,8 @@ class Room
         $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE userID = :userID");
         $stmt->bindValue(':userID', $userID);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result;
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getRoomCount($gameID)
