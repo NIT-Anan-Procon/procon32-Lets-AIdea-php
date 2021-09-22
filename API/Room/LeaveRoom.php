@@ -38,7 +38,7 @@ if (false === $gameInfo) {
 }
 
 $gameID = $gameInfo['gameID'];
-$roomID = (int) $gameInfo['roomID'];
+$roomID = $gameInfo['roomID'];
 $count = count($room->GameInfo($gameID));
 if (1 === $count) {
     $room->LeaveRoom($roomID, $gameInfo['playerID']);
