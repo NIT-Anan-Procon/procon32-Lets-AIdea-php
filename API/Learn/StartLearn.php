@@ -1,7 +1,5 @@
 <?php
 
-ini_set('display_errors', 1);
-
 require_once '../../lib/Picture.php';
 
 require_once '../../lib/Room.php';
@@ -14,6 +12,7 @@ require_once '../../lib/Word.php';
 
 require_once '../../Develop.php';
 
+ini_set('display_errors', 1);
 header('Access-Control-Allow-Origin:'.URL);
 header('Access-Control-Allow-Credentials:true');
 header('Content-Type: application/json; charset=utf-8');

@@ -21,7 +21,7 @@ if (false === $userInfo->CheckLogin()) {
 
 if (filter_input(INPUT_POST, 'roomID')) {
     $userID = $userInfo->CheckLogin()['userID'];
-    $roomID = (int) ($_POST['roomID']);
+    $roomID = $_POST['roomID'];
 
     $playerInfo = $room->JoinRoom($userID, $roomID);
 
@@ -31,8 +31,8 @@ if (filter_input(INPUT_POST, 'roomID')) {
         'name' => $user['name'],
         'icon' => $user['icon'],
         'badge' => $user['badge'],
-        'flag' => $playerInfo['flag'],
         'gamemode' => $playerInfo['gamemode'],
+        'roomID' => $roomID,
     ];
     echo json_encode($result);
     http_response_code(200);

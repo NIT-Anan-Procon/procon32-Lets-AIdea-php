@@ -26,11 +26,12 @@ class Room
         }
     }
 
-    public function CreateRoomID()
+    public function CreateRoomID($mode)
     {
         $roomID = random_int(100000, 999999);
-        $code = (int) (sprintf('%04d', $roomID));
-        $result = $this->RoomInfo($code);
+        $code = (sprintf('%04d', $roomID));
+        $roomID = (string) $mode.(string) $code;
+        $result = $this->RoomInfo($mode.$code);
 
         if (0 === count($result)) {
             return $code;
@@ -77,6 +78,8 @@ class Room
         $st->execute();
 
         return $st->fetchall(PDO::FETCH_ASSOC);
+        // $result = $st->fetchall(PDO::FETCH_ASSOC);
+        // return $result;
     }
 
     public function getGameInfo($userID)
@@ -84,8 +87,8 @@ class Room
         $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE userID = :userID");
         $stmt->bindValue(':userID', $userID);
         $stmt->execute();
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
     }
 
     public function getRoomCount($gameID)
@@ -128,7 +131,7 @@ class Room
         if ((0 !== $count) && (false === $user) && (4 !== $count)) {
             $playerID = (int) ($room[$count - 1]['playerID']) + 1;
             $gameID = (int) ($room[$count - 1]['gameID']);
-            $gamemode = (int) ($room[$count - 1]['gamemode']);
+            $gamemode = $room[$count - 1]['gamemode'];
 
             $sql = "INSERT INTO {$this->table}(gameID, playerID, userID, roomID, flag, gamemode)
             VALUES
@@ -237,6 +240,20 @@ class Room
 
                 exit;
             }
+        }
+    }
+
+    public function updateStatus($gameID)
+    {
+        try {
+            $stmt = $this->dbh->prepare("UPDATE {$this->table} SET status = :status WHERE gameID = :gameID");
+            $stmt->bindValue(':status', 1, PDO::PARAM_INT);
+            $stmt->bindValue(':gameID', $gameID, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            header('Error: '.$e->getMessage());
+
+            exit;
         }
     }
 }
