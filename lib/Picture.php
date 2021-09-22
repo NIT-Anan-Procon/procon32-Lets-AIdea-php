@@ -38,8 +38,6 @@ class Picture
             $stmt->bindValue(':pictureURL', $PictureUrl);
             $stmt->bindValue(':answer', $answer);
             $stmt->execute();
-
-            return ['state' => true];
         } catch (PDOException $e) {
             header('Error:'.$e->getMessage());
 
@@ -123,5 +121,25 @@ class Picture
         $stmt->execute();
 
         return $stmt->fetchColumn();
+    }
+
+    public function checkPlayerPicture($gameID, $pictureURL)
+    {
+        try {
+            $stmt = $this->dbh->prepare("SELECT pictureID FROM {$this->table} WHERE gameID = :gameID AND pictureURL = :pictureURL");
+            $stmt->bindValue(':gameID', $gameID);
+            $stmt->bindValue(':pictureURL', $pictureURL);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_COLUMN);
+            if (false !== $result) {
+                return true;
+            }
+
+            return false;
+        } catch (PDOException $e) {
+            header('Error:'.$e->getMessage());
+
+            exit;
+        }
     }
 }
