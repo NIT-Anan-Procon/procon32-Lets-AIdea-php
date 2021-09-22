@@ -11,8 +11,6 @@ require_once '../../lib/UnsplashApi.php';
 require_once '../../lib/UserInfo.php';
 
 require_once '../../lib/Word.php';
-
-require_once '../Develop.php';
 header('Access-Control-Allow-Origin:'.URL);
 header('Access-Control-Allow-Credentials:true');
 header('Content-Type: application/json; charset=utf-8');
