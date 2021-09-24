@@ -5,6 +5,7 @@ ini_set('display_errors', 1);
 require_once '../../lib/Room.php';
 
 require_once '../../lib/UserInfo.php';
+
 header('Access-Control-Allow-Origin:'.URL);
 header('Access-Control-Allow-Credentials:true');
 header('Content-Type: application/json; charset=utf-8');
@@ -20,7 +21,7 @@ if (false === $userInfo->CheckLogin()) {
 
 if (filter_input(INPUT_POST, 'roomID')) {
     $userID = $userInfo->CheckLogin()['userID'];
-    $roomID = (int) ($_POST['roomID']);
+    $roomID = $_POST['roomID'];
 
     $playerInfo = $room->JoinRoom($userID, $roomID);
 

@@ -78,6 +78,8 @@ class Room
         $st->execute();
 
         return $st->fetchall(PDO::FETCH_ASSOC);
+        // $result = $st->fetchall(PDO::FETCH_ASSOC);
+        // return $result;
     }
 
     public function getGameInfo($userID)
@@ -129,7 +131,7 @@ class Room
         if ((0 !== $count) && (false === $user) && (4 !== $count)) {
             $playerID = (int) ($room[$count - 1]['playerID']) + 1;
             $gameID = (int) ($room[$count - 1]['gameID']);
-            $gamemode = (int) ($room[$count - 1]['gamemode']);
+            $gamemode = $room[$count - 1]['gamemode'];
 
             $sql = "INSERT INTO {$this->table}(gameID, playerID, userID, roomID, flag, gamemode)
             VALUES
@@ -192,11 +194,12 @@ class Room
         try {
             $stmt = $this->dbh->prepare("UPDATE {$this->table} SET flag = :flag WHERE playerID = :playerID AND roomID = :roomID");
             $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
-            $stmt->bindValue(':roomID', $roomID, PDO::PARAM_INT);
+            $stmt->bindValue(':roomID', $roomID, PDO::PARAM_STR);
             $stmt->bindValue(':flag', 1, PDO::PARAM_INT);
             $stmt->execute();
             $this->dbh->commit();
         } catch (PDOException $e) {
+            $this->dbh->rollBack();
             header('Error: '.$e->getMessage());
 
             exit;
