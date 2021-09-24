@@ -194,11 +194,12 @@ class Room
         try {
             $stmt = $this->dbh->prepare("UPDATE {$this->table} SET flag = :flag WHERE playerID = :playerID AND roomID = :roomID");
             $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
-            $stmt->bindValue(':roomID', $roomID, PDO::PARAM_INT);
+            $stmt->bindValue(':roomID', $roomID, PDO::PARAM_STR);
             $stmt->bindValue(':flag', 1, PDO::PARAM_INT);
             $stmt->execute();
             $this->dbh->commit();
         } catch (PDOException $e) {
+            $this->dbh->rollBack();
             header('Error: '.$e->getMessage());
 
             exit;
