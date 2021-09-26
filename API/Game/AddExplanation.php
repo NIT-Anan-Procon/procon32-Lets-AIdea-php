@@ -14,13 +14,13 @@ $word = new Word();
 $room = new Room();
 $userInfo = new UserInfo();
 
-if (false === $userInfo->CheckLogin()) {
+if (false === $userInfo->checkLogin()) {
     header('Error:Login failed.');
     http_response_code(403);
 
     exit;
 }
-$userID = $userInfo->CheckLogin()['userID'];
+$userID = $userInfo->checkLogin()['userID'];
 if (false === $room->getGameInfo($userID)) {
     header('Error:The user is not in the room.');
     http_response_code(403);

@@ -11,7 +11,7 @@ header('Content-Type: application/json; charset=utf-8');
 $room = new Room();
 $userInfo = new UserInfo();
 
-if (false === $userInfo->CheckLogin()) {
+if (false === $userInfo->checkLogin()) {
     header('Error: Login failed.');
     http_response_code(403);
 
@@ -19,7 +19,7 @@ if (false === $userInfo->CheckLogin()) {
 }
 
 // ユーザーが他の部屋に入っていないかチェック
-$userID = $userInfo->CheckLogin()['userID'];
+$userID = $userInfo->checkLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 
 if (false !== $gameInfo) {
@@ -31,7 +31,7 @@ if (false !== $gameInfo) {
 
 // 部屋を追加
 if (isset($_POST['gamemode'])) {
-    $gameID = $room->GetGameID() + 1;
+    $gameID = $room->getGameID() + 1;
     $playerID = 1;
     $gamemode = (string) $_POST['gamemode'];
     if ((int) $gamemode > 1000) {
@@ -39,10 +39,10 @@ if (isset($_POST['gamemode'])) {
     } else {
         $mode = 'L';
     }
-    $roomID = $mode.$room->CreateRoomID($mode);
-    $room->AddRoom($gameID, $playerID, $userID, $roomID, 1, $gamemode);
-    $playerInfo = $room->PlayerInfo($gameID, $playerID);
-    $user = $userInfo->GetUserInfo($userID);
+    $roomID = $mode.$room->createRoomID($mode);
+    $room->addRoom($gameID, $playerID, $userID, $roomID, 1, $gamemode);
+    $playerInfo = $room->playerInfo($gameID, $playerID);
+    $user = $userInfo->getUserInfo($userID);
     $result = [
         'playerID' => $playerInfo['playerID'],
         'name' => $user['name'],

@@ -23,7 +23,7 @@ $userInfo = new UserInfo();
 $word = new Word();
 
 // ユーザーがログインしているかチェック
-if (false === $userInfo->CheckLogin()) {
+if (false === $userInfo->checkLogin()) {
     header('Error: Login failed.');
     http_response_code(403);
 
@@ -31,7 +31,7 @@ if (false === $userInfo->CheckLogin()) {
 }
 
 // ユーザーが部屋に入っているかチェック
-$userID = $userInfo->CheckLogin()['userID'];
+$userID = $userInfo->checkLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 if (false === $gameInfo) {
     header('Error: The user is not in the room.');

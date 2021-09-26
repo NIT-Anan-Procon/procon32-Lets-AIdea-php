@@ -11,7 +11,7 @@ header('Access-Control-Allow-Credentials:true');
 header('Content-Type: application/json; charset=utf-8');
 $library = new Library();
 $userInfo = new UserInfo();
-$loginUser = $userInfo->CheckLogin();
+$loginUser = $userInfo->checkLogin();
 if (false === $loginUser) {
     header('Error:Login failed.');
 
@@ -27,7 +27,7 @@ if (isset($_GET['search'], $_GET['sort'], $_GET['period']) && filter_input(INPUT
     } else {
         $userID = 0;
     }
-    $result = $library->GetLibrary($search, $sort, $period, $page, $userID);
+    $result = $library->getLibrary($search, $sort, $period, $page, $userID);
     for ($i = 0; $i < count($result); ++$i) {
         $user = $userInfo->getUserInfo($result[$i]['userID']);
         unset($user['password']);

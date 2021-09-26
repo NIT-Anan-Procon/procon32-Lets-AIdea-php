@@ -25,7 +25,7 @@ class UnsplashApi
         ]);
     }
 
-    public function InitialPhoto()
+    public function initialPhoto()
     {
         $this->init($this->access, $this->secret);
         $key_word = ['animal', 'scenery', 'people'];

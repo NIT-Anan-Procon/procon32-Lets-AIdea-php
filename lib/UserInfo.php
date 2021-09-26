@@ -30,7 +30,7 @@ class UserInfo
         }
     }
 
-    public function AddUserInfo($name, $password, $icon)
+    public function addUserInfo($name, $password, $icon)
     {
         if (!preg_match('/^[a-zA-Z0-9]+$/', $name) || !preg_match('/^[a-zA-Z0-9]+$/', $password)) {
             $result['character'] = false;
@@ -38,7 +38,7 @@ class UserInfo
             return $result;
         }
         $result['character'] = true;
-        if ($this->CheckName($name)) {
+        if ($this->checkName($name)) {
             $result['name'] = false;
 
             return $result;
@@ -85,7 +85,7 @@ class UserInfo
         return false;
     }
 
-    public function GetUserInfo($userID)
+    public function getUserInfo($userID)
     {
         $stmt = $this->dbh->prepare('SELECT * FROM userinfo WHERE userID = :userID');
         $stmt->bindValue(':userID', $userID);
@@ -94,7 +94,7 @@ class UserInfo
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function ChangeUserName($userID, $name)
+    public function changeUserName($userID, $name)
     {
         if (!preg_match('/^[a-zA-Z0-9]+$/', $name)) {
             $result['character'] = false;
@@ -102,7 +102,7 @@ class UserInfo
             return $result;
         }
         $result['character'] = true;
-        if ($this->CheckName($name)) {
+        if ($this->checkName($name)) {
             $result['name'] = false;
 
             return $result;
@@ -126,7 +126,7 @@ class UserInfo
         }
     }
 
-    public function ChangePassword($userID, $password)
+    public function changePassword($userID, $password)
     {
         if (!preg_match('/^[a-zA-Z0-9]+$/', $password)) {
             $result['character'] = false;
@@ -152,7 +152,7 @@ class UserInfo
         }
     }
 
-    public function ChangeUserIcon($userID, $icon)
+    public function changeUserIcon($userID, $icon)
     {
         $sql = 'UPDATE userinfo SET icon = :icon WHERE userID = :userID';
 
@@ -170,7 +170,7 @@ class UserInfo
         }
     }
 
-    public function DelUserInfo($userID)
+    public function delUserInfo($userID)
     {
         try {
             $stmt = $this->dbh->prepare('DELETE FROM userinfo WHERE userID = :userID');
@@ -185,7 +185,7 @@ class UserInfo
         }
     }
 
-    public function CheckName($name)
+    public function checkName($name)
     {
         $sql = 'SELECT name FROM userinfo WHERE name=:name';
         $stmt = $this->dbh->prepare($sql);
@@ -199,7 +199,7 @@ class UserInfo
         return true;
     }
 
-    public function CheckLogin()
+    public function checkLogin()
     {
         date_default_timezone_set('Asia/Tokyo');
         if (filter_input(INPUT_COOKIE, 'token')) {
@@ -228,7 +228,7 @@ class UserInfo
                 exit;
             }
         } elseif (ReleaseMode === false) {
-            $result = $this->GetUserInfo(2);
+            $result = $this->getUserInfo(2);
 
             return $result;
         } else {

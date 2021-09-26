@@ -6,13 +6,13 @@ header('Access-Control-Allow-Credentials:true');
 header('Content-Type: application/json; charset=utf-8');
 
 $userInfo = new UserInfo();
-if (false === $userInfo->CheckLogin()) {
+if (false === $userInfo->checkLogin()) {
     header('Error:Login failed.');
     http_response_code(403);
 
     exit;
 }
-$result = $userInfo->CheckLogin();
+$result = $userInfo->checkLogin();
 if (false === $result['name']) {
     header('Error:User does not exist.');
     http_response_code(403);

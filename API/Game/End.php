@@ -22,7 +22,7 @@ $picture = new Picture();
 $library = new Library();
 $room = new Room();
 $userInfo = new UserInfo();
-$user['userInfo'] = $userInfo->CheckLogin();
+$user['userInfo'] = $userInfo->checkLogin();
 if (false === $user['userInfo']) {
     header('Error:Login failed.');
     http_response_code(403);
@@ -36,7 +36,7 @@ if (false === $user['room']) {
 
     exit;
 }
-$game = $room->GameInfo($user['room']['gameID']);
+$game = $room->gameInfo($user['room']['gameID']);
 $mode = (int) ((int) $user['room']['gamemode'] / 1000);
 $playerNum = count($game);
 $max = -1;
@@ -73,7 +73,7 @@ if (1 === (int) $user['room']['flag']) {
     for ($i = 1; $i < count($result['ng']); ++$i) {
         $ng .= ','.$result['ng'][$i];
     }
-    $lib = $library->UploadLibrary($result['userID'], $result['explanation'], $ng, $result['pictureURL'], $mode);
+    $lib = $library->uploadLibrary($result['userID'], $result['explanation'], $ng, $result['pictureURL'], $mode);
     if (false === $lib) {
         http_response_code(400);
 

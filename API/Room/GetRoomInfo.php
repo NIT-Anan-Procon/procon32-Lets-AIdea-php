@@ -11,14 +11,14 @@ header('Content-Type: application/json; charset=utf-8');
 $room = new Room();
 $userInfo = new UserInfo();
 
-if (false === $userInfo->CheckLogin()) {
+if (false === $userInfo->checkLogin()) {
     header('Error: Login failed.');
     http_response_code(403);
 
     exit;
 }
 
-$userID = $userInfo->CheckLogin()['userID'];
+$userID = $userInfo->checkLogin()['userID'];
 $game = $room->getGameInfo($userID);
 $playerID = $game['playerID'];
 $gamemode = $game['gamemode'];
@@ -27,7 +27,7 @@ $status = $game['status'];
 
 if (false !== $game) {
     $gameID = $game['gameID'];
-    $gameInfo = $room->GameInfo($gameID);
+    $gameInfo = $room->gameInfo($gameID);
     $playerNum = count($gameInfo);
     $gamemode = $gameInfo[0]['gamemode'];
     $result = [
@@ -39,7 +39,7 @@ if (false !== $game) {
     for ($i = 0; $i < $playerNum; ++$i) {
         $userID = $gameInfo[$i]['userID'];
         $flag = $gameInfo[$i]['flag'];
-        $user = $userInfo->GetUserInfo($userID);
+        $user = $userInfo->getUserInfo($userID);
         $playerID = $gameInfo[$i]['playerID'];
         $result['player'][$i] = [
             'name' => $user['name'],

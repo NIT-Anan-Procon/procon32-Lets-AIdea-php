@@ -27,7 +27,7 @@ class Library
         }
     }
 
-    public function UploadLibrary($userID, $explanation, $ng, $pictureURL, $flag)
+    public function uploadLibrary($userID, $explanation, $ng, $pictureURL, $flag)
     {
         $sql = "INSERT INTO library(userID, explanation, ng, pictureURL, time, flag, likedUser)
         VALUES
@@ -51,7 +51,7 @@ class Library
         }
     }
 
-    public function GetLibrary($search, $sort, $period, $page, $userID)
+    public function getLibrary($search, $sort, $period, $page, $userID)
     {
         $limit = 20;
         $p = 0;
@@ -125,7 +125,7 @@ class Library
         return $result;
     }
 
-    public function Good($libraryID, $userID)
+    public function good($libraryID, $userID)
     {
         $check = $this->check($libraryID, $userID);
         $sql = 'UPDATE library SET good = good ';
