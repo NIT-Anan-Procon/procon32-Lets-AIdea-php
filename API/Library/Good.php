@@ -10,7 +10,7 @@ header('Access-Control-Allow-Credentials:true');
 header('Content-Type: application/json; charset=utf-8');
 $library = new Library();
 $userInfo = new UserInfo();
-$user = $userInfo->CheckLogin();
+$user = $userInfo->checkLogin();
 if (false === $user) {
     header('Error:Login failed.');
     http_response_code(403);
@@ -19,7 +19,7 @@ if (false === $user) {
 }
 if (filter_input(INPUT_POST, 'libraryID')) {
     $libraryID = (int) $_POST['libraryID'];
-    $result = $library->Good($libraryID, $user['userID']);
+    $result = $library->good($libraryID, $user['userID']);
     if (false === $result) {
         http_response_code(400);
 

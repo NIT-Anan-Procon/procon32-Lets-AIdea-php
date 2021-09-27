@@ -13,7 +13,7 @@ header('Content-Type: application/json; charset=utf-8');
 $point = new Point();
 $room = new Room();
 $userInfo = new UserInfo();
-$user['userInfo'] = $userInfo->CheckLogin();
+$user['userInfo'] = $userInfo->checkLogin();
 if (false === $user['userInfo']) {
     header('Error:Login failed.');
     http_response_code(403);

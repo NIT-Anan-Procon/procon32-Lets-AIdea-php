@@ -11,7 +11,7 @@ header('Content-Type: application/json; charset=utf-8');
 $room = new Room();
 $userInfo = new UserInfo();
 
-if (false === $userInfo->CheckLogin()) {
+if (false === $userInfo->checkLogin()) {
     header('Error: Login failed.');
     http_response_code(403);
 
@@ -19,7 +19,7 @@ if (false === $userInfo->CheckLogin()) {
 }
 
 // ユーザーが他の部屋に入っているかチェック
-$userID = $userInfo->CheckLogin()['userID'];
+$userID = $userInfo->checkLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 
 if (false === $gameInfo) {

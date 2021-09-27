@@ -17,7 +17,7 @@ $userInfo = new UserInfo();
 $point = new Point();
 $word = new Word();
 
-if (false === $userInfo->CheckLogin()) {
+if (false === $userInfo->checkLogin()) {
     header('Error: Login failed.');
     http_response_code(403);
 
@@ -25,7 +25,7 @@ if (false === $userInfo->CheckLogin()) {
 }
 
 // ユーザーが部屋に入っているかチェック
-$userID = $userInfo->CheckLogin()['userID'];
+$userID = $userInfo->checkLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 
 if (false === $gameInfo) {
@@ -47,13 +47,13 @@ function sortByKey($key_name, $sort_order, $array)
 }
 
 $gameID = $gameInfo['gameID'];
-$roomInfo = $room->RoomInfo($gameInfo['roomID']);
+$roomInfo = $room->roomInfo($gameInfo['roomID']);
 $result = [];
 for ($i = 0; $i < count($roomInfo); ++$i) {
     $explanation = $word->getWord($gameID, $roomInfo[$i]['playerID'], 0);
-    $exp = $point->GetPoint($gameID, $roomInfo[$i]['playerID'], 0);
-    $ans = $point->GetPoint($gameID, $roomInfo[$i]['playerID'], 1);
-    $user = $userInfo->GetUserInfo($roomInfo[$i]['userID']);
+    $exp = $point->getPoint($gameID, $roomInfo[$i]['playerID'], 0);
+    $ans = $point->getPoint($gameID, $roomInfo[$i]['playerID'], 1);
+    $user = $userInfo->getUserInfo($roomInfo[$i]['userID']);
     $array = [
         'name' => $user['name'],
         'icon' => $user['icon'],

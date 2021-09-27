@@ -17,13 +17,13 @@ $room = new Room();
 $userInfo = new UserInfo();
 $word = new Word();
 
-if (false === $userInfo->CheckLogin()) {
+if (false === $userInfo->checkLogin()) {
     header('Error:Login failed.');
     http_response_code(403);
 
     exit;
 }
-$userID = $userInfo->CheckLogin()['userID'];
+$userID = $userInfo->checkLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 if (false === $gameInfo) {
     header('Error:The user is not in the room.');
@@ -33,11 +33,11 @@ if (false === $gameInfo) {
 }
 $gameID = $gameInfo['gameID'];
 $playerID = $gameInfo['playerID'];
-$roomInfo = $room->GameInfo($gameID);
+$roomInfo = $room->gameInfo($gameID);
 $result['playerID'] = $playerID;
 for ($i = 0; $i < count($roomInfo); ++$i) {
     $playerID = $roomInfo[$i]['playerID'];
-    $photos = $picture->GetPicture($gameID, $playerID, 0);
+    $photos = $picture->getPicture($gameID, $playerID, 0);
     $user = $userInfo->getUserInfo($roomInfo[$i]['userID']);
     $explanation = $word->getWord($gameID, $playerID, 0);
     $array = [

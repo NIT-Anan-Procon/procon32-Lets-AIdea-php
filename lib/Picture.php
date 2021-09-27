@@ -25,7 +25,7 @@ class Picture
         }
     }
 
-    public function AddPicture($gameID, $playerID, $PictureUrl, $answer)
+    public function addPicture($gameID, $playerID, $PictureUrl, $answer)
     {
         $sql = "INSERT INTO {$this->table}(gameID, playerID, pictureURL, answer)
         VALUES
@@ -45,7 +45,7 @@ class Picture
         }
     }
 
-    public function GetPicture($gameID, $playerID, $answer)
+    public function getPicture($gameID, $playerID, $answer)
     {
         $sql = "SELECT pictureURL, answer FROM {$this->table} WHERE gameID = :gameID AND playerID ";
         if (null === $playerID) {
@@ -73,13 +73,13 @@ class Picture
                 $result[0]['answer'] = $answer;
             }
         } else {
-            $result = $this->CheckPicture($result);
+            $result = $this->checkPicture($result);
         }
 
         return $result;
     }
 
-    public function CheckPicture($result)
+    public function checkPicture($result)
     {
         if (!isset($result[0])) {
             $count = 0;

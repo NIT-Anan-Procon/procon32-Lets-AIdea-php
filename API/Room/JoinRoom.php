@@ -12,7 +12,7 @@ header('Content-Type: application/json; charset=utf-8');
 $room = new Room();
 $userInfo = new UserInfo();
 
-if (false === $userInfo->CheckLogin()) {
+if (false === $userInfo->checkLogin()) {
     header('Error: Login failed.');
     http_response_code(403);
 
@@ -20,12 +20,12 @@ if (false === $userInfo->CheckLogin()) {
 }
 
 if (filter_input(INPUT_POST, 'roomID')) {
-    $userID = $userInfo->CheckLogin()['userID'];
+    $userID = $userInfo->checkLogin()['userID'];
     $roomID = $_POST['roomID'];
 
-    $playerInfo = $room->JoinRoom($userID, $roomID);
+    $playerInfo = $room->joinRoom($userID, $roomID);
 
-    $user = $userInfo->GetUserInfo($userID);
+    $user = $userInfo->getUserInfo($userID);
     $result = [
         'playerID' => $playerInfo['playerID'],
         'name' => $user['name'],
