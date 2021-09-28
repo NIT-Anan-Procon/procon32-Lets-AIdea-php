@@ -6,11 +6,19 @@ require_once '../../lib/Room.php';
 
 require_once '../../lib/UserInfo.php';
 
+require_once '../../lib/Picture.php';
+
+require_once '../../lib/Point.php';
+
+require_once '../../lib/Word.php';
 header('Access-Control-Allow-Origin:'.URL);
 header('Access-Control-Allow-Credentials:true');
 header('Content-Type: application/json; charset=utf-8');
 $room = new Room();
 $userInfo = new UserInfo();
+$picture = new Picture();
+$point = new Point();
+$explanation = new Word();
 
 if (false === $userInfo->checkLogin()) {
     header('Error: Login failed.');
