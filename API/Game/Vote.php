@@ -27,12 +27,19 @@ if (false === $user['room']) {
 
     exit;
 }
+if (2 === (int)$user['room']['status']) {
+    header('Error:The user has already voted.');
+    http_response_code(403);
+
+    exit;
+}
 if (isset($_POST['playerID'])) {
     $playerID = (int) $_POST['playerID'];
     $result = $point->addPoint($user['room']['gameID'], $playerID, 1, 2);
     if (false === $result) {
         http_response_code(400);
     } else {
+        $room->vote($user['room']['gameID'], $user['room']['playerID']);
         http_response_code(200);
     }
 } else {

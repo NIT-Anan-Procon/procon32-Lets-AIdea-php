@@ -209,7 +209,7 @@ class Room
         $this->dbh->beginTransaction();
 
         try {
-            $stmt = $this->dbh->prepare("UPDATE {$this->table} SET gameID = :gameID WHERE userID = :userID");
+            $stmt = $this->dbh->prepare("UPDATE {$this->table} SET gameID = :gameID, status = 0 WHERE userID = :userID");
             $stmt->bindValue(':gameID', $gameID, PDO::PARAM_INT);
             $stmt->bindValue(':userID', $userID, PDO::PARAM_INT);
             $stmt->execute();
@@ -248,6 +248,20 @@ class Room
             $stmt = $this->dbh->prepare("UPDATE {$this->table} SET status = :status WHERE gameID = :gameID");
             $stmt->bindValue(':status', 1, PDO::PARAM_INT);
             $stmt->bindValue(':gameID', $gameID, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            header('Error: '.$e->getMessage());
+
+            exit;
+        }
+    }
+    
+    public function vote($gameID, $playerID)
+    {
+        try {
+            $stmt = $this->dbh->prepare("UPDATE {$this->table} SET status = 2 WHERE gameID = :gameID AND playerID = :playerID");
+            $stmt->bindValue(':gameID', $gameID, PDO::PARAM_INT);
+            $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
             $stmt->execute();
         } catch (PDOException $e) {
             header('Error: '.$e->getMessage());
