@@ -27,8 +27,29 @@ if (false === $userInfo->checkLogin()) {
     exit;
 }
 
+$userID = $userInfo->checkLogin()['userID'];
+$gameInfo = $room->getGameInfo($userID);
+
+if (false !== $gameInfo) {
+    $gameID = $gameInfo['gameID'];
+    $roomID = $gameInfo['roomID'];
+    $count = count($room->gameInfo($gameID));
+    if (1 === $count) {
+        $room->leaveRoom($roomID, $gameInfo['playerID']);
+        $picture->deleteGameInfo($gameID);
+        $point->deleteGameInfo($gameID);
+        $explanation->delWord($gameID);
+        $room->updateGame($roomID);
+    } elseif (1 === (int) $gameInfo['flag']) {
+        $room->updateOwner($roomID);
+        $room->leaveRoom($roomID, $gameInfo['playerID']);
+        $room->updateGame($roomID);
+    } else {
+        $room->leaveRoom($roomID, $gameInfo['playerID']);
+        $room->updateGame($roomID);
+    }
+}
 if (filter_input(INPUT_POST, 'roomID')) {
-    $userID = $userInfo->checkLogin()['userID'];
     $roomID = $_POST['roomID'];
 
     $playerInfo = $room->joinRoom($userID, $roomID);
