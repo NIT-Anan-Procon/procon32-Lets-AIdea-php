@@ -30,7 +30,7 @@ if (false === $user['room']) {
 $playerNum = count($room->gameInfo($user['room']['gameID']));
 $voter = $point->getVoter($user['room']['gameID']);
 $result['playerNum'] = $playerNum - $voter;
-if (2 === (int)$user['room']['status']) {
+if (2 === (int) $user['room']['status']) {
     $result['status'] = true;
 } else {
     $result['status'] = false;

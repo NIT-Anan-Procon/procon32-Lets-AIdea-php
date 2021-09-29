@@ -27,7 +27,7 @@ if (false === $user['room']) {
 
     exit;
 }
-if (2 === (int)$user['room']['status']) {
+if (2 === (int) $user['room']['status']) {
     header('Error:The user has already voted.');
     http_response_code(403);
 
