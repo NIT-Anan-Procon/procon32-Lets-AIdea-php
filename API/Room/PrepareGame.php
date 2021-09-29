@@ -75,12 +75,12 @@ $stockInfo['synonym'] = explode(':', $stockInfo['synonym']);
 for ($i = 0; $i < count($stockInfo['synonym']); ++$i) {
     $stockInfo['synonym'][$i] = explode(',', $stockInfo['synonym'][$i]);
 }
-$word->addWord($gameID, 0, $stockInfo['explanation'], 1);
+$word->addWord($gameID, $playerID, $stockInfo['explanation'], 1);
 if (1 === $ngWord) {
     if (1 === $wordNum) {
         for ($i = 0; $i < count($stockInfo['synonym']); ++$i) {
-            if (null !== $stockInfo['synonym'][$i][0]) {
-                $stockInfo['ng'] += $stockInfo['synonym'][$i][0];
+            if (isset($stockInfo['synonym'][$i][0])) {
+                $stockInfo['ng'][] = $stockInfo['synonym'][$i][0];
             }
             unset($stockInfo['synonym'][$i][0]);
         }
