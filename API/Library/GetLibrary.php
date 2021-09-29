@@ -10,6 +10,13 @@ header('Access-Control-Allow-Origin:'.URL);
 header('Access-Control-Allow-Credentials:true');
 header('Content-Type: application/json; charset=utf-8');
 $library = new Library();
+$userInfo = new UserInfo();
+$loginUser = $userInfo->CheckLogin();
+if (false === $loginUser) {
+    header('Error:Login failed.');
+
+    exit;
+}
 if (isset($_GET['search'], $_GET['sort'], $_GET['period']) && filter_input(INPUT_GET, 'page')) {
     $search = (int) $_GET['search'];
     $sort = (int) $_GET['sort'];
