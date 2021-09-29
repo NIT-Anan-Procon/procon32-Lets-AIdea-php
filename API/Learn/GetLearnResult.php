@@ -16,7 +16,7 @@ $room = new Room();
 $userInfo = new UserInfo();
 $picture = new Picture();
 $word = new Word();
-$user['userInfo'] = $userInfo->CheckLogin();
+$user['userInfo'] = $userInfo->checkLogin();
 
 if (false === $user['userInfo']) {
     header('Error: Login failed.');
@@ -34,7 +34,7 @@ if (false === $user['game']) {
 
 $result['playerID'] = $user['game']['playerID'];
 $result['AI'] = $word->getWord($user['game']['gameID'], 0, 1);
-$gameInfo = $room->GameInfo($user['game']['gameID']);
+$gameInfo = $room->gameInfo($user['game']['gameID']);
 $url = $picture->getPicture($user['game']['gameID'], null, 2);
 if (!isset($url[0])) {
     header('Error: The requested picture does not exist.');
@@ -45,7 +45,7 @@ if (!isset($url[0])) {
 $result['pictureURL'] = $url[0]['pictureURL'];
 for ($i = 0; $i < count($gameInfo); ++$i) {
     $playerID = $gameInfo[$i]['playerID'];
-    $playerInfo = $userInfo->GetUserInfo($gameInfo[$i]['userID']);
+    $playerInfo = $userInfo->getUserInfo($gameInfo[$i]['userID']);
     $explanation = $word->getWord($user['game']['gameID'], $playerID, 0);
     $ng = $word->getWord($user['game']['gameID'], $playerID, 2);
     $result['player'][$playerID] = [

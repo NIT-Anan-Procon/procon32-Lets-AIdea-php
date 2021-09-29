@@ -20,13 +20,13 @@ $stock = new Stock();
 $room = new Room();
 $userInfo = new UserInfo();
 
-if (false === $userInfo->CheckLogin()) {
+if (false === $userInfo->checkLogin()) {
     header('Error:Login failed.');
     http_response_code(403);
 
     exit;
 }
-$userID = $userInfo->CheckLogin()['userID'];
+$userID = $userInfo->checkLogin()['userID'];
 $user['room'] = $room->getGameInfo($userID);
 if (false === $user['room']) {
     header('Error:The user is not in the room.');
@@ -48,7 +48,7 @@ if (0 === $mode) {
 } else {
     $playerID = $user['room']['playerID'];
 }
-$gameInfo = $room->GameInfo($gameID);
+$gameInfo = $room->gameInfo($gameID);
 do {
     $stockInfo = $stock->getStock();
     if (false === $stockInfo) {
@@ -75,12 +75,12 @@ $stockInfo['synonym'] = explode(':', $stockInfo['synonym']);
 for ($i = 0; $i < count($stockInfo['synonym']); ++$i) {
     $stockInfo['synonym'][$i] = explode(',', $stockInfo['synonym'][$i]);
 }
-$word->addWord($gameID, 0, $stockInfo['explanation'], 1);
+$word->addWord($gameID, $playerID, $stockInfo['explanation'], 1);
 if (1 === $ngWord) {
     if (1 === $wordNum) {
         for ($i = 0; $i < count($stockInfo['synonym']); ++$i) {
-            if (null !== $stockInfo['synonym'][$i][0]) {
-                $stockInfo['ng'] += $stockInfo['synonym'][$i][0];
+            if (isset($stockInfo['synonym'][$i][0])) {
+                $stockInfo['ng'][] = $stockInfo['synonym'][$i][0];
             }
             unset($stockInfo['synonym'][$i][0]);
         }

@@ -17,7 +17,7 @@ $userInfo = new UserInfo();
 $picture = new Picture();
 $word = new Word();
 
-if (false === $userInfo->CheckLogin()) {
+if (false === $userInfo->checkLogin()) {
     header('Error: Login failed.');
     http_response_code(403);
 
@@ -25,7 +25,7 @@ if (false === $userInfo->CheckLogin()) {
 }
 
 // ユーザーが他の部屋に入っているかチェック
-$userID = $userInfo->CheckLogin()['userID'];
+$userID = $userInfo->checkLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 
 if (false === $gameInfo) {
@@ -37,13 +37,13 @@ if (false === $gameInfo) {
 
 $gameID = $gameInfo['gameID'];
 $player = $gameInfo['playerID'];
-$roomInfo = $room->RoomInfo($gameInfo['roomID']);
+$roomInfo = $room->roomInfo($gameInfo['roomID']);
 $result = [];
 for ($i = 0; $i < count($roomInfo); ++$i) {
     $playerID = $roomInfo[$i]['playerID'];
     $userID = $roomInfo[$i]['userID'];
-    $url = $picture->GetPicture($gameID, $playerID, 1)[0]['pictureURL'];
-    $user = $userInfo->GetUserInfo($userID);
+    $url = $picture->getPicture($gameID, $playerID, 1)[0]['pictureURL'];
+    $user = $userInfo->getUserInfo($userID);
     $explanation = $word->getWord($gameID, $playerID, 0);
     $ng = $word->getWord($gameID, $playerID, 2);
     $array[$playerID] = [

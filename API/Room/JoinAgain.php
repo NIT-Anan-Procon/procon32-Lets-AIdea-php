@@ -20,7 +20,7 @@ $picture = new Picture();
 $point = new Point();
 $explanation = new Word();
 
-if (false === $userInfo->CheckLogin()) {
+if (false === $userInfo->checkLogin()) {
     header('Error: Login failed.');
     http_response_code(403);
 
@@ -28,7 +28,7 @@ if (false === $userInfo->CheckLogin()) {
 }
 
 // userIDでプレイヤーの情報を取得
-$userID = $userInfo->CheckLogin()['userID'];
+$userID = $userInfo->checkLogin()['userID'];
 $player = $room->getGameInfo($userID);
 
 // ユーザーが部屋に入っているかチェック
@@ -41,17 +41,17 @@ if (false === $player) {
 
 $gameID = $player['gameID'];
 $playerID = $player['playerID'];
-$gameInfo = $room->GameInfo($gameID);
+$gameInfo = $room->gameInfo($gameID);
 
 if (1 === count($gameInfo)) {
     $picture->deleteGameInfo($gameID);
     $point->deleteGameInfo($gameID);
-    $explanation->DelWord($gameID);
+    $explanation->delWord($gameID);
 }
 
 // roomIDで部屋の情報を取得
 $roomID = $player['roomID'];
-$roomInfo = $room->RoomInfo($roomID);
+$roomInfo = $room->roomInfo($roomID);
 
 $count = count($roomInfo);
 $flag = 0;
@@ -64,14 +64,14 @@ for ($i = 0; $i < $count; ++$i) {
 
 // gameIDを更新されているかチェック
 if (0 === $flag) {
-    $gameID = $room->GetGameID() + 1;
+    $gameID = $room->getGameID() + 1;
     $room->joinAgain($gameID, $userID);
 } else {
     $room->joinAgain($gameID, $userID);
 }
 
-$playerInfo = $room->PlayerInfo($gameID, $playerID);
-$user = $userInfo->GetUserInfo($userID);
+$playerInfo = $room->playerInfo($gameID, $playerID);
+$user = $userInfo->getUserInfo($userID);
 $result = [
     'playerID' => $playerInfo['playerID'],
     'name' => $user['name'],

@@ -26,20 +26,20 @@ class Room
         }
     }
 
-    public function CreateRoomID($mode)
+    public function createRoomID($mode)
     {
         $roomID = random_int(100000, 999999);
         $code = (sprintf('%04d', $roomID));
         $roomID = (string) $mode.(string) $code;
-        $result = $this->RoomInfo($mode.$code);
+        $result = $this->roomInfo($mode.$code);
 
         if (0 === count($result)) {
             return $code;
         }
-        $this->CreateRoomID();
+        $this->createRoomID();
     }
 
-    public function GetGameID()
+    public function getGameID()
     {
         $stmt = $this->dbh->prepare("SELECT gameID FROM {$this->table} ORDER BY gameID DESC LIMIT 1");
         $stmt->execute();
@@ -52,7 +52,7 @@ class Room
         return $result['gameID'];
     }
 
-    public function GameInfo($gameID)
+    public function gameInfo($gameID)
     {
         $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE gameID = :gameID ORDER BY playerID ASC");
         $stmt->bindValue(':gameID', $gameID);
@@ -61,7 +61,7 @@ class Room
         return $stmt->fetchall(PDO::FETCH_ASSOC);
     }
 
-    public function PlayerInfo($gameID, $playerID)
+    public function playerInfo($gameID, $playerID)
     {
         $stmt = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE gameID = :gameID AND playerID = :playerID");
         $stmt->bindValue(':gameID', $gameID);
@@ -71,15 +71,13 @@ class Room
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function RoomInfo($roomID)
+    public function roomInfo($roomID)
     {
         $st = $this->dbh->prepare("SELECT * FROM {$this->table} WHERE roomID = :roomID");
         $st->bindValue(':roomID', $roomID);
         $st->execute();
 
         return $st->fetchall(PDO::FETCH_ASSOC);
-        // $result = $st->fetchall(PDO::FETCH_ASSOC);
-        // return $result;
     }
 
     public function getGameInfo($userID)
@@ -100,7 +98,7 @@ class Room
         return $stmt->fetchall(PDO::FETCH_ASSOC);
     }
 
-    public function AddRoom($gameID, $playerID, $userID, $roomID, $flag, $gamemode)
+    public function addRoom($gameID, $playerID, $userID, $roomID, $flag, $gamemode)
     {
         $sql = "INSERT INTO {$this->table}(gameID, playerID, userID, roomID, flag, gamemode)
         VALUES
@@ -122,9 +120,9 @@ class Room
         }
     }
 
-    public function JoinRoom($userID, $roomID)
+    public function joinRoom($userID, $roomID)
     {
-        $room = $this->RoomInfo($roomID);
+        $room = $this->roomInfo($roomID);
         $user = $this->getGameInfo($userID);
         $count = count($room);
 
@@ -147,7 +145,7 @@ class Room
                 $stmt->bindValue(':gamemode', $gamemode);
                 $stmt->execute();
 
-                return $this->PlayerInfo($gameID, $playerID);
+                return $this->playerInfo($gameID, $playerID);
             } catch (PDOException $e) {
                 header('Error: '.$e->getMessage());
 
@@ -171,14 +169,14 @@ class Room
         }
     }
 
-    public function DeleteRoom($gameID)
+    public function deleteRoom($gameID)
     {
         $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE gameID = :gameID");
         $stmt->bindValue(':gameID', $gameID);
         $stmt->execute();
     }
 
-    public function LeaveRoom($roomID, $playerID)
+    public function leaveRoom($roomID, $playerID)
     {
         $stmt = $this->dbh->prepare("DELETE FROM {$this->table} WHERE roomID = :roomID AND playerID = :playerID");
         $stmt->bindValue(':roomID', $roomID);
@@ -188,17 +186,18 @@ class Room
 
     public function updateOwner($roomID)
     {
-        $playerID = (int) $this->RoomInfo($roomID)[1]['playerID'];
+        $playerID = (int) $this->roomInfo($roomID)[1]['playerID'];
         $this->dbh->beginTransaction();
 
         try {
             $stmt = $this->dbh->prepare("UPDATE {$this->table} SET flag = :flag WHERE playerID = :playerID AND roomID = :roomID");
             $stmt->bindValue(':playerID', $playerID, PDO::PARAM_INT);
-            $stmt->bindValue(':roomID', $roomID, PDO::PARAM_INT);
+            $stmt->bindValue(':roomID', $roomID, PDO::PARAM_STR);
             $stmt->bindValue(':flag', 1, PDO::PARAM_INT);
             $stmt->execute();
             $this->dbh->commit();
         } catch (PDOException $e) {
+            $this->dbh->rollBack();
             header('Error: '.$e->getMessage());
 
             exit;
@@ -224,7 +223,7 @@ class Room
 
     public function updateGame($roomID)
     {
-        $roomInfo = $this->RoomInfo($roomID);
+        $roomInfo = $this->roomInfo($roomID);
         $num = count($roomInfo);
 
         for ($i = 0; $i < $num; ++$i) {

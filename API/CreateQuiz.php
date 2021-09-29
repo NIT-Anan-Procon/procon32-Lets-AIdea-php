@@ -13,7 +13,7 @@ $stock = new Stock();
 $unsplash = new UnsplashApi();
 
 // 正解画像の取得
-$photo = $unsplash->InitialPhoto();
+$photo = $unsplash->initialPhoto();
 $photos[] = $photo;
 
 // PythonのAPIをたたく

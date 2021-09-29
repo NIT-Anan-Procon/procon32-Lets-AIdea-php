@@ -9,18 +9,18 @@ header('Access-Control-Allow-Credentials:true');
 $userInfo = new UserInfo();
 $unsplash = new UnsplashApi();
 
-if (false === $userInfo->CheckLogin()) {
+if (false === $userInfo->checkLogin()) {
     header('Error:Login failed.');
     http_response_code(403);
 
     exit;
 }
-$userID = $userInfo->CheckLogin()['userID'];
+$userID = $userInfo->checkLogin()['userID'];
 $name = $_POST['name'];
 $password = $_POST['password'];
 $icon = $unsplash->getPhoto('');
 if (isset($name)) {
-    $result = $userInfo->ChangeUserName($userID, $name);
+    $result = $userInfo->changeUserName($userID, $name);
     if (false === $result['character']) {
         header('Error:Your name and password must be alphanumeric.');
         http_response_code(401);
@@ -40,7 +40,7 @@ if (isset($name)) {
     }
 }
 if (isset($password)) {
-    $result = $userInfo->ChangePassword($userID, $password);
+    $result = $userInfo->changePassword($userID, $password);
     if (false === $result['character']) {
         header('Error:Your name and password must be alphanumeric.');
         http_response_code(401);
@@ -54,7 +54,7 @@ if (isset($password)) {
     }
 }
 if (isset($icon)) {
-    $result = $userInfo->ChangeUserIcon($userID, $icon);
+    $result = $userInfo->changeUserIcon($userID, $icon);
     if (false === $result) {
         http_response_code(400);
 

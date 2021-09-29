@@ -5,33 +5,54 @@ ini_set('display_errors', 1);
 require_once '../../lib/Room.php';
 
 require_once '../../lib/UserInfo.php';
+
+require_once '../../lib/Picture.php';
+
+require_once '../../lib/Point.php';
+
+require_once '../../lib/Word.php';
 header('Access-Control-Allow-Origin:'.URL);
 header('Access-Control-Allow-Credentials:true');
 header('Content-Type: application/json; charset=utf-8');
 $room = new Room();
 $userInfo = new UserInfo();
+$picture = new Picture();
+$point = new Point();
+$explanation = new Word();
 
-if (false === $userInfo->CheckLogin()) {
+if (false === $userInfo->checkLogin()) {
     header('Error: Login failed.');
     http_response_code(403);
 
     exit;
 }
 
-// ユーザーが他の部屋に入っていないかチェック
-$userID = $userInfo->CheckLogin()['userID'];
+$userID = $userInfo->checkLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 
 if (false !== $gameInfo) {
-    header('Error: The user is already in the other room.');
-    http_response_code(403);
-
-    exit;
+    $gameID = $gameInfo['gameID'];
+    $roomID = $gameInfo['roomID'];
+    $count = count($room->gameInfo($gameID));
+    if (1 === $count) {
+        $room->leaveRoom($roomID, $gameInfo['playerID']);
+        $picture->deleteGameInfo($gameID);
+        $point->deleteGameInfo($gameID);
+        $explanation->delWord($gameID);
+        $room->updateGame($roomID);
+    } elseif (1 === (int) $gameInfo['flag']) {
+        $room->updateOwner($roomID);
+        $room->leaveRoom($roomID, $gameInfo['playerID']);
+        $room->updateGame($roomID);
+    } else {
+        $room->leaveRoom($roomID, $gameInfo['playerID']);
+        $room->updateGame($roomID);
+    }
 }
 
 // 部屋を追加
 if (isset($_POST['gamemode'])) {
-    $gameID = $room->GetGameID() + 1;
+    $gameID = $room->getGameID() + 1;
     $playerID = 1;
     $gamemode = (string) $_POST['gamemode'];
     if ((int) $gamemode > 1000) {
@@ -39,10 +60,10 @@ if (isset($_POST['gamemode'])) {
     } else {
         $mode = 'L';
     }
-    $roomID = $mode.$room->CreateRoomID($mode);
-    $room->AddRoom($gameID, $playerID, $userID, $roomID, 1, $gamemode);
-    $playerInfo = $room->PlayerInfo($gameID, $playerID);
-    $user = $userInfo->GetUserInfo($userID);
+    $roomID = $mode.$room->createRoomID($mode);
+    $room->addRoom($gameID, $playerID, $userID, $roomID, 1, $gamemode);
+    $playerInfo = $room->playerInfo($gameID, $playerID);
+    $user = $userInfo->getUserInfo($userID);
     $result = [
         'playerID' => $playerInfo['playerID'],
         'name' => $user['name'],
