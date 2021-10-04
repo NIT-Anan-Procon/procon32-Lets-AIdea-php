@@ -255,7 +255,7 @@ class Room
             exit;
         }
     }
-    
+
     public function vote($gameID, $playerID)
     {
         try {
