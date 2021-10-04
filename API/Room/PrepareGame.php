@@ -1,5 +1,5 @@
 <?php
-
+/*
 ini_set('display_errors', 1);
 
 require_once '../../lib/Word.php';
@@ -109,5 +109,5 @@ if (0 === $mode) {
         unset($value);
     }
     unset($key);
-}
+}*/
 http_response_code(200);
