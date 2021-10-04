@@ -56,6 +56,7 @@ class Picture
         if (0 < $answer) {
             $sql .= ' AND answer = :answer';
         }
+        $sql .= ' ORDER BY playerID ASC';
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindValue(':gameID', $gameID);
         if (null !== $playerID) {
