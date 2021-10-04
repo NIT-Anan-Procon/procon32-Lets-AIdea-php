@@ -65,9 +65,15 @@ do {
 if (0 === $mode) {
     $picture->addPicture($gameID, null, $stockInfo['pictureURL'][0], 2);
 } else {
-    $picture->addPicture($gameID, $playerID, $stockInfo['pictureURL'][0], 1);
+    $r = random_int(1, 4);
     for ($i = 1; $i < count($stockInfo['pictureURL']); ++$i) {
+        if ($i === $r) {
+            $picture->addPicture($gameID, $playerID, $stockInfo['pictureURL'][0], 1);
+        }
         $picture->addPicture($gameID, $playerID, $stockInfo['pictureURL'][$i], 0);
+    }
+    if (4 === $r) {
+        $picture->addPicture($gameID, $playerID, $stockInfo['pictureURL'][0], 1);
     }
 }
 $stockInfo['ng'] = explode(',', $stockInfo['ng']);
