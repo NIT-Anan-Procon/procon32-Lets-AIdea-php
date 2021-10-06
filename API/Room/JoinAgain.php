@@ -27,50 +27,8 @@ if (false === $userInfo->checkLogin()) {
     exit;
 }
 
-// userIDでプレイヤーの情報を取得
 $userID = $userInfo->checkLogin()['userID'];
-$player = $room->getGameInfo($userID);
-
-// ユーザーが部屋に入っているかチェック
-if (false === $player) {
-    header('Error: The user is not in the room.');
-    http_response_code(403);
-
-    exit;
-}
-
-$gameID = $player['gameID'];
-$playerID = $player['playerID'];
-$gameInfo = $room->gameInfo($gameID);
-
-if (1 === count($gameInfo)) {
-    $picture->deleteGameInfo($gameID);
-    $point->deleteGameInfo($gameID);
-    $explanation->delWord($gameID);
-}
-
-// roomIDで部屋の情報を取得
-$roomID = $player['roomID'];
-$roomInfo = $room->roomInfo($roomID);
-
-$count = count($roomInfo);
-$flag = 0;
-for ($i = 0; $i < $count; ++$i) {
-    if ($gameID < $roomInfo[$i]['gameID']) {
-        $gameID = $roomInfo[$i]['gameID'];
-        $flag = 1;
-    }
-}
-
-// gameIDを更新されているかチェック
-if (0 === $flag) {
-    $gameID = $room->getGameID() + 1;
-    $room->joinAgain($gameID, $userID);
-} else {
-    $room->joinAgain($gameID, $userID);
-}
-
-$playerInfo = $room->playerInfo($gameID, $playerID);
+$gameInfo = $room->getGameInfo($userID);
 $user = $userInfo->getUserInfo($userID);
 $result = [
     'playerID' => $playerInfo['playerID'],
@@ -78,8 +36,7 @@ $result = [
     'icon' => $user['icon'],
     'badge' => $user['badge'],
     'gamemode' => $playerInfo['gamemode'],
-    'roomID' => $roomID,
+    'roomID' => $gameInfo['roomID'],
 ];
-
 echo json_encode($result);
 http_response_code(200);

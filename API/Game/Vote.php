@@ -1,5 +1,5 @@
 <?php
-
+/*
 ini_set('display_errors', 1);
 
 require_once '../../lib/Point.php';
@@ -46,3 +46,5 @@ if (isset($_POST['playerID'])) {
     header('Error:The requested value is different from the specified format.');
     http_response_code(401);
 }
+*/
+http_response_code(200);
