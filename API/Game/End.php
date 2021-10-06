@@ -68,6 +68,7 @@ if (1 === $mode) {
 } else {
     $result['pictureURL'] = $picture->getPicture($user['room']['gameID'], null, 2)[0]['pictureURL'];
 }
+/*
 if (1 === (int) $user['room']['flag']) {
     $ng = $result['ng'][0];
     for ($i = 1; $i < count($result['ng']); ++$i) {
@@ -80,6 +81,7 @@ if (1 === (int) $user['room']['flag']) {
         exit;
     }
 }
+*/
 unset($result['userID'], $result['password']);
 
 echo json_encode($result);
