@@ -256,6 +256,19 @@ class Room
         }
     }
 
+    public function updateDemoStatus($gameID)
+    {
+        try {
+            $stmt = $this->dbh->prepare("UPDATE {$this->table} SET status = 0 WHERE gameID = :gameID");
+            $stmt->bindValue(':gameID', $gameID, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            header('Error: '.$e->getMessage());
+
+            exit;
+        }
+    }
+
     public function vote($gameID, $playerID)
     {
         try {

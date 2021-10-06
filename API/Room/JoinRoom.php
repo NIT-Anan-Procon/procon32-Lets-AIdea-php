@@ -21,6 +21,7 @@ if (false === $userInfo->checkLogin()) {
 $userID = $userInfo->checkLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 $user = $userInfo->getUserInfo($userID);
+$room->updateDemoStatus($gameInfo['gameID']);
 $result = [
     'playerID' => $playerInfo['playerID'],
     'name' => $user['name'],
