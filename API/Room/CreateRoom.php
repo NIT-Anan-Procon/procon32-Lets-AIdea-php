@@ -21,12 +21,13 @@ if (false === $userInfo->checkLogin()) {
 $userID = $userInfo->checkLogin()['userID'];
 $gameInfo = $room->getGameInfo($userID);
 $user = $userInfo->getUserInfo($userID);
+$room->updateDemoStatus($gameInfo['gameID']);
 $result = [
-    'playerID' => $playerInfo['playerID'],
+    'playerID' => $gameInfo['playerID'],
     'name' => $user['name'],
     'icon' => $user['icon'],
     'badge' => $user['badge'],
-    'gamemode' => $playerInfo['gamemode'],
+    'gamemode' => $gameInfo['gamemode'],
     'roomID' => $gameInfo['roomID'],
 ];
 echo json_encode($result);
