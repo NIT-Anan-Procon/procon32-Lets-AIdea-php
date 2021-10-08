@@ -14,11 +14,11 @@ $unsplash = new UnsplashApi();
 
 // 正解画像の取得
 if (isset($_GET['URL'])) {
-    echo json_encode("1");
+    echo json_encode('1');
     $photo = $_GET['URL'];
     $photos[] = $photo;
 } else {
-    echo json_encode("2");
+    echo json_encode('2');
     $photo = $unsplash->initialPhoto();
     $photos[] = $photo;
 }
