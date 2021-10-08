@@ -27,17 +27,17 @@ class Stock
         }
     }
 
-    public function addStock($explanation, $ng, $synonyms, $pictureURL)
+    public function addStock($explanation, $ng, $synonym, $pictureURL)
     {
-        $sql = "INSERT INTO {$this->table}(explanation, ng, synonyms, pictureURL)
+        $sql = "INSERT INTO {$this->table}(explanation, ng, synonym, pictureURL)
         VALUES
-            (:explanation, :ng, :synonyms, :pictureURL)";
+            (:explanation, :ng, :synonym, :pictureURL)";
 
         try {
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindValue(':explanation', $explanation);
             $stmt->bindValue(':ng', $ng);
-            $stmt->bindValue(':synonyms', $synonyms);
+            $stmt->bindValue(':synonym', $synonym);
             $stmt->bindValue(':pictureURL', $pictureURL);
             $stmt->execute();
         } catch (PDOException $e) {
