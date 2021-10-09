@@ -13,8 +13,13 @@ $stock = new Stock();
 $unsplash = new UnsplashApi();
 
 // 正解画像の取得
-$photo = $unsplash->initialPhoto();
-$photos[] = $photo;
+if (isset($_GET['URL'])) {
+    $photo = $_GET['URL'];
+    $photos[] = $photo;
+} else {
+    $photo = $unsplash->initialPhoto();
+    $photos[] = $photo;
+}
 
 // PythonのAPIをたたく
 $data = json_encode(['url' => $photo, 'subject' => 1, 'synonym' => 1]);
